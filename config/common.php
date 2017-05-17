@@ -8,7 +8,12 @@ $params = ArrayHelper::merge(
 );
  
 return [
+    'name' => 'ПРЕЙСКУРАНТ ООО «КРАСНОДАРЗЕРНОПРОДУКТ-ЭКСПО»',
     'basePath' => dirname(__DIR__),
+    'aliases' => [
+        '@bower' => '@vendor/bower-asset',
+        '@npm'   => '@vendor/npm-asset',
+    ],
     'bootstrap' => ['log'],
     'components' => [
         'db' => [
