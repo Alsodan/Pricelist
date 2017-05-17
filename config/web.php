@@ -2,18 +2,23 @@
 
 $config = [
     'id' => 'pricekzp-main',
+    'defaultRoute' => 'main/default/index',
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\modules\user\models\User',
             'enableAutoLogin' => true,
+            'loginUrl' => ['user/default/login']
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'main/default/error',
         ],
+        'log' => [
+            'traceLevel' => YII_DEBUG ? 3 : 0,
+        ]
     ],
 ];
 
