@@ -22,7 +22,7 @@ class SignupForm extends Model
         return [
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'required'],
-            ['username', 'match', 'pattern' => '#^[\w_-]+$#i'],
+            ['username', 'match', 'pattern' => '#^[\w_-]+$#i'], //#^[a-zа-яё0-9_\-]+$#uis - With Russian letters
             ['username', 'unique', 'targetClass' => User::className(), 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
  
