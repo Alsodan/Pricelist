@@ -23,13 +23,13 @@ class SignupForm extends Model
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'required'],
             ['username', 'match', 'pattern' => '#^[\w_-]+$#i'], //#^[a-zа-яё0-9_\-]+$#uis - With Russian letters
-            ['username', 'unique', 'targetClass' => User::className(), 'message' => 'This username has already been taken.'],
+            ['username', 'unique', 'targetClass' => User::className(), 'message' => Yii::t('app', 'USER_SIGN_UP_NOT_UNIQUE_USERNAME')],
             ['username', 'string', 'min' => 2, 'max' => 255],
  
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => User::className(), 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => User::className(), 'message' => Yii::t('app', 'USER_SIGN_UP_NOT_UNIQUE_EMAIL')],
  
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
@@ -38,6 +38,19 @@ class SignupForm extends Model
         ];
     }
  
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'username' => Yii::t('app', 'USER_USERNAME'),
+            'email' => Yii::t('app', 'USER_EMAIL'),
+            'password' => Yii::t('app', 'USER_PASSWORD'),
+            'verifyCode' => Yii::t('app', 'USER_VERIFY_CODE'),
+        ];
+    }
+    
     /**
      * Signs user up.
      *
@@ -57,9 +70,9 @@ class SignupForm extends Model
             if ($user->save()) {
                 Yii::$app->mailer->compose('@app/modules/user/mails/emailConfirm', ['user' => $user])
                     ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
-                    ->setReplyTo($this->email)
+                    ->setReplyTo(Yii::$app->params['adminEmail'])
                     ->setTo($this->email)
-                    ->setSubject('Email confirmation for ' . Yii::$app->name)
+                    ->setSubject(Yii::t('app', 'USER_SIGN_UP_MAIL_SUBJECT') . Yii::$app->name)
                     ->send();
                 return $user;
             }

@@ -9,38 +9,44 @@ use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use app\widgets\Alert;
 
-$this->title = 'Signup';
+$this->title = Yii::t('app', 'USER_SIGN_UP_TITLE');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="user-default-signup">
     
-    <?= Alert::widget() ?>
+    <?php if (Yii::$app->session->hasFlash('success')): ?>
+
+        <?= Alert::widget() ?>
+
+    <?php else: ?>
     
-    <h1><?= Html::encode($this->title) ?></h1>
+        <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to signup:</p>
+        <p><?= Yii::t('app', 'USER_SIGN_UP_SUBTITLE') ?></p>
 
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+        <div class="row">
+            <div class="col-lg-5">
+                <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                    <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
-                <?= $form->field($model, 'email') ?>
+                    <?= $form->field($model, 'email') ?>
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
-            
-                <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-                    'captchaAction' => '/user/default/captcha',
-                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                ]) ?>
+                    <?= $form->field($model, 'password')->passwordInput() ?>
 
-                <div class="form-group">
-                    <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
-                </div>
+                    <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+                        'captchaAction' => '/user/default/captcha',
+                        'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+                    ]) ?>
 
-            <?php ActiveForm::end(); ?>
+                    <div class="form-group">
+                        <?= Html::submitButton(Yii::t('app', 'BUTTON_SIGNUP'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                    </div>
+
+                <?php ActiveForm::end(); ?>
+            </div>
         </div>
-    </div>
+    
+    <?php endif; ?>
 </div>

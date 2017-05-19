@@ -34,6 +34,15 @@ class LoginForm extends Model
         ];
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'username' => Yii::t('app', 'USER_USERNAME'),
+            'password' => Yii::t('app', 'USER_PASSWORD'),
+            'rememberMe' => Yii::t('app', 'USER_REMEMBER_ME'),
+        ];
+    }
+    
     /**
      * Validates the password.
      * This method serves as the inline validation for password.
@@ -47,11 +56,11 @@ class LoginForm extends Model
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError('password', 'Неверное имя пользователя или пароль.');
+                $this->addError('password', Yii::t('app', 'USER_LOG_IN_WRONG_LOGIN_OR_PASSWORD'));
             } elseif ($user && $user->status == User::STATUS_BLOCKED) {
-                $this->addError('username', 'Ваш аккаунт заблокирован.');
+                $this->addError('username', Yii::t('app', 'USER_LOG_IN_ACCOUNT_BLOCKED'));
             } elseif ($user && $user->status == User::STATUS_WAIT) {
-                $this->addError('username', 'Ваш аккаунт не подтвежден.');
+                $this->addError('username', Yii::t('app', 'USER_LOG_IN_EMAIL_NOT_CONFIRMED'));
             }
         }
     }

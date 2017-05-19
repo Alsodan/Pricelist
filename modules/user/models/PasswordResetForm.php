@@ -2,6 +2,7 @@
 
 namespace app\modules\user\models;
 
+use Yii;
 use yii\base\Model;
 use yii\base\InvalidParamException;
 use app\modules\user\models\User;
@@ -17,6 +18,13 @@ class PasswordResetForm extends Model
      * @var app\modules\user\models\User
      */
     private $_user;
+
+    public function attributeLabels()
+    {
+        return [
+            'password' => Yii::t('app', 'USER_PASSWORD'),
+        ];
+    }
     
     /**
      * Creates a form model given a token.
@@ -28,11 +36,11 @@ class PasswordResetForm extends Model
     public function __construct($token, $config = [])
     {
         if (empty($token) || !is_string($token)) {
-            throw new InvalidParamException('Password reset token cannot be blank.');
+            throw new InvalidParamException(Yii::t('app', 'EXEPTION_NO_PASSWORD_RESET_TOKEN'));
         }
         $this->_user = User::findByPasswordResetToken($token);
         if (!$this->_user) {
-            throw new InvalidParamException('Wrong password reset token.');
+            throw new InvalidParamException(Yii::t('app', 'EXEPTION_WRONG_PASSWORD_RESET_TOKEN'));
         }
         parent::__construct($config);
     }

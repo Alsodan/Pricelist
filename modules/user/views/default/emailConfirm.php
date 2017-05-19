@@ -7,7 +7,7 @@
 use yii\helpers\Html;
 use app\widgets\Alert;
 
-$this->title = 'Email Confirm';
+$this->title = Yii::t('app', 'USER_EMAIL_CONFIRM');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

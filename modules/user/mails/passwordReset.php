@@ -10,12 +10,12 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['user/default/password-re
 
 <div class="password-reset">
     
-    <p>Здравствуйте, <?= Html::encode($user->username) ?>!</p>
+    <p><?= Yii::t('app', 'HELLO {username}', ['username' => $user->username]) ?></p>
 
-    <p>Для изменения пароля пройдите по ссылке:</p>
+    <p><?= Yii::t('app', 'FOLLOW_TO_RESET_PASSWORD') ?></p>
 
     <?= Html::a(Html::encode($resetLink), $resetLink) ?>
 
-    <p>Если Вы не регистрировались на нашем сайте, то просто удалите это письмо.</p>
+    <p><?= Yii::t('app', 'IGNORE_IF_DO_NOT_REGISTER') ?></p>
     
 </div>

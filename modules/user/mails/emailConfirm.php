@@ -10,12 +10,12 @@ $confirmLink = Yii::$app->urlManager->createAbsoluteUrl(['user/default/email-con
  
 <div class="email-confirm">
     
-    <p>Здравствуйте, <?= Html::encode($user->username) ?>!</p>
+    <p><?= Yii::t('app', 'HELLO {username}', ['username' => $user->username]) ?></p>
 
-    <p>Для подтверждения адреса пройдите по ссылке:</p>
+    <p><?= Yii::t('app', 'FOLLOW_TO_CONFIRM_EMAIL') ?></p>
 
     <?= Html::a(Html::encode($confirmLink), $confirmLink) ?>
 
-    <p>Если Вы не регистрировались на нашем сайте, то просто удалите это письмо.</p>
+    <p><?= Yii::t('app', 'IGNORE_IF_DO_NOT_REGISTER') ?></p>
 
 </div>

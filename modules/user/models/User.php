@@ -46,12 +46,12 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['username', 'required'],
             ['username', 'match', 'pattern' => '#^[\w_-]+$#is'],
-            ['username', 'unique', 'targetClass' => self::className(), 'message' => 'This username has already been taken.'],
+            ['username', 'unique', 'targetClass' => self::className(), 'message' => Yii::t('app', 'USER_SIGN_UP_NOT_UNIQUE_USERNAME')],
             ['username', 'string', 'min' => 2, 'max' => 255],
  
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => self::className(), 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => self::className(), 'message' => Yii::t('app', 'USER_SIGN_UP_NOT_UNIQUE_EMAIL')],
             ['email', 'string', 'max' => 255],
  
             ['status', 'integer'],
@@ -66,12 +66,12 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'username' => 'Имя пользователя',
-            'email' => 'Email',
-            'status' => 'Статус',
-            'created_at' => 'Создан',
-            'updated_at' => 'Обновлён',
+            'id' => Yii::t('app', 'USER_ID'),
+            'username' => Yii::t('app', 'USER_USERNAME'),
+            'email' => Yii::t('app', 'USER_EMAIL'),
+            'status' => Yii::t('app', 'USER_STATUS'),
+            'created_at' => Yii::t('app', 'USER_CREATED'),
+            'updated_at' => Yii::t('app', 'USER_UPDATED'),
         ];
     }
     
@@ -103,9 +103,9 @@ class User extends ActiveRecord implements IdentityInterface
     public static function getStatusesArray()
     {
         return [
-            self::STATUS_BLOCKED => 'Заблокирован',
-            self::STATUS_ACTIVE => 'Активен',
-            self::STATUS_WAIT => 'Ожидает подтверждения',
+            self::STATUS_BLOCKED => Yii::t('app', 'USER_STATUS_BLOCKED'),
+            self::STATUS_ACTIVE => Yii::t('app', 'USER_STATUS_ACTIVE'),
+            self::STATUS_WAIT => Yii::t('app', 'USER_STATUS_WAIT'),
         ];
     }
     

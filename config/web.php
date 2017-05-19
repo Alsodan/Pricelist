@@ -2,6 +2,7 @@
 
 $config = [
     'id' => 'pricekzp-main',
+    'language' => 'ru-RU',
     'defaultRoute' => 'main/default/index',
     'components' => [
         'request' => [
