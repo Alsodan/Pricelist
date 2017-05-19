@@ -6,7 +6,6 @@
 /* @var $exception Exception */
 
 use yii\helpers\Html;
-use Yii;
 
 $this->title = $name;
 ?>
