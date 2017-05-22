@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c7c7def8d30153c5409ccd9b8c391296",
+    "content-hash": "f39950a43bfe04b985c72a70518c4926",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -26,17 +26,33 @@
             "type": "bower-asset"
         },
         {
-            "name": "bower-asset/jquery",
-            "version": "2.2.4",
+            "name": "bower-asset/html5shiv",
+            "version": "3.7.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jquery/jquery-dist.git",
-                "reference": "c0185ab7c75aab88762c5aae780b9d83b80eda72"
+                "url": "https://github.com/aFarkas/html5shiv.git",
+                "reference": "40df868a76f1f19ea23b123d1480d44a7195f349"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/c0185ab7c75aab88762c5aae780b9d83b80eda72",
-                "reference": "c0185ab7c75aab88762c5aae780b9d83b80eda72",
+                "url": "https://api.github.com/repos/aFarkas/html5shiv/zipball/40df868a76f1f19ea23b123d1480d44a7195f349",
+                "reference": "40df868a76f1f19ea23b123d1480d44a7195f349",
+                "shasum": null
+            },
+            "type": "bower-asset"
+        },
+        {
+            "name": "bower-asset/jquery",
+            "version": "1.12.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jquery/jquery-dist.git",
+                "reference": "5e89585e0121e72ff47de177c5ef604f3089a53d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/5e89585e0121e72ff47de177c5ef604f3089a53d",
+                "reference": "5e89585e0121e72ff47de177c5ef604f3089a53d",
                 "shasum": null
             },
             "type": "bower-asset"
@@ -72,6 +88,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/bestiejs/punycode.js/zipball/38c8d3131a82567bfef18da09f7f4db68c84f8a3",
                 "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3",
+                "shasum": null
+            },
+            "type": "bower-asset"
+        },
+        {
+            "name": "bower-asset/respond",
+            "version": "1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/scottjehl/Respond.git",
+                "reference": "3510fb2965db59ea476e4708746817d0a947b4fe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/scottjehl/Respond/zipball/3510fb2965db59ea476e4708746817d0a947b4fe",
+                "reference": "3510fb2965db59ea476e4708746817d0a947b4fe",
                 "shasum": null
             },
             "type": "bower-asset"
