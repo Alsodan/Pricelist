@@ -7,7 +7,6 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use app\widgets\Alert;
 use app\assets\AppAsset;
 
 AppAsset::register($this);
@@ -47,20 +46,21 @@ AppAsset::register($this);
                 ['label' => Yii::t('app', 'NAV_LOGIN'), 'url' => ['/user/default/login']]
             ) : false,
             !Yii::$app->user->isGuest ?
-                ['label' => Yii::t('app', 'NAV_PROFILE'), 'url' => ['/user/profile/index']] :
-                false,
+            ['label' => Yii::t('app', 'NAV_ADMIN'), 'items' => [
+                ['label' => Yii::t('app', 'NAV_ADMIN'), 'url' => ['/admin/default/index']],
+                ['label' => Yii::t('app', 'NAV_ADMIN_USERS'), 'url' => ['/admin/users/index']],
+            ]] :
+            false,
             !Yii::$app->user->isGuest ?
-                (
-                    '<li>'
-                    . Html::beginForm(['/user/default/logout'], 'post')
-                    . Html::submitButton(
-                        Yii::t('app', 'NAV_LOGOUT') . ' (' . Yii::$app->user->identity->username . ')',
-                        ['class' => 'btn btn-link logout']
-                    )
-                    . Html::endForm()
-                    . '</li>'
-                ) :
-            false
+                ['label' => Yii::t('app', 'NAV_PROFILE'), 'items' => [
+                    ['label' => Yii::t('app', 'NAV_PROFILE'), 'url' => ['/user/profile/index']],
+                    ['label' => Yii::t('app', 'NAV_LOGOUT') . ' (' . Yii::$app->user->identity->username . ')',
+                        'url' => ['/user/default/logout'],
+                        'linkOptions' => ['data-method' => 'post']
+                    ]
+                ]
+            ] :
+            false,
         ]),
     ]);
     NavBar::end();

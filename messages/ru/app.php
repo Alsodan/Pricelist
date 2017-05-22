@@ -7,6 +7,8 @@ return [
     'NAV_LOGIN' => 'Вход',
     'NAV_LOGOUT' => 'Выход',
     'NAV_PROFILE' => 'Профиль',
+    'NAV_ADMIN' => 'Администрирование',
+    'NAV_ADMIN_USERS' => 'Пользователи',
  
     'BUTTON_SEND' => 'Отправить',
     'BUTTON_SAVE' => 'Сохранить',
@@ -17,6 +19,9 @@ return [
     
     'LINK_RESET_IT' => 'изменить его',
     'LINK_PASSWORD_CHANGE' => 'Сменить пароль',
+    'LINK_CREATE_USER' => 'Создать пользователя',
+    'LINK_UPDATE' => 'Редактировать',
+    'LINK_ADMIN_USERS' => 'Управление пользователями',
     
     'ERROR_MESSAGE_GLOBAL' => 'При обработке вашего запроса произошла ошибка.<br>Если вы считаете, что это ошибка сервера, пожалуйста напишите нам. Спасибо!',
     
@@ -82,6 +87,13 @@ return [
     'CONTACT_SUBJECT' => 'Тема письма',
     'CONTACT_MESSAGE' => 'Сообщение',
     'CONTACT_VERIFICATION_CODE' => 'Проверочный код',
+    
+    'ADMIN_TITLE' => 'Администрирование',
+    
+    'ADMIN_USERS_INDEX_TITLE' => 'Пользователи',
+    'ADMIN_USERS_CREATE_USER_TITLE' => 'Создание пользователя',
+    'ADMIN_USERS_VIEW_USER_TITLE' => 'Просмотр',
+    'ADMIN_USERS_DELETE_USER_CONFIRM' => 'Вы точно хотите удалить этого пользователя?',
 
     'HELLO {username}' => 'Здравствуйте, {username}!',
     'FOLLOW_TO_RESET_PASSWORD' => 'Для смены пароля пройдите по ссылке:',

@@ -7,6 +7,8 @@ return [
     'NAV_LOGIN' => 'Log in',
     'NAV_LOGOUT' => 'Log out',
     'NAV_PROFILE' => 'Profile',
+    'NAV_ADMIN' => 'Administration',
+    'NAV_ADMIN_USERS' => 'Users',
  
     'BUTTON_SEND' => 'Send',
     'BUTTON_SAVE' => 'Save',
@@ -17,6 +19,9 @@ return [
     
     'LINK_RESET_IT' => 'reset it',
     'LINK_PASSWORD_CHANGE' => 'Change Password',
+    'LINK_CREATE_USER' => 'Create User',
+    'LINK_UPDATE' => 'Update',
+    'LINK_ADMIN_USERS' => 'Manage Users',
     
     'ERROR_MESSAGE_GLOBAL' => 'The above error occurred while the Web server was processing your request.<br>Please contact us if you think this is a server error. Thank you.',
     
@@ -82,6 +87,13 @@ return [
     'CONTACT_SUBJECT' => 'Subject',
     'CONTACT_MESSAGE' => 'Message',
     'CONTACT_VERIFICATION_CODE' => 'Verification Code',
+    
+    'ADMIN_TITLE' => 'Administration',
+    
+    'ADMIN_USERS_INDEX_TITLE' => 'Users',
+    'ADMIN_USERS_CREATE_USER_TITLE' => 'Create User',
+    'ADMIN_USERS_VIEW_USER_TITLE' => 'View',
+    'ADMIN_USERS_DELETE_USER_CONFIRM' => 'Are you sure you want to delete this item?',
 
     'HELLO {username}' => 'Hello, {username}!',
     'FOLLOW_TO_RESET_PASSWORD' => 'Follow the link below to reset your password:',
