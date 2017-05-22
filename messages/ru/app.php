@@ -6,6 +6,7 @@ return [
     'NAV_SIGNUP' => 'Регистрация',
     'NAV_LOGIN' => 'Вход',
     'NAV_LOGOUT' => 'Выход',
+    'NAV_PROFILE' => 'Профиль',
  
     'BUTTON_SEND' => 'Отправить',
     'BUTTON_SAVE' => 'Сохранить',
@@ -15,6 +16,7 @@ return [
     'BUTTON_SIGNUP' => 'Зарегистрироваться',
     
     'LINK_RESET_IT' => 'изменить его',
+    'LINK_PASSWORD_CHANGE' => 'Сменить пароль',
     
     'ERROR_MESSAGE_GLOBAL' => 'При обработке вашего запроса произошла ошибка.<br>Если вы считаете, что это ошибка сервера, пожалуйста напишите нам. Спасибо!',
     
@@ -27,6 +29,9 @@ return [
     'USER_CREATED' => 'Создано',
     'USER_UPDATED' => 'Изменено',
     'USER_VERIFY_CODE' => 'Проверочный код',
+    'USER_NEW_PASSWORD' => 'Новый пароль',
+    'USER_REPEAT_PASSWORD' => 'Повторите новый пароль',
+    'USER_CURRENT_PASSWORD' => 'Текущий пароль',
     
     'USER_STATUS_BLOCKED' => 'Заблокирован',
     'USER_STATUS_ACTIVE' => 'Активен',
@@ -62,6 +67,12 @@ return [
     'USER_SIGN_UP_NOT_UNIQUE_USERNAME' => 'Такое имя пользователя уже занято.',
     'USER_SIGN_UP_NOT_UNIQUE_EMAIL' => 'Такая электронная почта уже занята.',
     'USER_SIGN_UP_MAIL_SUBJECT' => 'Подтверждение электронной почты для ',
+    
+    'USER_PROFILE_TITLE' => 'Профиль',
+    'USER_PROFILE_UPDATE_TITLE' => 'Редактировать',
+    
+    'USER_PASSWORD_CHANGE_TITLE' => 'Смена пароля',
+    'USER_PASSWORD_CHANGE_ERROR_WRONG_CURRENT_PASSWORD' => 'Неверный текущий пароль',
     
     'CONTACT_TITLE' => 'Связь',
     'CONTACT_SUBTITLE' => 'Если у вас есть предложения или вопросы, то заполните эту форму, чтобы написать нам. Спасибо.',

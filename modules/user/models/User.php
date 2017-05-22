@@ -59,7 +59,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => array_keys(self::getStatusesArray())],
         ];
     }
-
+    
     /**
      * @inheritdoc
      */

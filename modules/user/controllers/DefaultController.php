@@ -183,4 +183,14 @@ class DefaultController extends Controller
             'model' => $model,
         ]);
     }
+    
+    /**
+     * Redirect from /user to /user/profile
+     * 
+     * @return string
+     */
+    public function actionIndex()
+    {
+        return $this->redirect(['profile/index'], 301);
+    }
 }

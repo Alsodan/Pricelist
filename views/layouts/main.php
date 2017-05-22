@@ -45,16 +45,22 @@ AppAsset::register($this);
                 false,
             Yii::$app->user->isGuest ? (
                 ['label' => Yii::t('app', 'NAV_LOGIN'), 'url' => ['/user/default/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/user/default/logout'], 'post')
-                . Html::submitButton(
-                    Yii::t('app', 'NAV_LOGOUT') . ' (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
+            ) : false,
+            !Yii::$app->user->isGuest ?
+                ['label' => Yii::t('app', 'NAV_PROFILE'), 'url' => ['/user/profile/index']] :
+                false,
+            !Yii::$app->user->isGuest ?
+                (
+                    '<li>'
+                    . Html::beginForm(['/user/default/logout'], 'post')
+                    . Html::submitButton(
+                        Yii::t('app', 'NAV_LOGOUT') . ' (' . Yii::$app->user->identity->username . ')',
+                        ['class' => 'btn btn-link logout']
+                    )
+                    . Html::endForm()
+                    . '</li>'
+                ) :
+            false
         ]),
     ]);
     NavBar::end();

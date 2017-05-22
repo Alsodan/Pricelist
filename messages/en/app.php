@@ -6,6 +6,7 @@ return [
     'NAV_SIGNUP' => 'Sign up',
     'NAV_LOGIN' => 'Log in',
     'NAV_LOGOUT' => 'Log out',
+    'NAV_PROFILE' => 'Profile',
  
     'BUTTON_SEND' => 'Send',
     'BUTTON_SAVE' => 'Save',
@@ -15,6 +16,7 @@ return [
     'BUTTON_SIGNUP' => 'Signup',
     
     'LINK_RESET_IT' => 'reset it',
+    'LINK_PASSWORD_CHANGE' => 'Change Password',
     
     'ERROR_MESSAGE_GLOBAL' => 'The above error occurred while the Web server was processing your request.<br>Please contact us if you think this is a server error. Thank you.',
     
@@ -27,6 +29,9 @@ return [
     'USER_CREATED' => 'Created at',
     'USER_UPDATED' => 'Updated at',
     'USER_VERIFY_CODE' => 'Verify Code',
+    'USER_NEW_PASSWORD' => 'New password',
+    'USER_REPEAT_PASSWORD' => 'Repeat password',
+    'USER_CURRENT_PASSWORD' => 'Current password',
     
     'USER_STATUS_BLOCKED' => 'Blocked',
     'USER_STATUS_ACTIVE' => 'Active',
@@ -62,6 +67,12 @@ return [
     'USER_SIGN_UP_NOT_UNIQUE_USERNAME' => 'This username has already been taken.',
     'USER_SIGN_UP_NOT_UNIQUE_EMAIL' => 'This email address has already been taken.',
     'USER_SIGN_UP_MAIL_SUBJECT' => 'Email confirmation for ',
+    
+    'USER_PROFILE_TITLE' => 'Profile',
+    'USER_PROFILE_UPDATE_TITLE' => 'Edit',
+    
+    'USER_PASSWORD_CHANGE_TITLE' => 'Password Change',
+    'USER_PASSWORD_CHANGE_ERROR_WRONG_CURRENT_PASSWORD' => 'Wrong current password',
     
     'CONTACT_TITLE' => 'Contact',
     'CONTACT_SUBTITLE' => 'If you have business inquiries or other questions, please fill out the following form to contact us. Thank you.',
