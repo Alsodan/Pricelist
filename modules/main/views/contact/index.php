@@ -1,5 +1,7 @@
 <?php
 
+use app\modules\main\Module;
+
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\models\ContactForm */
@@ -8,7 +10,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
-$this->title = Yii::t('app', 'CONTACT_TITLE');
+$this->title = Module::t('main', 'CONTACT_TITLE');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-contact">
@@ -17,13 +19,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php if (Yii::$app->session->hasFlash('contactFormSubmitted')): ?>
 
         <div class="alert alert-success">
-            <?= Yii::t('app', 'CONTACT_THANKS'); ?>
+            <?= Module::t('main', 'CONTACT_THANKS'); ?>
         </div>
 
     <?php else: ?>
 
         <p>
-            <?= Yii::t('app', 'CONTACT_SUBTITLE') ?>
+            <?= Module::t('main', 'CONTACT_SUBTITLE') ?>
         </p>
 
         <div class="row">
@@ -45,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]) ?>
 
                     <div class="form-group">
-                        <?= Html::submitButton(Yii::t('app', 'BUTTON_SEND'), ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
+                        <?= Html::submitButton(Module::t('main', 'BUTTON_SEND'), ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
                     </div>
 
                 <?php ActiveForm::end(); ?>

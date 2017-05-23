@@ -1,5 +1,7 @@
 <?php
 
+use app\modules\main\Module;
+
 /* @var $this yii\web\View */
 /* @var $name string */
 /* @var $message string */
@@ -18,7 +20,7 @@ $this->title = $name;
     </div>
 
     <p>
-        <?= Yii::t('app', 'ERROR_MESSAGE_GLOBAL') ?>
+        <?= Module::t('main', 'ERROR_MESSAGE_GLOBAL') ?>
     </p>
 
 </div>

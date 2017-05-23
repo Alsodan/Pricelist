@@ -1,9 +1,11 @@
 <?php
 
-namespace app\modules\user\models;
+namespace app\modules\user\forms;
  
 use yii\base\Model;
 use Yii;
+use app\modules\user\models\User;
+use app\modules\user\Module;
  
 /**
  * Password reset form
@@ -42,9 +44,9 @@ class PasswordChangeForm extends Model
     public function attributeLabels()
     {
         return [
-            'newPassword' => Yii::t('app', 'USER_NEW_PASSWORD'),
-            'newPasswordRepeat' => Yii::t('app', 'USER_REPEAT_PASSWORD'),
-            'currentPassword' => Yii::t('app', 'USER_CURRENT_PASSWORD'),
+            'newPassword' => Module::t('user', 'USER_NEW_PASSWORD'),
+            'newPasswordRepeat' => Module::t('user', 'USER_REPEAT_PASSWORD'),
+            'currentPassword' => Module::t('user', 'USER_CURRENT_PASSWORD'),
         ];
     }
  

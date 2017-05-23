@@ -1,9 +1,11 @@
 <?php
 
-namespace app\modules\user\models;
+namespace app\modules\user\forms;
 
 use Yii;
 use yii\base\Model;
+use app\modules\user\models\User;
+use app\modules\user\Module;
 
 /**
  * LoginForm is the model behind the login form.
@@ -37,9 +39,9 @@ class LoginForm extends Model
     public function attributeLabels()
     {
         return [
-            'username' => Yii::t('app', 'USER_USERNAME'),
-            'password' => Yii::t('app', 'USER_PASSWORD'),
-            'rememberMe' => Yii::t('app', 'USER_REMEMBER_ME'),
+            'username' => Module::t('user', 'USER_USERNAME'),
+            'password' => Module::t('user', 'USER_PASSWORD'),
+            'rememberMe' => Module::t('user', 'USER_REMEMBER_ME'),
         ];
     }
     
@@ -56,11 +58,11 @@ class LoginForm extends Model
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError('password', Yii::t('app', 'USER_LOG_IN_WRONG_LOGIN_OR_PASSWORD'));
+                $this->addError('password', Module::t('user', 'USER_LOG_IN_WRONG_LOGIN_OR_PASSWORD'));
             } elseif ($user && $user->status == User::STATUS_BLOCKED) {
-                $this->addError('username', Yii::t('app', 'USER_LOG_IN_ACCOUNT_BLOCKED'));
+                $this->addError('username', Module::t('user', 'USER_LOG_IN_ACCOUNT_BLOCKED'));
             } elseif ($user && $user->status == User::STATUS_WAIT) {
-                $this->addError('username', Yii::t('app', 'USER_LOG_IN_EMAIL_NOT_CONFIRMED'));
+                $this->addError('username', Module::t('user', 'USER_LOG_IN_EMAIL_NOT_CONFIRMED'));
             }
         }
     }

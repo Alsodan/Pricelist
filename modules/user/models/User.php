@@ -8,6 +8,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
+use app\modules\user\Module;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -46,12 +47,12 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['username', 'required'],
             ['username', 'match', 'pattern' => '#^[\w_-]+$#is'],
-            ['username', 'unique', 'targetClass' => self::className(), 'message' => Yii::t('app', 'USER_SIGN_UP_NOT_UNIQUE_USERNAME')],
+            ['username', 'unique', 'targetClass' => self::className(), 'message' => Module::t('user', 'USER_SIGN_UP_NOT_UNIQUE_USERNAME')],
             ['username', 'string', 'min' => 2, 'max' => 255],
  
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => self::className(), 'message' => Yii::t('app', 'USER_SIGN_UP_NOT_UNIQUE_EMAIL')],
+            ['email', 'unique', 'targetClass' => self::className(), 'message' => Module::t('user', 'USER_SIGN_UP_NOT_UNIQUE_EMAIL')],
             ['email', 'string', 'max' => 255],
  
             ['status', 'integer'],
@@ -66,12 +67,12 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'USER_ID'),
-            'username' => Yii::t('app', 'USER_USERNAME'),
-            'email' => Yii::t('app', 'USER_EMAIL'),
-            'status' => Yii::t('app', 'USER_STATUS'),
-            'created_at' => Yii::t('app', 'USER_CREATED'),
-            'updated_at' => Yii::t('app', 'USER_UPDATED'),
+            'id' => Module::t('user', 'USER_ID'),
+            'username' => Module::t('user', 'USER_USERNAME'),
+            'email' => Module::t('user', 'USER_EMAIL'),
+            'status' => Module::t('user', 'USER_STATUS'),
+            'created_at' => Module::t('user', 'USER_CREATED'),
+            'updated_at' => Module::t('user', 'USER_UPDATED'),
         ];
     }
     
@@ -103,9 +104,9 @@ class User extends ActiveRecord implements IdentityInterface
     public static function getStatusesArray()
     {
         return [
-            self::STATUS_BLOCKED => Yii::t('app', 'USER_STATUS_BLOCKED'),
-            self::STATUS_ACTIVE => Yii::t('app', 'USER_STATUS_ACTIVE'),
-            self::STATUS_WAIT => Yii::t('app', 'USER_STATUS_WAIT'),
+            self::STATUS_BLOCKED => Module::t('user', 'USER_STATUS_BLOCKED'),
+            self::STATUS_ACTIVE => Module::t('user', 'USER_STATUS_ACTIVE'),
+            self::STATUS_WAIT => Module::t('user', 'USER_STATUS_WAIT'),
         ];
     }
     
@@ -208,11 +209,12 @@ class User extends ActiveRecord implements IdentityInterface
      * Finds user by password reset token
      *
      * @param string $token password reset token
+     * @param integer $timeout
      * @return static|null
      */
-    public static function findByPasswordResetToken($token)
+    public static function findByPasswordResetToken($token, $timeout)
     {
-        if (!static::isPasswordResetTokenValid($token)) {
+        if (!static::isPasswordResetTokenValid($token, $timeout)) {
             return null;
         }
         return static::findOne([
@@ -225,17 +227,17 @@ class User extends ActiveRecord implements IdentityInterface
      * Finds out if password reset token is valid
      *
      * @param string $token password reset token
-     * @return boolean
+     * @param integer $timeout
+     * @return bool
      */
-    public static function isPasswordResetTokenValid($token)
+    public static function isPasswordResetTokenValid($token, $timeout)
     {
         if (empty($token)) {
             return false;
         }
-        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         $parts = explode('_', $token);
         $timestamp = (int) end($parts);
-        return $timestamp + $expire >= time();
+        return $timestamp + $timeout >= time();
     }
  
     /**

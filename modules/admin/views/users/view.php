@@ -2,13 +2,14 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\user\models\User */
 
 $this->title = $model->username;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'ADMIN_TITLE'), 'url' => ['default/index']];
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'ADMIN_USERS_INDEX_TITLE'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('admin', 'ADMIN_TITLE'), 'url' => ['default/index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('admin', 'ADMIN_USERS_INDEX_TITLE'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
@@ -16,11 +17,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'BUTTON_UPDATE'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'BUTTON_DELETE'), ['delete', 'id' => $model->id], [
+        <?= Html::a(Module::t('admin', 'BUTTON_UPDATE'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Module::t('admin', 'BUTTON_DELETE'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('app', 'ADMIN_USERS_DELETE_USER_CONFIRM'),
+                'confirm' => Module::t('admin', 'ADMIN_USERS_DELETE_USER_CONFIRM'),
                 'method' => 'post',
             ],
         ]) ?>

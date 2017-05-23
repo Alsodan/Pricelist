@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\user\models;
+namespace app\modules\user\forms;
  
 use yii\base\Model;
-use yii\db\ActiveQuery;
-use Yii;
+use app\modules\user\models\User;
+use app\modules\user\Module;
  
 class ProfileUpdateForm extends Model
 {
@@ -31,10 +31,20 @@ class ProfileUpdateForm extends Model
                 'email',
                 'unique',
                 'targetClass' => User::className(),
-                'message' => Yii::t('app', 'USER_SIGN_UP_NOT_UNIQUE_EMAIL'),
+                'message' => Module::t('user', 'USER_SIGN_UP_NOT_UNIQUE_EMAIL'),
                 'filter' => ['<>', 'id', $this->_user->id],
             ],
             ['email', 'string', 'max' => 255],
+        ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'email' => Module::t('user', 'USER_EMAIL'),
         ];
     }
  

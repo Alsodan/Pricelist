@@ -5,6 +5,8 @@ namespace app\modules\admin\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use app\modules\admin\models\User;
+use app\modules\admin\Module;
 
 /**
  * UserSearch represents the model behind the search form about `app\modules\user\models\User`.
@@ -33,13 +35,13 @@ class UserSearch extends Model
     public function attributeLabels() {
         return [
             'id' => 'ID',
-            'created_at' => Yii::t('app', 'USER_CREATED'),
-            'updated_at' => Yii::t('app', 'USER_UPDATED'),
-            'username' => Yii::t('app', 'USER_USERNAME'),
-            'email' => Yii::t('app', 'USER_EMAIL'),
-            'status' => Yii::t('app', 'USER_STATUS'),
-            'date_from' => Yii::t('app', 'USER_DATE_FROM'),
-            'date_to' => Yii::t('app', 'USER_DATE_TO'),
+            'created_at' => Module::t('admin', 'USER_CREATED'),
+            'updated_at' => Module::t('admin', 'USER_UPDATED'),
+            'username' => Module::t('admin', 'USER_USERNAME'),
+            'email' => Module::t('admin', 'USER_EMAIL'),
+            'status' => Module::t('admin', 'USER_STATUS'),
+            'date_from' => Module::t('admin', 'USER_DATE_FROM'),
+            'date_to' => Module::t('admin', 'USER_DATE_TO'),
         ];
     }
 

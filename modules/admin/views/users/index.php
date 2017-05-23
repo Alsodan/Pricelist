@@ -7,22 +7,22 @@ use app\modules\admin\models\User;
 use app\components\grid\SetColumn;
 use app\components\grid\LinkColumn;
 use kartik\date\DatePicker;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\admin\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'ADMIN_USERS_INDEX_TITLE');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'ADMIN_TITLE'), 'url' => ['default/index']];
+$this->title = Module::t('admin', 'ADMIN_USERS_INDEX_TITLE');
+$this->params['breadcrumbs'][] = ['label' => Module::t('admin', 'ADMIN_TITLE'), 'url' => ['default/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'LINK_CREATE_USER'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Module::t('admin', 'LINK_CREATE_USER'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

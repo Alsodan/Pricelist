@@ -1,11 +1,12 @@
 <?php
 
-namespace app\modules\user\models;
+namespace app\modules\user\forms;
 
 use Yii;
 use yii\base\InvalidParamException;
 use yii\base\Model;
 use app\modules\user\models\User;
+use app\modules\user\Module;
  
 class EmailConfirmForm extends Model
 {
@@ -24,11 +25,11 @@ class EmailConfirmForm extends Model
     public function __construct($token, $config = [])
     {
         if (empty($token) || !is_string($token)) {
-            throw new InvalidParamException(Yii::t('app', 'EXEPTION_NO_EMAIL_CONFIRM_TOKEN'));
+            throw new InvalidParamException(Module::t('user', 'EXEPTION_NO_EMAIL_CONFIRM_TOKEN'));
         }
         $this->_user = User::findByEmailConfirmToken($token);
         if (!$this->_user) {
-            throw new InvalidParamException(Yii::t('app', 'EXEPTION_WRONG_EMAIL_CONFIRM_TOKEN'));
+            throw new InvalidParamException(Module::t('user', 'EXEPTION_WRONG_EMAIL_CONFIRM_TOKEN'));
         }
         parent::__construct($config);
     }

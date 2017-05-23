@@ -1,15 +1,17 @@
 <?php
 
+use app\modules\user\Module;
+
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-/* @var $model app\modules\user\models\SignupForm */
+/* @var $model app\modules\user\forms\SignupForm */
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use app\widgets\Alert;
 
-$this->title = Yii::t('app', 'USER_SIGN_UP_TITLE');
+$this->title = Module::t('user', 'USER_SIGN_UP_TITLE');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -23,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
         <h1><?= Html::encode($this->title) ?></h1>
 
-        <p><?= Yii::t('app', 'USER_SIGN_UP_SUBTITLE') ?></p>
+        <p><?= Module::t('user', 'USER_SIGN_UP_SUBTITLE') ?></p>
 
         <div class="row">
             <div class="col-lg-5">
@@ -41,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]) ?>
 
                     <div class="form-group">
-                        <?= Html::submitButton(Yii::t('app', 'BUTTON_SIGNUP'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                        <?= Html::submitButton(Module::t('user', 'BUTTON_SIGNUP'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                     </div>
 
                 <?php ActiveForm::end(); ?>

@@ -1,13 +1,15 @@
 <?php
 
+use app\modules\user\Module;
+
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-/* @var $model app\modules\user\models\SignupForm */
+/* @var $model app\modules\user\forms\SignupForm */
 
 use yii\helpers\Html;
 use app\widgets\Alert;
 
-$this->title = Yii::t('app', 'USER_EMAIL_CONFIRM');
+$this->title = Module::t('user', 'USER_EMAIL_CONFIRM');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

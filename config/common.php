@@ -14,7 +14,12 @@ return [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        'log',
+        'app\modules\admin\Bootstrap',
+        'app\modules\main\Bootstrap',
+        'app\modules\user\Bootstrap',
+    ],
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
@@ -33,6 +38,7 @@ return [
                 '<_m:[\w\-]+>' => '<_m>/default/index',
                 '<_m:[\w\-]+>/<_c:[\w\-]+>' => '<_m>/<_c>/index',
                 '<_m:[\w\-]+>/<_c:[\w\-]+>/<id:\d+>' => '<_m>/<_c>/view',
+                '<_m:[\w\-]+>/<_c:[\w\-]+>/<_a:[\w\-]+>/<id:\d+>' => '<_m>/<_c>/<_a>',
                 '<_m:[\w\-]+>/<_c:[\w\-]+>/<id:\d+>/<_a:[\w\-]+>' => '<_m>/<_c>/<_a>',
             ],
         ],
