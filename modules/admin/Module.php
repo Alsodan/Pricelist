@@ -30,8 +30,8 @@ class Module extends \yii\base\Module
     
     public function behaviors()
     {
-        return [
-            'access' => [
+        return array_filter([
+            'access' => !Yii::$app instanceof \yii\console\Application ? [
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
@@ -39,8 +39,8 @@ class Module extends \yii\base\Module
                         'roles' => ['@'],
                     ],
                 ],
-            ],
-        ];
+            ] : false,
+        ]);
     }
     
     public static function t($category, $message, $params = [], $language = null)

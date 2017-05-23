@@ -54,24 +54,19 @@ class PasswordResetRequestForm extends Model
      */
     public function sendEmail()
     {
-        /* @var $user User */
-        $user = User::findOne([
-            'status' => User::STATUS_ACTIVE,
-            'email' => $this->email,
-        ]);
-        if (!$user) {
+        if (!$this->user) {
             return false;
         }
         
-        if (!User::isPasswordResetTokenValid($user->password_reset_token, $this->_timeout)) {
-            $user->generatePasswordResetToken();
-            if (!$user->save()) {
+        if (!User::isPasswordResetTokenValid($this->user->password_reset_token, $this->_timeout)) {
+            $this->user->generatePasswordResetToken();
+            if (!$this->user->save()) {
                 return false;
             }
         }
         return Yii::$app
             ->mailer
-            ->compose('@app/modules/user/mails/passwordReset', ['user' => $user])
+            ->compose('@app/modules/user/mails/passwordReset', ['user' => $this->user])
             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
             ->setReplyTo(Yii::$app->params['adminEmail'])
             ->setTo($this->email)
@@ -79,15 +74,24 @@ class PasswordResetRequestForm extends Model
             ->send();
     }
     
+    /**
+     * Check if Password Reset Token was already sent
+     * @param type $attribute
+     * @param type $params
+     */
     public function validateIsSent($attribute, $params)
     {
         if (!$this->hasErrors() && $user = $this->getUser()) {
-            if (!User::isPasswordResetTokenValid($user->$attribute, $this->_timeout)) {
+            if (User::isPasswordResetTokenValid($user->password_reset_token, $this->_timeout)) {
                 $this->addError($attribute, Module::t('user', 'USER_PASSWORD_RESET_ERROR_TOKEN_IS_SENT'));
             }
         }
     }
     
+    /**
+     * Get user via email
+     * @return null|mixed
+     */
     public function getUser()
     {
         if (!$this->_user) {

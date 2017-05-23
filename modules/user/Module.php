@@ -21,6 +21,11 @@ class Module extends \yii\base\Module
     public $passwordResetTokenExpire = 3600;
     
     /**
+     * @var int
+     */
+    public $emailConfirmTokenExpire = 259200; // 3 days
+    
+    /**
      * @inheritdoc
      */
     public function init()
