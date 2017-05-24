@@ -4,7 +4,7 @@ Yii::setAlias('@tests', dirname(__DIR__) . '/tests');
 
 return [
     'id' => 'pricekzp-console',
-    'bootstrap' => ['gii'],
+    'bootstrap' => [],
     'controllerNamespace' => 'app\commands',
     'modules' => [
         'user' => [

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\user\commands;
+namespace app\modules\user\controllers\console;
 
 use app\modules\user\models\User;
 use yii\base\Model;

@@ -1,8 +1,8 @@
 <?php
 
-namespace app\modules\user\commands;
+namespace app\modules\user\controllers\console;
  
-use app\modules\user\models\User;
+use app\modules\user\models\common\User;
 use yii\console\Controller;
 use yii\helpers\Console;
 use Yii;
