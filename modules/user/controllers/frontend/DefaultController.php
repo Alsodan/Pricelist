@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\user\controllers;
+namespace app\modules\user\controllers\frontend;
 
 use Yii;
 use yii\web\Controller;
@@ -8,11 +8,11 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
-use app\modules\user\forms\LoginForm;
-use app\modules\user\forms\SignupForm;
-use app\modules\user\forms\EmailConfirmForm;
-use app\modules\user\forms\PasswordResetForm;
-use app\modules\user\forms\PasswordResetRequestForm;
+use app\modules\user\forms\common\LoginForm;
+use app\modules\user\forms\frontend\SignupForm;
+use app\modules\user\forms\frontend\EmailConfirmForm;
+use app\modules\user\forms\frontend\PasswordResetForm;
+use app\modules\user\forms\frontend\PasswordResetRequestForm;
 use app\modules\user\Module;
 
 class DefaultController extends Controller

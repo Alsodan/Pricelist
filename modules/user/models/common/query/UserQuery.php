@@ -1,8 +1,8 @@
 <?php
 
-namespace app\modules\user\models\query;
+namespace app\modules\user\models\common\query;
  
-use app\modules\user\models\User;
+use app\modules\user\models\common\User;
 use yii\db\ActiveQuery;
  
 class UserQuery extends ActiveQuery

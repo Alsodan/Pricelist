@@ -6,9 +6,12 @@ return [
     'BUTTON_UPDATE' => 'Update',
     'BUTTON_LOGIN' => 'Login',
     'BUTTON_SIGNUP' => 'Signup',
+    'BUTTON_DELETE' => 'Delete',
     
     'LINK_RESET_IT' => 'reset it',
     'LINK_PASSWORD_CHANGE' => 'Change Password',
+    'LINK_CREATE_USER' => 'Create User',
+    'LINK_UPDATE' => 'Update',
     
     'USER_ID' => 'ID',
     'USER_USERNAME' => 'Username',
@@ -66,6 +69,12 @@ return [
     'USER_PASSWORD_CHANGE_TITLE' => 'Password Change',
     'USER_PASSWORD_CHANGE_ERROR_WRONG_CURRENT_PASSWORD' => 'Wrong current password',
 
+    'ADMIN_USERS_INDEX_TITLE' => 'Users',
+    'ADMIN_USERS_CREATE_USER_TITLE' => 'Create User',
+    'ADMIN_USERS_UPDATE_TITLE' => 'Update User',
+    'ADMIN_USERS_VIEW_USER_TITLE' => 'View User',
+    'ADMIN_USERS_DELETE_USER_CONFIRM' => 'Are you sure you want to delete this item?',
+    
     'HELLO {username}' => 'Hello, {username}!',
     'FOLLOW_TO_RESET_PASSWORD' => 'Follow the link below to reset your password:',
     'FOLLOW_TO_CONFIRM_EMAIL' => 'Follow the link below to confirm your email:',

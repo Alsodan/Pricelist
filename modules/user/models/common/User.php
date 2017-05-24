@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\user\models;
+namespace app\modules\user\models\common;
 
 use Yii;
 use yii\base\NotSupportedException;
@@ -9,7 +9,7 @@ use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 use app\modules\user\Module;
-use app\modules\user\models\query\UserQuery;
+use app\modules\user\models\common\query\UserQuery;
 
 /**
  * This is the model class for table "{{%user}}".

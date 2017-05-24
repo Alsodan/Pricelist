@@ -1,12 +1,11 @@
 <?php
 
-namespace app\modules\admin\models;
+namespace app\modules\user\models\backend;
  
 use yii\helpers\ArrayHelper;
-use Yii;
-use app\modules\admin\Module;
+use app\modules\user\Module;
  
-class User extends \app\modules\user\models\User
+class User extends \app\modules\user\models\common\User
 {
     const SCENARIO_ADMIN_CREATE = 'adminCreate';
     const SCENARIO_ADMIN_UPDATE = 'adminUpdate';
@@ -34,8 +33,8 @@ class User extends \app\modules\user\models\User
     public function attributeLabels()
     {
         return ArrayHelper::merge(parent::attributeLabels(), [
-            'newPassword' => Module::t('admin', 'USER_NEW_PASSWORD'),
-            'newPasswordRepeat' => Module::t('admin', 'USER_REPEAT_PASSWORD'),
+            'newPassword' => Module::t('user', 'USER_NEW_PASSWORD'),
+            'newPasswordRepeat' => Module::t('user', 'USER_REPEAT_PASSWORD'),
         ]);
     }
  

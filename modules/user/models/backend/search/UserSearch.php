@@ -1,15 +1,14 @@
 <?php
 
-namespace app\modules\admin\models;
+namespace app\modules\user\models\backend\search;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\admin\models\User;
-use app\modules\admin\Module;
+use app\modules\user\models\backend\User;
+use app\modules\user\Module;
 
 /**
- * UserSearch represents the model behind the search form about `app\modules\user\models\User`.
+ * UserSearch represents the model behind the search form about `app\modules\user\models\backend\User`.
  */
 class UserSearch extends Model
 {
@@ -35,13 +34,13 @@ class UserSearch extends Model
     public function attributeLabels() {
         return [
             'id' => 'ID',
-            'created_at' => Module::t('admin', 'USER_CREATED'),
-            'updated_at' => Module::t('admin', 'USER_UPDATED'),
-            'username' => Module::t('admin', 'USER_USERNAME'),
-            'email' => Module::t('admin', 'USER_EMAIL'),
-            'status' => Module::t('admin', 'USER_STATUS'),
-            'date_from' => Module::t('admin', 'USER_DATE_FROM'),
-            'date_to' => Module::t('admin', 'USER_DATE_TO'),
+            'created_at' => Module::t('user', 'USER_CREATED'),
+            'updated_at' => Module::t('user', 'USER_UPDATED'),
+            'username' => Module::t('user', 'USER_USERNAME'),
+            'email' => Module::t('user', 'USER_EMAIL'),
+            'status' => Module::t('user', 'USER_STATUS'),
+            'date_from' => Module::t('user', 'USER_DATE_FROM'),
+            'date_to' => Module::t('user', 'USER_DATE_TO'),
         ];
     }
 

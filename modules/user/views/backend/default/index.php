@@ -3,18 +3,17 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\components\grid\ActionColumn;
-use app\modules\admin\models\User;
+use app\modules\user\models\backend\User;
 use app\components\grid\SetColumn;
 use app\components\grid\LinkColumn;
 use kartik\date\DatePicker;
-use app\modules\admin\Module;
+use app\modules\user\Module;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\admin\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('admin', 'ADMIN_USERS_INDEX_TITLE');
-$this->params['breadcrumbs'][] = ['label' => Module::t('admin', 'ADMIN_TITLE'), 'url' => ['default/index']];
+$this->title = Module::t('user', 'ADMIN_USERS_INDEX_TITLE');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
@@ -22,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Module::t('admin', 'LINK_CREATE_USER'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Module::t('user', 'LINK_CREATE_USER'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

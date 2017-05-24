@@ -6,9 +6,12 @@ return [
     'BUTTON_SAVE' => 'Сохранить',
     'BUTTON_LOGIN' => 'Войти',
     'BUTTON_SIGNUP' => 'Зарегистрироваться',
+    'BUTTON_DELETE' => 'Удалить',
     
     'LINK_PASSWORD_CHANGE' => 'Сменить пароль',
     'LINK_RESET_IT' => 'изменить его',
+    'LINK_CREATE_USER' => 'Создать пользователя',
+    'LINK_UPDATE' => 'Редактировать',    
     
     'USER_ID' => 'ИД',
     'USER_USERNAME' => 'Имя пользователя',
@@ -65,6 +68,12 @@ return [
     
     'USER_PASSWORD_RESET_REQUEST_TITLE' => 'Запрос на изменение пароля',
     'USER_PASSWORD_RESET_REQUEST_SUBTITLE' => 'Укажите действующий адрес электронной почты. На него будет отправлена ссылка для изменения пароля.',
+    
+    'ADMIN_USERS_INDEX_TITLE' => 'Пользователи',
+    'ADMIN_USERS_VIEW_USER_TITLE' => 'Просмотр пользователя',
+    'ADMIN_USERS_UPDATE_TITLE' => 'Редактирование пользователя',
+    'ADMIN_USERS_CREATE_USER_TITLE' => 'Создание пользователя',
+    'ADMIN_USERS_DELETE_USER_CONFIRM' => 'Вы точно хотите удалить этого пользователя?',
     
     'HELLO {username}' => 'Здравствуйте, {username}!',
     'FOLLOW_TO_RESET_PASSWORD' => 'Для смены пароля пройдите по ссылке:',

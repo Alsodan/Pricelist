@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\user\forms;
+namespace app\modules\user\forms\common;
 
 use Yii;
 use yii\base\Model;
-use app\modules\user\models\User;
+use app\modules\user\models\common\User;
 use app\modules\user\Module;
 
 /**

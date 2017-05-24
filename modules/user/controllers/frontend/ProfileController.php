@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\user\controllers;
+namespace app\modules\user\controllers\frontend;
 
-use app\modules\user\forms\PasswordChangeForm;
-use app\modules\user\forms\ProfileUpdateForm;
-use app\modules\user\models\User;
+use app\modules\user\forms\frontend\PasswordChangeForm;
+use app\modules\user\forms\frontend\ProfileUpdateForm;
+use app\modules\user\models\common\User;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use Yii;

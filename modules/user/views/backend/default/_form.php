@@ -2,8 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\modules\admin\models\User;
-use app\modules\admin\Module;
+use app\modules\user\models\backend\User;
+use app\modules\user\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\user\models\User */
@@ -25,7 +25,7 @@ use app\modules\admin\Module;
     <?= $form->field($model, 'status')->dropDownList(User::getStatusesArray()) ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Module::t('admin', 'BUTTON_SAVE'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton(Module::t('user', 'BUTTON_SAVE'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -2,7 +2,6 @@
 
 namespace app\modules\user;
 
-use yii\console\Application as ConsoleApplication;
 use Yii;
 
 /**
@@ -10,11 +9,6 @@ use Yii;
  */
 class Module extends \yii\base\Module
 {
-    /**
-     * @inheritdoc
-     */
-    public $controllerNamespace = 'app\modules\user\controllers';
-
     /**
      * @var int
      */
@@ -24,18 +18,6 @@ class Module extends \yii\base\Module
      * @var int
      */
     public $emailConfirmTokenExpire = 259200; // 3 days
-    
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        parent::init();
-
-        if (Yii::$app instanceof ConsoleApplication) {
-            $this->controllerNamespace = 'app\modules\user\commands';
-        }
-    }
     
     public static function t($category, $message, $params = [], $language = null)
     {

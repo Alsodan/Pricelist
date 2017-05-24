@@ -1,11 +1,11 @@
 <?php
 
-namespace app\modules\user\forms;
+namespace app\modules\user\forms\frontend;
 
 use Yii;
 use yii\base\Model;
 use yii\base\InvalidParamException;
-use app\modules\user\models\User;
+use app\modules\user\models\common\User;
 use app\modules\user\Module;
 
 /**

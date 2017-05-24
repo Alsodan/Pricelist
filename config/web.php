@@ -10,7 +10,7 @@ $config = [
             'cookieValidationKey' => '',
         ],
         'user' => [
-            'identityClass' => 'app\modules\user\models\User',
+            'identityClass' => 'app\modules\user\models\common\User',
             'enableAutoLogin' => true,
             'loginUrl' => ['user/default/login']
         ],
@@ -21,6 +21,27 @@ $config = [
             'traceLevel' => YII_DEBUG ? 3 : 0,
         ]
     ],
+    'modules' => [
+        'admin' => [
+            'class' => 'app\modules\admin\Module',
+            'modules' => [
+                'user' => [
+                    'class' => 'app\modules\user\Module',
+                    'layout' => '@app/views/layouts/admin',
+                    'controllerNamespace' => 'app\modules\user\controllers\backend',
+                    'viewPath' => '@app/modules/user/views/backend',
+                ],
+            ]
+        ],
+        'main' => [
+            'class' => 'app\modules\main\Module',
+        ],
+        'user' => [
+            'class' => 'app\modules\user\Module',
+            'controllerNamespace' => 'app\modules\user\controllers\frontend',
+            'viewPath' => '@app/modules/user/views/frontend',
+        ],
+    ], 
 ];
 
 if (YII_ENV_DEV) {
