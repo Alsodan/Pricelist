@@ -43,6 +43,15 @@ class DefaultController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    
+    /**
+     * Lists all User models with Roles.
+     * @return mixed
+     */
+    public function actionRoles()
+    {
+        return $this->redirect('roles/index');
+    }
 
     /**
      * Displays a single User model.

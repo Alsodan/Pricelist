@@ -2,7 +2,7 @@
 
 namespace app\modules\user\controllers\console;
 
-use app\modules\user\models\User;
+use app\modules\user\models\common\User;
 use yii\base\Model;
 use yii\console\Controller;
 use yii\console\Exception;

@@ -40,7 +40,7 @@ return [
                         '<_m:[\w\-]+>/<id:\d+>' => '<_m>/default/view',
                         
                         '<_m:[\w\-]+>/<_a:[\w\-]+>' => '<_m>/default/<_a>',
-                        
+
                         '<_m:[\w\-]+>/<id:\d+>/<_a:[\w-]+>' => '<_m>/default/<_a>',
                         '<_m:[\w\-]+>/<_c:[\w\-]+>/<id:\d+>' => '<_m>/<_c>/view',
                         '<_m:[\w\-]+>/<_c:[\w\-]+>/<id:\d+>/<_a:[\w\-]+>' => '<_m>/<_c>/<_a>',
@@ -77,6 +77,9 @@ return [
                     'forceTranslation' => true,
                 ],
             ],
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
         ],
     ],
     'params' => $params,

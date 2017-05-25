@@ -6,6 +6,7 @@ return [
     'BUTTON_DELETE' => 'Delete',
 
     'LINK_ADMIN_USERS' => 'Manage Users',
+    'LINK_ADMIN_ROLES' => 'Manage Roles',
     
     'ADMIN_TITLE' => 'Administration',
 ];

@@ -75,6 +75,8 @@ return [
     'ADMIN_USERS_CREATE_USER_TITLE' => 'Создание пользователя',
     'ADMIN_USERS_DELETE_USER_CONFIRM' => 'Вы точно хотите удалить этого пользователя?',
     
+    'ADMIN_USERS_ROLES_INDEX_TITLE' => 'Управление доступом пользователей',
+    
     'HELLO {username}' => 'Здравствуйте, {username}!',
     'FOLLOW_TO_RESET_PASSWORD' => 'Для смены пароля пройдите по ссылке:',
     'FOLLOW_TO_CONFIRM_EMAIL' => 'Для подтверждения адреса пройдите по ссылке:',

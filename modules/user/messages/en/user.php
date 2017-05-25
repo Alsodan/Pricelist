@@ -75,6 +75,8 @@ return [
     'ADMIN_USERS_VIEW_USER_TITLE' => 'View User',
     'ADMIN_USERS_DELETE_USER_CONFIRM' => 'Are you sure you want to delete this item?',
     
+    'ADMIN_USERS_ROLES_INDEX_TITLE' => 'User access managment',
+    
     'HELLO {username}' => 'Hello, {username}!',
     'FOLLOW_TO_RESET_PASSWORD' => 'Follow the link below to reset your password:',
     'FOLLOW_TO_CONFIRM_EMAIL' => 'Follow the link below to confirm your email:',
