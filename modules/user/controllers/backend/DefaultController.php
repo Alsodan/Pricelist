@@ -4,6 +4,7 @@ namespace app\modules\user\controllers\backend;
 
 use Yii;
 use app\modules\user\models\backend\User;
+use app\modules\user\models\common\Profile;
 use app\modules\user\models\backend\search\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -72,15 +73,23 @@ class DefaultController extends Controller
      */
     public function actionCreate()
     {
-        $model = new User();
-        $model->scenario = User::SCENARIO_ADMIN_CREATE;
-        $model->status = User::STATUS_ACTIVE;
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $user = new User();
+        $user->scenario = User::SCENARIO_ADMIN_CREATE;
+        $user->status = User::STATUS_ACTIVE;
+        
+        $profile = new Profile();
+        
+        if ($user->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
+            if ($user->validate() && $profile->validate()) {
+                $user->save(false);
+                $profile->user_id = $user->id;
+                $profile->save(false);
+                return $this->redirect(['view', 'id' => $user->id]);
+            }
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'user' => $user,
+                'profile' => $profile,
             ]);
         }
     }

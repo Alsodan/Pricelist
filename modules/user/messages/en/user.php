@@ -69,6 +69,10 @@ return [
     'USER_PASSWORD_CHANGE_TITLE' => 'Password Change',
     'USER_PASSWORD_CHANGE_ERROR_WRONG_CURRENT_PASSWORD' => 'Wrong current password',
 
+    'USER_PROFILE_NAME' => 'Name',
+    'USER_PROFILE_PHONE' => 'Phone',
+    'USER_PROFILE_WORK_EMAIL' => 'Work Email',
+    
     'ADMIN_USERS_INDEX_TITLE' => 'Users',
     'ADMIN_USERS_CREATE_USER_TITLE' => 'Create User',
     'ADMIN_USERS_UPDATE_TITLE' => 'Update User',

@@ -69,6 +69,10 @@ return [
     'USER_PASSWORD_RESET_REQUEST_TITLE' => 'Запрос на изменение пароля',
     'USER_PASSWORD_RESET_REQUEST_SUBTITLE' => 'Укажите действующий адрес электронной почты. На него будет отправлена ссылка для изменения пароля.',
     
+    'USER_PROFILE_NAME' => 'Имя',
+    'USER_PROFILE_PHONE' => 'Телефон',
+    'USER_PROFILE_WORK_EMAIL' => 'Электронная почта (рабочая)',
+    
     'ADMIN_USERS_INDEX_TITLE' => 'Пользователи',
     'ADMIN_USERS_VIEW_USER_TITLE' => 'Просмотр пользователя',
     'ADMIN_USERS_UPDATE_TITLE' => 'Редактирование пользователя',

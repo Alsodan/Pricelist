@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m170525_142347_profile extends Migration
+class m170525_142347_create_profile extends Migration
 {
     public function up()
     {

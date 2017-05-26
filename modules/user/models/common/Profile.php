@@ -35,10 +35,9 @@ class Profile extends ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'integer'],
+            ['work_email', 'email'],
             [['name', 'phone', 'work_email'], 'string', 'max' => 255],
-            [['user_id'], 'unique'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id'], 'safe'],
         ];
     }
 
@@ -48,9 +47,9 @@ class Profile extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'name' => Module::t('profile', 'USER_PROFILE_NAME'),
-            'phone' => Module::t('profile', 'USER_PROFILE_PHONE'),
-            'work_email' => Module::t('profile', 'USER_PROFILE_WORK_EMAIL'),
+            'name' => Module::t('user', 'USER_PROFILE_NAME'),
+            'phone' => Module::t('user', 'USER_PROFILE_PHONE'),
+            'work_email' => Module::t('user', 'USER_PROFILE_WORK_EMAIL'),
         ];
     }
 
