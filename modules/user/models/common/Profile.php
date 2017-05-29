@@ -36,7 +36,8 @@ class Profile extends ActiveRecord
     {
         return [
             ['work_email', 'email'],
-            [['name', 'phone', 'work_email'], 'string', 'max' => 255],
+            [['name', 'phone'], 'string', 'max' => 255],
+            [['name', 'phone', 'work_email'], 'required'],
             [['user_id'], 'safe'],
         ];
     }

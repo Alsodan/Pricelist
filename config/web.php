@@ -31,10 +31,18 @@ $config = [
                     'controllerNamespace' => 'app\modules\user\controllers\backend',
                     'viewPath' => '@app/modules/user/views/backend',
                 ],
+                'main' => [
+                    'class' => 'app\modules\main\Module',
+                    'layout' => '@app/views/layouts/admin',
+                    'controllerNamespace' => 'app\modules\main\controllers\backend',
+                    'viewPath' => '@app/modules/main/views/backend',
+                ],
             ]
         ],
         'main' => [
             'class' => 'app\modules\main\Module',
+            'controllerNamespace' => 'app\modules\main\controllers\frontend',
+            'viewPath' => '@app/modules/main/views/frontend',
         ],
         'user' => [
             'class' => 'app\modules\user\Module',

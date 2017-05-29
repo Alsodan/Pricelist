@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
  
     <p>
         <?= Html::a(Module::t('admin', 'LINK_ADMIN_USERS'), ['user/default/index'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Module::t('admin', 'LINK_ADMIN_GROUPS'), ['main/group/index'], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Module::t('admin', 'LINK_ADMIN_ROLES'), ['user/roles/index'], ['class' => 'btn btn-primary']) ?>
     </p>
     

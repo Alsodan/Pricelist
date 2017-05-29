@@ -19,8 +19,8 @@ return [
     'USER_PASSWORD' => 'Пароль',
     'USER_REMEMBER_ME' => 'Запомнить меня',
     'USER_STATUS' => 'Статус',
-    'USER_CREATED' => 'Создано',
-    'USER_UPDATED' => 'Изменено',
+    'USER_CREATED' => 'Создан',
+    'USER_UPDATED' => 'Изменен',
     'USER_VERIFY_CODE' => 'Проверочный код',
     'USER_NEW_PASSWORD' => 'Новый пароль',
     'USER_REPEAT_PASSWORD' => 'Повторите новый пароль',
@@ -72,6 +72,7 @@ return [
     'USER_PROFILE_NAME' => 'Имя',
     'USER_PROFILE_PHONE' => 'Телефон',
     'USER_PROFILE_WORK_EMAIL' => 'Электронная почта (рабочая)',
+    'USER_PROFILE_WORK_EMAIL_IS_SAME_AS_USER_EMAIL' => 'Рабочая почта совпадает с почтой пользователя',
     
     'ADMIN_USERS_INDEX_TITLE' => 'Пользователи',
     'ADMIN_USERS_VIEW_USER_TITLE' => 'Просмотр пользователя',

@@ -72,6 +72,7 @@ return [
     'USER_PROFILE_NAME' => 'Name',
     'USER_PROFILE_PHONE' => 'Phone',
     'USER_PROFILE_WORK_EMAIL' => 'Work Email',
+    'USER_PROFILE_WORK_EMAIL_IS_SAME_AS_USER_EMAIL' => 'Work email is same as user email',
     
     'ADMIN_USERS_INDEX_TITLE' => 'Users',
     'ADMIN_USERS_CREATE_USER_TITLE' => 'Create User',
