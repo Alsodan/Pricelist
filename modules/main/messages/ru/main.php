@@ -15,6 +15,11 @@ return [
     'CONTACT_MESSAGE' => 'Сообщение',
     'CONTACT_VERIFICATION_CODE' => 'Проверочный код',
     
+    'GROUP' => 'Группа',
+    'USERS' => 'Пользователи',
+    'CROPS' => 'Культуры',
+    'WAREHOUSES' => 'Склады',
+    
     'GROUP_ID' => 'ИД',
     'GROUP_TITLE' => 'Название',
     'GROUP_ACTIVE' => 'Активность',
@@ -26,4 +31,6 @@ return [
     'GROUP_DISABLE_CONFIRM' => 'Вы точно хотите отключить эту группу?',
     'GROUP_ACTIVITY_DISABLED' => 'Отключена',
     'GROUP_ACTIVITY_ACTIVE' => 'Активна',
+    
+    'GROUP_USERS' => 'Пользователи группы',
 ];

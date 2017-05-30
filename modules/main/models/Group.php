@@ -2,10 +2,11 @@
 
 namespace app\modules\main\models;
 
-use Yii;
 use app\modules\main\Module;
 use \app\modules\user\models\common\query\GroupQuery;
 use yii\helpers\ArrayHelper;
+use app\modules\user\models\common\Profile;
+use app\modules\main\models\ProfileGroups;
 
 /**
  * This is the model class for table "{{%group}}".
@@ -90,5 +91,29 @@ class Group extends \yii\db\ActiveRecord
     public function getActivityName()
     {
         return ArrayHelper::getValue(self::getActivityArray(), $this->active);
+    }
+    
+    /**
+     * Get Profiles
+     * 
+     * @return array profiles
+     */
+    public function getProfiles()
+    {
+        return $this->hasMany(Profile::className(), ['id' => 'profile_id'])
+            ->viaTable(ProfileGroups::tableName(), ['group_id' => 'id']);
+    }
+    
+    /**
+     * Get Profiles Name and Phone as string
+     * 
+     * @return array profiles data
+     */
+    public function getProfilesAsStringArray()
+    {
+        $result = [];
+        foreach (ArrayHelper::map($this->profiles, 'name', 'phone') as $key => $value)
+            $result[] = $key . ' (' . $value . ')';
+        return $result;
     }
 }

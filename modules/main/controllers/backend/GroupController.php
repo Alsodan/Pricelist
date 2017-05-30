@@ -8,6 +8,7 @@ use app\modules\main\models\search\GroupSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use \yii\data\ArrayDataProvider;
 
 /**
  * GroupController implements the CRUD actions for Group model.
@@ -51,8 +52,16 @@ class GroupController extends Controller
      */
     public function actionView($id)
     {
+        $group = $this->findModel($id);
+        $users = new ArrayDataProvider([
+            'allModels' => $group->profiles,
+            'sort' => false,
+            'pagination' => false,
+        ]);
+        
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'group' => $group,
+            'users' => $users,
         ]);
     }
 

@@ -13,6 +13,9 @@ return [
     'LINK_CREATE_USER' => 'Создать пользователя',
     'LINK_UPDATE' => 'Редактировать',    
     
+    'USER' => 'Пользователь',
+    'PROFILE' => 'Профиль',
+    
     'USER_ID' => 'ИД',
     'USER_USERNAME' => 'Имя пользователя',
     'USER_EMAIL' => 'Электронная почта',
@@ -25,6 +28,13 @@ return [
     'USER_NEW_PASSWORD' => 'Новый пароль',
     'USER_REPEAT_PASSWORD' => 'Повторите новый пароль',
     'USER_CURRENT_PASSWORD' => 'Текущий пароль',
+    
+    'USER_NAME' => 'Имя',
+    'USER_PHONE' => 'Телефон',
+    
+    'USER_BLOCK_CONFIRM' => 'Вы точно хотите заблокировать этого пользователя?',
+    'USER_BLOCK' => 'Заблокировать',
+    'USER_UNBLOCK' => 'Разблокировать',
     
     'USER_STATUS_BLOCKED' => 'Заблокирован',
     'USER_STATUS_ACTIVE' => 'Активен',

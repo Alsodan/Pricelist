@@ -13,6 +13,9 @@ return [
     'LINK_CREATE_USER' => 'Create User',
     'LINK_UPDATE' => 'Update',
     
+    'USER' => 'User',
+    'PROFILE' => 'Profile',
+    
     'USER_ID' => 'ID',
     'USER_USERNAME' => 'Username',
     'USER_EMAIL' => 'Email',
@@ -25,6 +28,13 @@ return [
     'USER_NEW_PASSWORD' => 'New password',
     'USER_REPEAT_PASSWORD' => 'Repeat password',
     'USER_CURRENT_PASSWORD' => 'Current password',
+    
+    'USER_NAME' => 'Name',
+    'USER_PHONE' => 'Phone',
+    
+    'USER_BLOCK_CONFIRM' => 'Are you sure you want to block this user?',
+    'USER_BLOCK' => 'Block User',
+    'USER_UNBLOCK' => 'Unblock User',
     
     'USER_STATUS_BLOCKED' => 'Blocked',
     'USER_STATUS_ACTIVE' => 'Active',

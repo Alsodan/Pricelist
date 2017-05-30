@@ -42,28 +42,35 @@ $this->params['breadcrumbs'][] = $this->title;
                     Group::STATUS_DISABLED => 'warning',
                 ]
             ],
-
+            [
+                'value' => function ($model) { return implode('<br>', $model->profilesAsStringArray);},
+                'format' => 'html',
+                'label' => Module::t('main', 'GROUP_USERS')
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{change}',
                 'buttons' => [
                     'change' => function ($url, $model, $key) {
                         return $model->active ?
-                            Html::a(Module::t('main', 'GROUP_DISABLE'), ['change', 'id' => $model->id, 'view' => 'index'], [
-                            'class' => 'btn btn-xs btn-danger',
-                            'data' => [
-                                'confirm' => Module::t('main', 'GROUP_DISABLE_CONFIRM'),
-                                'method' => 'post',
-                            ],
+                            Html::a('<span class="glyphicon glyphicon-off"></span>', ['change', 'id' => $model->id, 'view' => 'index'], [
+                                'class' => 'btn btn-xs btn-danger',
+                                'data' => [
+                                    'confirm' => Module::t('main', 'GROUP_DISABLE_CONFIRM'),
+                                    'method' => 'post',
+                                ],
+                                'title' => Module::t('main', 'GROUP_DISABLE'),
                             ]) :
-                            Html::a(Module::t('main', 'GROUP_ENABLE'), ['change', 'id' => $model->id, 'view' => 'index'], [
+                            Html::a('<span class="glyphicon glyphicon-off"></span>', ['change', 'id' => $model->id, 'view' => 'index'], [
                                 'class' => 'btn btn-xs btn-success',
                                 'data' => [
                                     'method' => 'post',
                                 ],
+                                'title' => Module::t('main', 'GROUP_ENABLE'),
                             ]);
                     },
                 ],
+                'contentOptions' => ['style' => 'width: 90px;']
             ],
         ],
     ]); ?>

@@ -61,8 +61,12 @@ class DefaultController extends Controller
      */
     public function actionView($id)
     {
+        $user = $this->findModel($id);
+        $profile = $user->profile;
+        
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'user' => $user,
+            'profile' => $profile,
         ]);
     }
 
@@ -102,14 +106,20 @@ class DefaultController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-        $model->scenario = User::SCENARIO_ADMIN_UPDATE;
+        $user = $this->findModel($id);
+        $user->scenario = User::SCENARIO_ADMIN_UPDATE;
+        $profile = $user->profile;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($user->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
+            if ($user->validate() && $profile->validate()) {
+                $user->save(false);
+                $profile->save(false);
+                return $this->redirect(['view', 'id' => $user->id]);
+            }
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'user' => $user,
+                'profile' => $profile,
             ]);
         }
     }
@@ -142,4 +152,26 @@ class DefaultController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    /**
+     * Block User
+     */
+    public function actionBlock($id, $view)
+    {
+        $model = $this->findModel($id);
+        $model->block();
+        
+        return $this->redirect([$view, 'id' => $id]);
+    }
+    
+    /**
+     * Unblock User
+     */
+    public function actionUnblock($id, $view)
+    {
+        $model = $this->findModel($id);
+        $model->unblock();
+        
+        return $this->redirect([$view, 'id' => $id]);
+    }    
 }

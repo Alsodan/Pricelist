@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\modules\main\Module;
+use app\modules\main\models\Group;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\main\models\Group */
@@ -15,7 +16,7 @@ use app\modules\main\Module;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'active')->textInput() ?>
+    <?= $form->field($model, 'active')->dropDownList(Group::getActivityArray()) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Module::t('main', 'BUTTON_SAVE'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

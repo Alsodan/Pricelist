@@ -26,8 +26,6 @@ class m170525_142347_create_profile extends Migration
     public function down()
     {
         $this->dropTable('{{%profile}}');
-
-        return false;
     }
 
     /*

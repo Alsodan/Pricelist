@@ -15,6 +15,11 @@ return [
     'CONTACT_MESSAGE' => 'Message',
     'CONTACT_VERIFICATION_CODE' => 'Verification Code',
     
+    'GROUP' => 'Group',
+    'USERS' => 'Users',
+    'CROPS' => 'Crops',
+    'WAREHOUSES' => 'Warehouses',
+    
     'GROUP_ID' => 'ID',
     'GROUP_TITLE' => 'Title',
     'GROUP_ACTIVE' => 'Active',
@@ -26,4 +31,6 @@ return [
     'GROUP_DISABLE_CONFIRM' => 'Are you sure you want to disable this group?',
     'GROUP_ACTIVITY_DISABLED' => 'Disabled',
     'GROUP_ACTIVITY_ACTIVE' => 'Active',
+    
+    'GROUP_USERS' => 'Group Users',
 ];

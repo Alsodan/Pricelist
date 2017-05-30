@@ -21,8 +21,6 @@ class m170529_111428_create_group extends Migration
     public function down()
     {
         $this->dropTable('{{%group}}');
-
-        return false;
     }
 
     /*
