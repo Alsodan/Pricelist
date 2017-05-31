@@ -70,4 +70,22 @@ class Profile extends ActiveRecord
     {
         return new ProfileQuery(get_called_class());
     }
+    
+    /**
+     * Prepare for SortableInput widget
+     */
+    public static function preparedForSIWActiveProfiles()
+    {
+        $all = Profile::find()
+                ->joinWith('user')
+                ->where([User::tableName() . '.status' => User::STATUS_ACTIVE])
+                ->all();
+
+        $result = [];
+        foreach ($all as $profile){
+            $result[$profile->id] = ['content' => $profile->name . ' (' . $profile->phone . ')'];
+        }
+        
+        return $result;
+    }
 }

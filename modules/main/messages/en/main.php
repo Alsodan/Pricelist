@@ -33,4 +33,7 @@ return [
     'GROUP_ACTIVITY_ACTIVE' => 'Active',
     
     'GROUP_USERS' => 'Group Users',
+    'GROUP_USERS_MANAGE' => 'Manage Group Users',
+    
+    'ALL_USERS' => 'All Users',
 ];

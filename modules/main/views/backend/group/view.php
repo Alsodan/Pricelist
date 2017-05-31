@@ -22,6 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="panel-body">
             <?= Html::a(Module::t('main', 'GROUP_UPDATE'), ['update', 'id' => $group->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Module::t('main', 'GROUP_USERS_MANAGE'), ['user', 'id' => $group->id], ['class' => 'btn btn-primary']) ?>
             <?= $group->active ?
                 Html::a(Module::t('main', 'GROUP_DISABLE'), ['change', 'id' => $group->id, 'view' => 'view'], [
                 'class' => 'btn btn-danger',

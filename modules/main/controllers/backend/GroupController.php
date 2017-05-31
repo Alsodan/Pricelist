@@ -5,10 +5,12 @@ namespace app\modules\main\controllers\backend;
 use Yii;
 use app\modules\main\models\Group;
 use app\modules\main\models\search\GroupSearch;
+use app\modules\user\models\common\Profile;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\data\ArrayDataProvider;
+use yii\helpers\ArrayHelper;
 
 /**
  * GroupController implements the CRUD actions for Group model.
@@ -129,5 +131,40 @@ class GroupController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    /**
+     * Manage Group Users
+     * @param integer $id
+     * @return string
+     */
+    public function actionUser($id)
+    {
+        $group = $this->findModel($id);
+        $groupUsers = $group->preparedForSIWActiveProfiles();
+        $allUsers = Profile::preparedForSIWActiveProfiles();
+        
+        return $this->render('user', [
+                'group' => $group,
+                'allUsers' => array_diff_key($allUsers, $groupUsers),
+                'groupUsers' => $groupUsers,
+            ]);
+    }
+    
+    /**
+     * Manage Groups Users
+     * @return string
+     */
+    public function actionUsers($id = -1)
+    {
+        $groups = ArrayHelper::map(Group::find()->select(['id', 'title'])->asArray()->all(), 'id', 'title');
+        if ($id == -1) {
+            $id = key($groups);
+        }
+        
+        return $this->render('user', [
+                'groups' => $groups,
+                'selectedGroup' => $id,
+            ]);
     }
 }

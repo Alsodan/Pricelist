@@ -7,6 +7,7 @@ use \app\modules\user\models\common\query\GroupQuery;
 use yii\helpers\ArrayHelper;
 use app\modules\user\models\common\Profile;
 use app\modules\main\models\ProfileGroups;
+use \app\modules\user\models\common\User;
 
 /**
  * This is the model class for table "{{%group}}".
@@ -105,15 +106,34 @@ class Group extends \yii\db\ActiveRecord
     }
     
     /**
+     * Get only active Profiles
+     * 
+     * @return array profiles
+     */
+    public function getActiveProfiles()
+    {
+        $result = [];
+        foreach ($this->profiles as $profile) {
+            if ($profile->user->status == User::STATUS_ACTIVE) {
+                $result[] = $profile;
+            }
+        }
+        
+        return $result;
+    }
+
+    /**
      * Get Profiles Name and Phone as string
      * 
      * @return array profiles data
      */
-    public function getProfilesAsStringArray()
+    public function preparedForSIWActiveProfiles()
     {
         $result = [];
-        foreach (ArrayHelper::map($this->profiles, 'name', 'phone') as $key => $value)
-            $result[] = $key . ' (' . $value . ')';
+        foreach ($this->activeProfiles as $profile) {
+            $result[$profile->id] = ['content' => $profile->name . ' (' . $profile->phone . ')'];
+        }
+        
         return $result;
     }
 }
