@@ -77,6 +77,7 @@ class User extends ActiveRecord implements IdentityInterface
             
             'profileName' => Module::t('user', 'USER_NAME'),
             'profilePhone' => Module::t('user', 'USER_PHONE'),
+            'groups' => Module::t('user', 'USER_GROUPS'),
         ];
     }
     
@@ -319,6 +320,14 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->profile->phone;
     }
     
+    /**
+     * Get User Groups
+     */
+    public function getGroups()
+    {
+        return implode('<br>', $this->profile->groupsTitleArray);
+    }
+
     /**
      * Block User
      */

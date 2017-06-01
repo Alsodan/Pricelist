@@ -56,7 +56,7 @@ class GroupController extends Controller
     {
         $group = $this->findModel($id);
         $users = new ArrayDataProvider([
-            'allModels' => $group->profiles,
+            'allModels' => $group->activeProfiles,
             'sort' => false,
             'pagination' => false,
         ]);
@@ -166,5 +166,18 @@ class GroupController extends Controller
                 'groups' => $groups,
                 'selectedGroup' => $id,
             ]);
+    }
+    
+    public function actionUserChange($id)
+    {
+        if (Yii::$app->request->isAjax) {
+            $group = $this->findModel($id);
+            $usersString = Yii::$app->request->post('users');
+            $group->profilesList = empty($usersString) ? [] : explode(',', $usersString);
+            
+            return $group->save(false);
+        }
+        
+        return false;
     }
 }

@@ -5,8 +5,10 @@ namespace app\modules\user\models\common;
 use Yii;
 use yii\db\ActiveRecord;
 use app\modules\user\models\common\User;
-use \app\modules\user\models\common\query\ProfileQuery;
+use app\modules\user\models\common\query\ProfileQuery;
 use app\modules\user\Module;
+use app\modules\main\models\Group;
+use app\modules\main\models\ProfileGroups;
 
 /**
  * This is the model class for table "{{%profile}}".
@@ -86,6 +88,27 @@ class Profile extends ActiveRecord
             $result[$profile->id] = ['content' => $profile->name . ' (' . $profile->phone . ')'];
         }
         
+        return $result;
+    }
+    
+    /**
+     * List of User Groups
+     */
+    public function getGroups()
+    {
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])
+            ->viaTable(ProfileGroups::tableName(), ['profile_id' => 'id']);
+    }
+    
+    /**
+     * Get Group Titles array
+     */
+    public function getGroupsTitleArray()
+    {
+        $result = [];
+        foreach ($this->groups as $group){
+            $result[] = $group->title;
+        }
         return $result;
     }
 }

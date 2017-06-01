@@ -32,7 +32,7 @@ use yii\widgets\Breadcrumbs;
             ) : false,
             !Yii::$app->user->isGuest ?
             ['label' => Yii::t('app', 'NAV_ADMIN'), 'items' => [
-                ['label' => Yii::t('app', 'NAV_ADMIN'), 'url' => ['/admin/default/index']],
+                ['label' => Yii::t('app', 'NAV_ADMIN_PANEL'), 'url' => ['/admin/default/index']],
                 ['label' => Yii::t('app', 'NAV_ADMIN_USERS'), 'url' => ['/admin/user/default/index']],
             ]] :
             false,

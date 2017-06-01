@@ -47,12 +47,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attributes' => [
                         'username',
                         'email:email',
-                        'created_at:datetime',
-                        'updated_at:datetime',
                         [
                             'attribute' => 'status',
                             'value' => $user->statusName
-                        ]
+                        ],
+                        'groups'
                     ],
                 ]) ?>
             </div>

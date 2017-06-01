@@ -8,7 +8,7 @@ $params = ArrayHelper::merge(
 );
  
 return [
-    'name' => 'ПРЕЙСКУРАНТ ООО «КРАСНОДАРЗЕРНОПРОДУКТ-ЭКСПО»',
+    'name' => 'ПРАЙС ООО «КРАСНОДАРЗЕРНОПРОДУКТ-ЭКСПО»',
     'basePath' => dirname(__DIR__),
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -38,8 +38,6 @@ return [
                         '' => 'default/index',
                         '<_m:[\w\-]+>' => '<_m>/default/index',
                         '<_m:[\w\-]+>/<id:\d+>' => '<_m>/default/view',
-                        
-                        //'<_m:[\w\-]+>/<_a:[\w\-]+>' => '<_m>/default/<_a>',
 
                         '<_m:[\w\-]+>/<id:\d+>/<_a:[\w-]+>' => '<_m>/default/<_a>',
                         '<_m:[\w\-]+>/<_c:[\w\-]+>/<id:\d+>' => '<_m>/<_c>/view',

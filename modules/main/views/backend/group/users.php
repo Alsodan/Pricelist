@@ -20,10 +20,11 @@ $this->params['breadcrumbs'][] = ['label' => Module::t('main', 'GROUPS_TITLE'), 
 $this->params['breadcrumbs'][] = ['label' => $group->title, 'url' => ['view', 'id' => $group->id]];
 $this->params['breadcrumbs'][] = $this->title;
 
-$ajaxUrl = Yii::$app->urlManager->createUrl(['admin/main/group/user-change', 'id' => $group->id]);
 $this->registerJs('
-    $("input.siw").change(function () {
-        $.post( "' . $ajaxUrl . '", { users: $("input[name=\'group-users\']").val() })
+    $(".list-group-item").click(function (event) {
+        event.preventDefault();
+        $("#users a.list-group-item.active").removeClass("active");
+        $(this).addClass("active");
     });
 ');
 ?>
@@ -42,20 +43,33 @@ $this->registerJs('
         </p>
     </div>
     <div class="row">
-        <div class="col-lg-3 col-lg-offset-2 col-md-3 col-md-offset-2 col-sm-5">
+        
+            <div class="col-lg-3 col-md-3">
+        <h5 class="text-center"><b>Пользователи</b></h5>
+        <?= LinkedItemsWidget::widget([
+            'links' => \yii\helpers\ArrayHelper::map(\app\modules\user\models\common\User::find()->select(['id', 'username'])->asArray()->all(), 'id', 'username'),
+            'options' => ['id' => 'users'],
+            'selectedKey' => 7
+        ]) ?>
+    </div>
+        
+    <div class="col-lg-3 col-lg-offset-2 col-md-3 col-md-offset-2 col-sm-5">
         <h5 class="text-center"><b><?= Module::t('main', 'GROUP_USERS') ?></b></h5>
         <?= SortableInput::widget([
             'name'=>'group-users',
             'items' => $groupUsers,
-            'hideInput' => true,
+            'hideInput' => false,
             'sortableOptions' => [
                 'connected' => true,
                 'itemOptions' => ['class'=>'alert alert-success'],
                 'options' => ['style' => 'min-height: 50px'],
             ],
             'options' => [
-                'class' => 'form-control siw', 
+                'class' => 'form-control', 
                 'readonly' => true,
+                'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl(['group/user-change', 'id' => $group->id]). '", function (data) {
+                    alert( data );
+                    })'
             ]
         ]);?>
         </div>
@@ -64,20 +78,15 @@ $this->registerJs('
         <?= SortableInput::widget([
             'name'=>'all-users',
             'items' => $allUsers,
-            'hideInput' => true,
+            'hideInput' => false,
             'sortableOptions' => [
                 'itemOptions'=>['class'=>'alert alert-info'],
                 'connected'=>true,
                 'options' => ['style' => 'min-height: 50px'],
             ],
-            'options' => [
-                'class'=>'form-control siw', 
-                'readonly'=>true,
-            ]
+            'options' => ['class'=>'form-control', 'readonly'=>true]
         ]);?>
         </div>
     </div>
-    
-    <?= Html::a(Module::t('main', 'BUTTON_BACK'), ['view', 'id' => $group->id], ['class' => 'btn btn-primary']) ?>
-    
+
 </div>

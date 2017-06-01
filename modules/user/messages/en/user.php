@@ -31,6 +31,7 @@ return [
     
     'USER_NAME' => 'Name',
     'USER_PHONE' => 'Phone',
+    'USER_GROUPS' => 'Groups',
     
     'USER_BLOCK_CONFIRM' => 'Are you sure you want to block this user?',
     'USER_BLOCK' => 'Block User',

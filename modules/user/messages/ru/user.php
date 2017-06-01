@@ -15,6 +15,7 @@ return [
     
     'USER' => 'Пользователь',
     'PROFILE' => 'Профиль',
+    'USER_GROUPS' => 'Группы',
     
     'USER_ID' => 'ИД',
     'USER_USERNAME' => 'Имя пользователя',

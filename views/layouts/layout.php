@@ -28,9 +28,9 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; <?= Yii::$app->name ?></p>
+        <p class="pull-left">&copy; <?= date('Y') ?> <?= Yii::$app->name ?></p>
 
-        <p class="pull-right"><?= date('Y') ?></p>
+        <p class="pull-right"></p>
     </div>
 </footer>
 

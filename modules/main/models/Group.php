@@ -38,6 +38,7 @@ class Group extends \yii\db\ActiveRecord
         return [
             [['active'], 'integer'],
             [['title'], 'string', 'max' => 255],
+            ['profilesList', 'safe'],
         ];
     }
 
@@ -53,6 +54,31 @@ class Group extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \app\components\behaviors\ManyHasManyBehavior::className(),
+                'relations' => [
+                    'profiles' => 'profilesList',                   
+                ],
+            ],
+        ];
+    }
+    
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $this->profilesList = $this->profilesList;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     /**
      * @inheritdoc
      * @return GroupQuery the active query used by this AR class.
@@ -122,6 +148,21 @@ class Group extends \yii\db\ActiveRecord
         return $result;
     }
 
+    /**
+     * Get only active Profiles string
+     * 
+     * @return array profiles
+     */
+    public function getProfilesAsStringArray()
+    {
+        $result = [];
+        foreach ($this->activeProfiles as $profile) {
+            $result[$profile->id] = $profile->name . ' (' . $profile->phone . ')';
+        }
+        
+        return $result;
+    }    
+    
     /**
      * Get Profiles Name and Phone as string
      * 
