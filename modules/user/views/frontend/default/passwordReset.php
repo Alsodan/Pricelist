@@ -9,7 +9,7 @@ use app\modules\user\Module;
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use app\widgets\Alert;
+use app\components\widgets\Alert;
 
 $this->title = Module::t('user', 'USER_PASSWORD_RESET_TITLE');
 $this->params['breadcrumbs'][] = $this->title;

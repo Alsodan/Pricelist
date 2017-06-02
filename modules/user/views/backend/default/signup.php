@@ -9,7 +9,7 @@ use app\modules\user\Module;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
-use app\widgets\Alert;
+use app\components\widgets\Alert;
 
 $this->title = Module::t('user', 'ADMIN_USERS_CREATE_USER_TITLE');
 $this->params['breadcrumbs'][] = ['label' => Module::t('user', 'ADMIN_USERS_INDEX_TITLE'), 'url' => ['index']];
