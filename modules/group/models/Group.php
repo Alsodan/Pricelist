@@ -1,20 +1,21 @@
 <?php
 
-namespace app\modules\main\models;
+namespace app\modules\group\models;
 
-use app\modules\main\Module;
+use app\modules\group\Module;
 use \app\modules\user\models\common\query\GroupQuery;
 use yii\helpers\ArrayHelper;
 use app\modules\user\models\common\Profile;
-use app\modules\main\models\ProfileGroups;
+use app\modules\group\models\ProfileGroups;
 use \app\modules\user\models\common\User;
+use \app\components\behaviors\ManyHasManyBehavior;
 
 /**
  * This is the model class for table "{{%group}}".
  *
  * @property integer $id
  * @property string $title
- * @property integer $active
+ * @property integer $status
  */
 class Group extends \yii\db\ActiveRecord
 {
@@ -36,7 +37,7 @@ class Group extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['active'], 'integer'],
+            [['status'], 'integer'],
             [['title'], 'string', 'max' => 255],
             ['profilesList', 'safe'],
         ];
@@ -48,9 +49,9 @@ class Group extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Module::t('main', 'GROUP_ID'),
-            'title' => Module::t('main', 'GROUP_TITLE'),
-            'active' => Module::t('main', 'GROUP_ACTIVE'),
+            'id' => Module::t('group', 'GROUP_ID'),
+            'title' => Module::t('group', 'GROUP_TITLE'),
+            'status' => Module::t('group', 'GROUP_STATUS'),
         ];
     }
 
@@ -61,7 +62,7 @@ class Group extends \yii\db\ActiveRecord
     {
         return [
             [
-                'class' => \app\components\behaviors\ManyHasManyBehavior::className(),
+                'class' => ManyHasManyBehavior::className(),
                 'relations' => [
                     'profiles' => 'profilesList',                   
                 ],
@@ -92,7 +93,7 @@ class Group extends \yii\db\ActiveRecord
      * Change Group activity
      * @return boolean
      */
-    public function changeActivity(){
+    public function changeStatus(){
         $this->active = !$this->active;
         return $this->save(false);
     }
@@ -102,11 +103,11 @@ class Group extends \yii\db\ActiveRecord
      * 
      * @return array
      */
-    public static function getActivityArray()
+    public static function getStatusArray()
     {
         return [
-            self::STATUS_DISABLED => Module::t('main', 'GROUP_ACTIVITY_DISABLED'),
-            self::STATUS_ACTIVE => Module::t('main', 'GROUP_ACTIVITY_ACTIVE'),
+            self::STATUS_DISABLED => Module::t('group', 'GROUP_ACTIVITY_DISABLED'),
+            self::STATUS_ACTIVE => Module::t('group', 'GROUP_ACTIVITY_ACTIVE'),
         ];
     }
     
@@ -115,9 +116,9 @@ class Group extends \yii\db\ActiveRecord
      * 
      * @return string
      */
-    public function getActivityName()
+    public function getStatusName()
     {
-        return ArrayHelper::getValue(self::getActivityArray(), $this->active);
+        return ArrayHelper::getValue(self::getStatusArray(), $this->status);
     }
     
     /**
@@ -177,4 +178,17 @@ class Group extends \yii\db\ActiveRecord
         
         return $result;
     }
+    
+    
+    /**
+     * Get Groups Dropdown
+     */
+    public static function getGroupsDropdown()
+    {
+        $result = [];
+        foreach (self::find()->all() as $group){
+            $result[$group->id] = $group->title;
+        }
+        return $result;
+    }    
 }

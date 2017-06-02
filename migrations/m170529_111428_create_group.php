@@ -14,7 +14,7 @@ class m170529_111428_create_group extends Migration
         $this->createTable('{{%group}}', [
             'id' => $this->primaryKey(),
             'title' => $this->string(),
-            'active' => $this->boolean(),
+            'status' => $this->integer(),
         ], $tableOptions);
     }
 

@@ -2,11 +2,11 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\modules\main\Module;
-use app\modules\main\models\Group;
+use app\modules\group\Module;
+use app\modules\group\models\Group;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\main\models\Group */
+/* @var $model app\modules\group\models\Group */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -16,10 +16,10 @@ use app\modules\main\models\Group;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'active')->dropDownList(Group::getActivityArray()) ?>
+    <?= $form->field($model, 'status')->dropDownList(Group::getStatusArray()) ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Module::t('main', 'BUTTON_SAVE'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton(Module::t('group', 'BUTTON_SAVE'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

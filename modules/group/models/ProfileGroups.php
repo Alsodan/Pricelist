@@ -1,9 +1,9 @@
 <?php
 
-namespace app\modules\main\models;
+namespace app\modules\group\models;
 
 use \yii\db\ActiveRecord;
-use app\modules\main\models\Group;
+use app\modules\group\models\Group;
 use app\modules\user\models\common\Profile;
 
 /**

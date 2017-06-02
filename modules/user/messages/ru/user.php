@@ -84,6 +84,7 @@ return [
     'USER_PROFILE_PHONE' => 'Телефон',
     'USER_PROFILE_WORK_EMAIL' => 'Электронная почта (рабочая)',
     'USER_PROFILE_WORK_EMAIL_IS_SAME_AS_USER_EMAIL' => 'Рабочая почта совпадает с почтой пользователя',
+    'USER_PROFILE_GROUP' => 'Группа',
     
     'ADMIN_USERS_INDEX_TITLE' => 'Пользователи',
     'ADMIN_USERS_VIEW_USER_TITLE' => 'Просмотр пользователя',

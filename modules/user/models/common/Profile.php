@@ -7,8 +7,9 @@ use yii\db\ActiveRecord;
 use app\modules\user\models\common\User;
 use app\modules\user\models\common\query\ProfileQuery;
 use app\modules\user\Module;
-use app\modules\main\models\Group;
-use app\modules\main\models\ProfileGroups;
+use app\modules\group\models\Group;
+use app\modules\group\models\ProfileGroups;
+use \app\components\behaviors\ManyHasManyBehavior;
 
 /**
  * This is the model class for table "{{%profile}}".
@@ -40,7 +41,7 @@ class Profile extends ActiveRecord
             ['work_email', 'email'],
             [['name', 'phone'], 'string', 'max' => 255],
             [['name', 'phone', 'work_email'], 'required'],
-            [['user_id'], 'safe'],
+            [['groupsList', 'user_id'], 'safe'],
         ];
     }
 
@@ -56,6 +57,33 @@ class Profile extends ActiveRecord
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => ManyHasManyBehavior::className(),
+                'relations' => [
+                    'groups' => 'groupsList',                   
+                ],
+            ],
+        ];
+    }
+    
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if (!empty($this->groupsList)) {
+                $this->groupsList = is_array($this->groupsList) ? $this->groupsList : [$this->groupsList];
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     /**
      * @return \yii\db\ActiveQuery
      */

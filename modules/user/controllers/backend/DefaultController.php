@@ -9,6 +9,7 @@ use app\modules\user\models\backend\search\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\modules\user\forms\backend\UserCreateForm;
 
 /**
  * DefaultController implements the CRUD actions for User model.
@@ -43,15 +44,6 @@ class DefaultController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
-    }
-    
-    /**
-     * Lists all User models with Roles.
-     * @return mixed
-     */
-    public function actionRoles()
-    {
-        return $this->redirect('roles/index');
     }
 
     /**
@@ -95,7 +87,7 @@ class DefaultController extends Controller
                 'user' => $user,
                 'profile' => $profile,
             ]);
-        }
+        }       
     }
 
     /**
@@ -130,12 +122,12 @@ class DefaultController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    /*public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
+    }*/
 
     /**
      * Finds the User model based on its primary key value.

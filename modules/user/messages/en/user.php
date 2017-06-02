@@ -85,6 +85,8 @@ return [
     'USER_PROFILE_WORK_EMAIL' => 'Work Email',
     'USER_PROFILE_WORK_EMAIL_IS_SAME_AS_USER_EMAIL' => 'Work email is same as user email',
     
+    'USER_PROFILE_GROUP' => 'Group',
+    
     'ADMIN_USERS_INDEX_TITLE' => 'Users',
     'ADMIN_USERS_CREATE_USER_TITLE' => 'Create User',
     'ADMIN_USERS_UPDATE_TITLE' => 'Update User',

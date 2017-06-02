@@ -19,6 +19,7 @@ return [
         'app\modules\admin\Bootstrap',
         'app\modules\main\Bootstrap',
         'app\modules\user\Bootstrap',
+        'app\modules\group\Bootstrap',
     ],
     'components' => [
         'db' => [

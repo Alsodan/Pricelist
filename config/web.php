@@ -37,6 +37,12 @@ $config = [
                     'controllerNamespace' => 'app\modules\main\controllers\backend',
                     'viewPath' => '@app/modules/main/views/backend',
                 ],
+                'group' => [
+                    'class' => 'app\modules\group\Module',
+                    'layout' => '@app/views/layouts/admin',
+                    'controllerNamespace' => 'app\modules\group\controllers\backend',
+                    'viewPath' => '@app/modules/group/views/backend',
+                ],
             ]
         ],
         'main' => [
@@ -48,6 +54,11 @@ $config = [
             'class' => 'app\modules\user\Module',
             'controllerNamespace' => 'app\modules\user\controllers\frontend',
             'viewPath' => '@app/modules/user/views/frontend',
+        ],
+        'group' => [
+            'class' => 'app\modules\group\Module',
+            'controllerNamespace' => 'app\modules\group\controllers\frontend',
+            'viewPath' => '@app/modules/group/views/frontend',
         ],
     ], 
 ];

@@ -1,11 +1,10 @@
 <?php
 
-namespace app\modules\main\models\search;
+namespace app\modules\group\models\search;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\main\models\Group;
+use app\modules\group\models\Group;
 
 /**
  * GroupSearch represents the model behind the search form about `app\modules\main\models\Group`.
@@ -18,7 +17,7 @@ class GroupSearch extends Group
     public function rules()
     {
         return [
-            [['id', 'active'], 'integer'],
+            [['id', 'status'], 'integer'],
             [['title'], 'safe'],
         ];
     }
@@ -53,14 +52,14 @@ class GroupSearch extends Group
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
+            $query->where('0=1');
+            //return $dataProvider;
         }
 
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'active' => $this->active,
+            'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title]);

@@ -1,15 +1,15 @@
 <?php
 
 use yii\helpers\Html;
-use app\modules\main\Module;
+use app\modules\group\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\main\models\Group */
 
-$this->title = Module::t('main', 'GROUP_UPDATE') . ': ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => Module::t('main', 'GROUPS_TITLE'), 'url' => ['index']];
+$this->title = Module::t('group', 'GROUP_UPDATE') . ': ' . $model->title;
+$this->params['breadcrumbs'][] = ['label' => Module::t('group', 'GROUPS_TITLE'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Module::t('main', 'GROUP_UPDATE');
+$this->params['breadcrumbs'][] = Module::t('group', 'GROUP_UPDATE');
 ?>
 <div class="group-update">
 

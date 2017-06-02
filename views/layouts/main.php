@@ -34,6 +34,10 @@ use yii\widgets\Breadcrumbs;
             ['label' => Yii::t('app', 'NAV_ADMIN'), 'items' => [
                 ['label' => Yii::t('app', 'NAV_ADMIN_PANEL'), 'url' => ['/admin/default/index']],
                 ['label' => Yii::t('app', 'NAV_ADMIN_USERS'), 'url' => ['/admin/user/default/index']],
+                ['label' => Yii::t('app', 'NAV_ADMIN_GROUPS'), 'url' => ['/admin/group/default/index']],
+                ['label' => Yii::t('app', 'NAV_ADMIN_WAREHOUSES'), 'url' => ['/admin/group/default/index']],
+                ['label' => Yii::t('app', 'NAV_ADMIN_CROPS'), 'url' => ['/admin/group/default/index']],
+                ['label' => Yii::t('app', 'NAV_ADMIN_PRICES'), 'url' => ['/admin/group/default/index']],
             ]] :
             false,
             !Yii::$app->user->isGuest ?

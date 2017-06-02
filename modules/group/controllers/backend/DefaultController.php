@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\main\controllers\backend;
+namespace app\modules\group\controllers\backend;
 
 use Yii;
-use app\modules\main\models\Group;
-use app\modules\main\models\search\GroupSearch;
+use app\modules\group\models\Group;
+use app\modules\group\models\search\GroupSearch;
 use app\modules\user\models\common\Profile;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -13,9 +13,9 @@ use \yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
 
 /**
- * GroupController implements the CRUD actions for Group model.
+ * DefaultController implements the CRUD actions for Group model.
  */
-class GroupController extends Controller
+class DefaultController extends Controller
 {
     /**
      * @inheritdoc

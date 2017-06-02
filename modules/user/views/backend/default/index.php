@@ -48,7 +48,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'profileName',
             'profilePhone',
-            'groups',
+            [
+                'attribute' => 'groups',
+                'format' => 'html',
+            ],
             [
                 'class' => SetColumn::className(),
                 'filter' => User::getStatusesArray(),

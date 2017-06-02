@@ -3,7 +3,6 @@
 return [
     'BUTTON_SEND' => 'Send',
     'BUTTON_SAVE' => 'Save',
-    'BUTTON_BACK' => '&lt;&nbsp;Back',
     
     'ERROR_MESSAGE_GLOBAL' => 'The above error occurred while the Web server was processing your request.<br>Please contact us if you think this is a server error. Thank you.',
     
@@ -15,26 +14,4 @@ return [
     'CONTACT_SUBJECT' => 'Subject',
     'CONTACT_MESSAGE' => 'Message',
     'CONTACT_VERIFICATION_CODE' => 'Verification Code',
-    
-    'GROUP' => 'Group',
-    'USERS' => 'Users',
-    'CROPS' => 'Crops',
-    'WAREHOUSES' => 'Warehouses',
-    
-    'GROUP_ID' => 'ID',
-    'GROUP_TITLE' => 'Title',
-    'GROUP_ACTIVE' => 'Active',
-    'GROUP_CREATE' => 'Create Group',
-    'GROUPS_TITLE' => 'Groups',
-    'GROUP_UPDATE' => 'Upadate Group',
-    'GROUP_DISABLE' => 'Disable Group',
-    'GROUP_ENABLE' => 'Enable Group',
-    'GROUP_DISABLE_CONFIRM' => 'Are you sure you want to disable this group?',
-    'GROUP_ACTIVITY_DISABLED' => 'Disabled',
-    'GROUP_ACTIVITY_ACTIVE' => 'Active',
-    
-    'GROUP_USERS' => 'Group Users',
-    'GROUP_USERS_MANAGE' => 'Manage Group Users',
-    
-    'ALL_USERS' => 'All Users',
 ];
