@@ -13,7 +13,7 @@ return [
     'NAV_ADMIN_GROUPS' => 'Группы',
     'NAV_ADMIN_WAREHOUSES' => 'Склады',
     'NAV_ADMIN_CROPS' => 'Культуры',
-    'NAV_ADMIN_PRICES' => 'Цены',
+    'NAV_ADMIN_PRODUCTS' => 'Продукция',
     
     'ERROR_MESSAGE_GLOBAL' => 'При обработке вашего запроса произошла ошибка.<br>Если вы считаете, что это ошибка сервера, пожалуйста напишите нам. Спасибо!',
 ];

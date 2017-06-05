@@ -1,27 +1,27 @@
 <?php
 
-namespace app\modules\group\models;
+namespace app\modules\warehouse\models;
 
-use app\modules\group\Module;
-use app\modules\group\models\query\GroupQuery;
+use app\modules\warehouse\Module;
+use app\modules\warehouse\models\query\WarehouseQuery;
 use yii\helpers\ArrayHelper;
 use app\modules\user\models\common\Profile;
-use app\modules\group\models\ProfileGroups;
-use app\modules\user\models\common\User;
-use app\components\behaviors\ManyHasManyBehavior;
-use app\modules\warehouse\models\Warehouse;
+use app\modules\warehouse\models\WarehouseProfiles;
 use app\modules\group\models\WarehouseGroups;
+use app\modules\user\models\common\User;
+use app\modules\group\models\Group;
+use app\components\behaviors\ManyHasManyBehavior;
 
 /**
- * This is the model class for table "{{%group}}".
+ * This is the model class for table "{{%warehouse}}".
  *
  * @property integer $id
  * @property string $title
  * @property integer $status
  */
-class Group extends \yii\db\ActiveRecord
+class Warehouse extends \yii\db\ActiveRecord
 {
-    //Group Status
+    //Warehouse status
     const STATUS_DISABLED = 0;
     const STATUS_ACTIVE = 1;
     
@@ -30,7 +30,7 @@ class Group extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%group}}';
+        return '{{%warehouse}}';
     }
 
     /**
@@ -41,7 +41,7 @@ class Group extends \yii\db\ActiveRecord
         return [
             [['status'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['profilesList', 'warehousesList'], 'safe'],
+            [['profilesList', 'groupsList'], 'safe'],
         ];
     }
 
@@ -51,9 +51,9 @@ class Group extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Module::t('group', 'GROUP_ID'),
-            'title' => Module::t('group', 'GROUP_TITLE'),
-            'status' => Module::t('group', 'GROUP_STATUS'),
+            'id' => Module::t('warehouse', 'WAREHOUSE_ID'),
+            'title' => Module::t('warehouse', 'WAREHOUSE_TITLE'),
+            'status' => Module::t('warehouse', 'WAREHOUSE_STATUS'),
         ];
     }
 
@@ -72,7 +72,7 @@ class Group extends \yii\db\ActiveRecord
             [
                 'class' => ManyHasManyBehavior::className(),
                 'relations' => [
-                    'warehouses' => 'warehousesList',                   
+                    'groups' => 'groupsList',                   
                 ],
             ],            
         ];
@@ -82,7 +82,7 @@ class Group extends \yii\db\ActiveRecord
     {
         if (parent::beforeSave($insert)) {
             $this->profilesList = $this->profilesList;
-            $this->warehousesList = $this->warehousesList;
+            $this->groupsList = $this->groupsList;
             return true;
         } else {
             return false;
@@ -91,52 +91,52 @@ class Group extends \yii\db\ActiveRecord
     
     /**
      * @inheritdoc
-     * @return GroupQuery the active query used by this AR class.
+     * @return WarehouseQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new GroupQuery(get_called_class());
+        return new WarehouseQuery(get_called_class());
     }
-
+    
     /**
-     * Block Group
+     * Block Warehouse
      * @return boolean
      */
     public function block(){
         $this->status = static::STATUS_DISABLED;
         return $this->save(false);
     }
-
+    
     /**
-     * Unblock Group
+     * Unblock Warehouse
      * @return boolean
      */
     public function unblock(){
         $this->status = static::STATUS_ACTIVE;
         return $this->save(false);
-    }
-
+    }    
+   
     /**
-     * Get Group status names array
+     * Get Warehouse Status names array
      * 
      * @return array
      */
     public static function getStatusArray()
     {
         return [
-            self::STATUS_DISABLED => Module::t('group', 'GROUP_ACTIVITY_DISABLED'),
-            self::STATUS_ACTIVE => Module::t('group', 'GROUP_ACTIVITY_ACTIVE'),
+            static::STATUS_DISABLED => Module::t('warehouse', 'WAREHOUSE_STATUS_DISABLED'),
+            static::STATUS_ACTIVE => Module::t('warehouse', 'WAREHOUSE_STATUS_ACTIVE'),
         ];
     }
     
     /**
-     * Get Group activity name
+     * Get Group status name
      * 
      * @return string
      */
     public function getStatusName()
     {
-        return ArrayHelper::getValue(self::getStatusArray(), $this->status);
+        return ArrayHelper::getValue(static::getStatusArray(), $this->status);
     }
     
     /**
@@ -147,18 +147,18 @@ class Group extends \yii\db\ActiveRecord
     public function getProfiles()
     {
         return $this->hasMany(Profile::className(), ['id' => 'profile_id'])
-            ->viaTable(ProfileGroups::tableName(), ['group_id' => 'id']);
+            ->viaTable(WarehouseProfiles::tableName(), ['warehouse_id' => 'id']);
     }
     
     /**
-     * Get Warehouses
+     * Get Groups
      * 
-     * @return array warehouses
+     * @return array Groups
      */
-    public function getWarehouses()
+    public function getGroups()
     {
-        return $this->hasMany(Warehouse::className(), ['id' => 'warehouse_id'])
-            ->viaTable(WarehouseGroups::tableName(), ['group_id' => 'id']);
+        return $this->hasMany(\app\modules\group\models\Group::className(), ['id' => 'group_id'])
+            ->viaTable(WarehouseGroups::tableName(), ['warehouse_id' => 'id']);
     }
     
     /**
@@ -179,16 +179,16 @@ class Group extends \yii\db\ActiveRecord
     }
 
     /**
-     * Get only active Warehouses
+     * Get only active Groups
      * 
-     * @return array warehouses
+     * @return array Groups
      */
-    public function getActiveWarehouses()
+    public function getActiveGroups()
     {
         $result = [];
-        foreach ($this->warehouses as $warehouse) {
-            if ($warehouse->status == Warehouse::STATUS_ACTIVE) {
-                $result[] = $warehouse;
+        foreach ($this->groups as $group) {
+            if ($group->status == Group::STATUS_ACTIVE) {
+                $result[] = $group;
             }
         }
         
@@ -211,19 +211,19 @@ class Group extends \yii\db\ActiveRecord
     }    
     
     /**
-     * Get only active Warehouses string
+     * Get only active Groups string
      * 
-     * @return array warehouses titles
+     * @return array Groups
      */
-    public function getWarehousesAsStringArray()
+    public function getGroupsAsStringArray()
     {
         $result = [];
-        foreach ($this->activeWarehouses as $warehouse) {
-            $result[$warehouse->id] = $warehouse->title;
+        foreach ($this->activeGroups as $group) {
+            $result[$group->id] = $group->title;
         }
         
         return $result;
-    }  
+    }    
     
     /**
      * Get Profiles Name and Phone as string
@@ -239,16 +239,18 @@ class Group extends \yii\db\ActiveRecord
         
         return $result;
     }
-
+    
     /**
-     * Get Warehouse title as string
-     * 
-     * @return array profiles data
+     * Get Active Warehouses list for Sorted Input widget
      */
-    public function preparedForSIWActiveWarehouses()
+    public static function preparedForSIWActiveWarehouses()
     {
+        $all = Warehouse::find()
+                ->where(['status' => Warehouse::STATUS_ACTIVE])
+                ->all();
+
         $result = [];
-        foreach ($this->activeWarehouses as $item) {
+        foreach ($all as $item){
             $result[$item->id] = ['content' => $item->title];
         }
         
@@ -256,13 +258,13 @@ class Group extends \yii\db\ActiveRecord
     }
     
     /**
-     * Get Groups Dropdown
+     * Get Warehouses Dropdown
      */
-    public static function getGroupsDropdown()
+    public static function getWarehousesDropdown()
     {
         $result = [];
-        foreach (self::find()->all() as $group){
-            $result[$group->id] = $group->title;
+        foreach (self::find()->all() as $warehouse){
+            $result[$warehouse->id] = $warehouse->title;
         }
         return $result;
     }    

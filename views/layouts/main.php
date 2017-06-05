@@ -37,7 +37,7 @@ use yii\widgets\Breadcrumbs;
                 ['label' => Yii::t('app', 'NAV_ADMIN_GROUPS'), 'url' => ['/admin/group/default/index']],
                 ['label' => Yii::t('app', 'NAV_ADMIN_WAREHOUSES'), 'url' => ['/admin/group/default/index']],
                 ['label' => Yii::t('app', 'NAV_ADMIN_CROPS'), 'url' => ['/admin/group/default/index']],
-                ['label' => Yii::t('app', 'NAV_ADMIN_PRICES'), 'url' => ['/admin/group/default/index']],
+                ['label' => Yii::t('app', 'NAV_ADMIN_PRODUCTS'), 'url' => ['/admin/product/default/index']],
             ]] :
             false,
             !Yii::$app->user->isGuest ?

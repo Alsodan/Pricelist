@@ -1,17 +1,15 @@
 <?php
 
-namespace app\modules\group\controllers\backend;
+namespace app\modules\warehouse\controllers\backend;
 
 use Yii;
-use app\modules\group\models\Group;
-use app\modules\group\models\search\GroupSearch;
-use app\modules\user\models\common\Profile;
 use app\modules\warehouse\models\Warehouse;
+use app\modules\warehouse\models\search\WarehouseSearch;
+use app\modules\user\models\common\Profile;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\data\ArrayDataProvider;
-use yii\helpers\ArrayHelper;
 
 /**
  * DefaultController implements the CRUD actions for Group model.
@@ -34,12 +32,12 @@ class DefaultController extends Controller
     }
 
     /**
-     * Lists all Group models.
+     * Lists all Warehouse models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new GroupSearch();
+        $searchModel = new WarehouseSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -49,42 +47,43 @@ class DefaultController extends Controller
     }
 
     /**
-     * Displays a single Group model.
+     * Displays a single Warehouse model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
-        $group = $this->findModel($id);
+        $warehouse = $this->findModel($id);
         $users = new ArrayDataProvider([
-            'allModels' => $group->activeProfiles,
+            'allModels' => $warehouse->activeProfiles,
             'sort' => false,
             'pagination' => false,
         ]);
-        $warehouses = new ArrayDataProvider([
-            'allModels' => $group->activeWarehouses,
+        $groups = new ArrayDataProvider([
+            'allModels' => $warehouse->activeGroups,
             'sort' => false,
             'pagination' => false,
-        ]);        
+        ]);
         
         return $this->render('view', [
-            'group' => $group,
+            'warehouse' => $warehouse,
             'users' => $users,
-            'warehouses' => $warehouses,
+            'groups' => $groups,
         ]);
     }
 
     /**
-     * Creates a new Group model.
+     * Creates a new Warehouse model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($view, $id = null)
     {
-        $model = new Group();
-
+        $model = new Warehouse();
+        $model->status = Warehouse::STATUS_ACTIVE;
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect([$view, 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -93,17 +92,17 @@ class DefaultController extends Controller
     }
 
     /**
-     * Updates an existing Group model.
+     * Updates an existing Warehouse model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($view = 'view', $id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect([$view, 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -112,7 +111,7 @@ class DefaultController extends Controller
     }
     
     /**
-     * Disable an existing Group model.
+     * Disable an existing Warehouse model.
      * @param integer $id
      * @return mixed
      */
@@ -125,7 +124,7 @@ class DefaultController extends Controller
     } 
 
     /**
-     * Enable an existing Group model.
+     * Enable an existing Warehouse model.
      * @param integer $id
      * @return mixed
      */
@@ -138,15 +137,15 @@ class DefaultController extends Controller
     } 
     
     /**
-     * Finds the Group model based on its primary key value.
+     * Finds the Warehouse model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Group the loaded model
+     * @return Warehouse the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Group::findOne($id)) !== null) {
+        if (($model = Warehouse::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -154,58 +153,23 @@ class DefaultController extends Controller
     }
     
     /**
-     * Manage Group Users
+     * Manage Warehouse Users
      * @param integer $id
      * @return string
      */
     public function actionUsers($id, $view = 'view')
     {
-        $group = $this->findModel($id);
-        $groupUsers = $group->preparedForSIWActiveProfiles();
+        $warehouse = $this->findModel($id);
+        $warehouseUsers = $warehouse->preparedForSIWActiveProfiles();
         $allUsers = Profile::preparedForSIWActiveProfiles();
         
-        return $this->render('user', [
-                'group' => $group,
-                'allUsers' => array_diff_key($allUsers, $groupUsers),
-                'groupUsers' => $groupUsers,
+        return $this->render('users', [
+                'warehouse' => $warehouse,
+                'allUsers' => array_diff_key($allUsers, $warehouseUsers),
+                'warehouseUsers' => $warehouseUsers,
                 'view' => $view,
             ]);
     }
-
-    /**
-     * Manage Group Warehouses
-     * @param integer $id
-     * @return string
-     */
-    public function actionWarehouses($id, $view = 'view')
-    {
-        $group = $this->findModel($id);
-        $groupWarehouses = $group->preparedForSIWActiveWarehouses();
-        $allWarehouses = Warehouse::preparedForSIWActiveWarehouses();
-        
-        return $this->render('warehouses', [
-                'group' => $group,
-                'allWarehouses' => array_diff_key($allWarehouses, $groupWarehouses),
-                'groupWarehouses' => $groupWarehouses,
-                'view' => $view,
-            ]);
-    }
-    /**
-     * Manage Groups Users
-     * @return string
-     */
-    /*public function actionUsers($id = -1)
-    {
-        $groups = ArrayHelper::map(Group::find()->select(['id', 'title'])->asArray()->all(), 'id', 'title');
-        if ($id == -1) {
-            $id = key($groups);
-        }
-        
-        return $this->render('user', [
-                'groups' => $groups,
-                'selectedGroup' => $id,
-            ]);
-    }*/
     
     public function actionUserChange($id)
     {
@@ -219,17 +183,4 @@ class DefaultController extends Controller
         
         return false;
     }
-    
-    public function actionWarehouseChange($id)
-    {
-        if (Yii::$app->request->isAjax) {
-            $group = $this->findModel($id);
-            $warehousesString = Yii::$app->request->post('warehouses');
-            $group->warehousesList = empty($warehousesString) ? [] : explode(',', $warehousesString);
-            
-            return $group->save(false);
-        }
-        
-        return false;
-    }    
 }

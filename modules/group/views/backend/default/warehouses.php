@@ -15,15 +15,15 @@ use app\modules\group\models\Group;
 /* @var $searchModel app\modules\group\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('group', 'GROUP_USERS_MANAGE');
+$this->title = Module::t('group', 'GROUP_WAREHOUSES_MANAGE');
 $this->params['breadcrumbs'][] = ['label' => Module::t('group', 'GROUPS_TITLE'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $group->title, 'url' => ['view', 'id' => $group->id]];
 $this->params['breadcrumbs'][] = $this->title;
 
-$ajaxUrl = Yii::$app->urlManager->createUrl(['/admin/group/default/user-change', 'id' => $group->id]);
+$ajaxUrl = Yii::$app->urlManager->createUrl(['/admin/group/default/warehouse-change', 'id' => $group->id]);
 $this->registerJs('
     $("input.siw").change(function () {
-        $.post( "' . $ajaxUrl . '", { users: $("input[name=\'group-users\']").val() })
+        $.post( "' . $ajaxUrl . '", { warehouses: $("input[name=\'group-warehouses\']").val() })
     });
 ');
 ?>
@@ -35,18 +35,18 @@ $this->registerJs('
             <span class="glyphicon glyphicon-info-sign" style="font-size: 48px;"></span>
         </p>
         <p class="col-lg-11 col-md-11 col-sm-10">
-            <p><?= Module::t('group', 'MANAGE_USERS_HINT {from} {to}', [
-                'from' => Module::t('group', 'ALL_USERS'),
-                'to' => Module::t('group', 'GROUP_USERS'),
+            <p><?= Module::t('group', 'MANAGE_WAREHOUSES_HINT {from} {to}', [
+                'from' => Module::t('group', 'ALL_WAREHOUSES'),
+                'to' => Module::t('group', 'GROUP_WAREHOUSES'),
             ]) ?></p>
         </p>
     </div>
     <div class="row">
         <div class="col-lg-3 col-lg-offset-2 col-md-3 col-md-offset-2 col-sm-5">
-        <h5 class="text-center"><b><?= Module::t('group', 'GROUP_USERS') ?></b></h5>
+        <h5 class="text-center"><b><?= Module::t('group', 'GROUP_WAREHOUSES') ?></b></h5>
         <?= SortableInput::widget([
-            'name'=>'group-users',
-            'items' => $groupUsers,
+            'name'=>'group-warehouses',
+            'items' => $groupWarehouses,
             'hideInput' => true,
             'sortableOptions' => [
                 'connected' => true,
@@ -60,10 +60,10 @@ $this->registerJs('
         ]);?>
         </div>
         <div class="col-lg-3 col-lg-offset-2 col-md-3 col-md-offset-2 col-sm-5 col-sm-offset-2">
-            <h5 class="text-center"><b><?= Module::t('group', 'ALL_USERS') ?></b></h5>
+            <h5 class="text-center"><b><?= Module::t('group', 'ALL_WAREHOUSES') ?></b></h5>
         <?= SortableInput::widget([
-            'name'=>'all-users',
-            'items' => $allUsers,
+            'name'=>'all-warehouses',
+            'items' => $allWarehouses,
             'hideInput' => true,
             'sortableOptions' => [
                 'itemOptions'=>['class'=>'alert alert-info'],

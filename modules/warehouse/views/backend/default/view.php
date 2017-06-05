@@ -3,14 +3,14 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
-use app\modules\group\Module;
-use app\modules\group\models\Group;
+use app\modules\warehouse\Module;
+use app\modules\warehouse\models\Warehouse;
 
 /* @var $this yii\web\View */
-/* @var $group app\modules\group\models\Group */
+/* @var $warehouse app\modules\warehouse\models\Warehouse */
 
-$this->title = $group->title;
-$this->params['breadcrumbs'][] = ['label' => Module::t('group', 'GROUPS_TITLE'), 'url' => ['index']];
+$this->title = $warehouse->title;
+$this->params['breadcrumbs'][] = ['label' => Module::t('warehouse', 'WAREHOUSES_TITLE'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="group-view">
@@ -19,22 +19,22 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title"><b><?= Module::t('group', 'GROUP') ?></b></h3>
+            <h3 class="panel-title"><b><?= Module::t('warehouse', 'WAREHOUSE') ?></b></h3>
         </div>
         <div class="panel-body text-center">
             <div class="btn-group" role="group">
-                <?= Html::a(Module::t('group', 'GROUP_UPDATE'), ['update', 'id' => $group->id], ['class' => 'btn btn-primary']) ?>
-                <?= Html::a(Module::t('group', 'GROUP_USERS_MANAGE'), ['users', 'id' => $group->id], ['class' => 'btn btn-primary']) ?>
-                <?= Html::a(Module::t('group', 'GROUP_WAREHOUSES_MANAGE'), ['warehouses', 'id' => $group->id], ['class' => 'btn btn-primary']) ?>
-                <?= $group->status == Group::STATUS_ACTIVE ?
-                    Html::a(Module::t('group', 'GROUP_DISABLE'), ['block', 'id' => $group->id, 'view' => 'view'], [
+                <?= Html::a(Module::t('warehouse', 'WAREHOUSE_UPDATE'), ['update', 'id' => $warehouse->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a(Module::t('warehouse', 'WAREHOUSE_USERS_MANAGE'), ['users', 'id' => $warehouse->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a(Module::t('warehouse', 'WAREHOUSE_CROPS_MANAGE'), ['crops', 'id' => $warehouse->id], ['class' => 'btn btn-primary']) ?>
+                <?= $warehouse->status == Warehouse::STATUS_ACTIVE ?
+                    Html::a(Module::t('warehouse', 'WAREHOUSE_DISABLE'), ['block', 'id' => $warehouse->id, 'view' => 'view'], [
                     'class' => 'btn btn-danger',
                     'data' => [
-                        'confirm' => Module::t('group', 'GROUP_DISABLE_CONFIRM'),
+                        'confirm' => Module::t('warehouse', 'WAREHOUSE_DISABLE_CONFIRM'),
                         'method' => 'post',
                     ],
                 ]) :
-                Html::a(Module::t('group', 'GROUP_ENABLE'), ['unblock', 'id' => $group->id, 'view' => 'view'], [
+                Html::a(Module::t('warehouse', 'WAREHOUSE_ENABLE'), ['unblock', 'id' => $warehouse->id, 'view' => 'view'], [
                     'class' => 'btn btn-success',
                     'data' => [
                         'method' => 'post',
@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <?= DetailView::widget([
-                    'model' => $group,
+                    'model' => $warehouse,
                     'attributes' => [
                         'title',
                     ],
@@ -55,10 +55,10 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <?= DetailView::widget([
-                    'model' => $group,
+                    'model' => $warehouse,
                     'attributes' => [
                         [
-                            'attribute' => 'active',
+                            'attribute' => 'status',
                             'value' => function ($model) { return $model->statusName; }
                         ],
                     ],
@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <div class="text-center">
-                    <h4><b><?= Module::t('group', 'USERS') ?></b></h4>
+                    <h4><b><?= Module::t('warehouse', 'USERS') ?></b></h4>
                 </div>
                 <?= GridView::widget([
                     'dataProvider' => $users,
@@ -85,13 +85,13 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <div class="text-center">
-                    <h4><b><?= Module::t('group', 'CROPS') ?></b></h4>
+                    <h4><b><?= Module::t('warehouse', 'CROPS') ?></b></h4>
                 </div>
                 <?= DetailView::widget([
-                    'model' => $group,
+                    'model' => $warehouse,
                     'attributes' => [
                         [
-                            'attribute' => 'active',
+                            'attribute' => 'status',
                             'value' => function ($model) { return $model->statusName; }
                         ],
                     ],
@@ -99,16 +99,14 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <div class="text-center">
-                    <h4><b><?= Module::t('group', 'WAREHOUSES') ?></b></h4>
+                    <h4><b><?= Module::t('warehouse', 'GROUPS') ?></b></h4>
                 </div>
                 <?= GridView::widget([
-                    'dataProvider' => $warehouses,
+                    'dataProvider' => $groups,
                     'showHeader' => false,
                     'layout' => "{items}",
                     'columns' => [
-                        [
-                            'value' => function ($model) { return $model->title; }
-                        ]
+                        'title',
                     ]
                 ])
                 ?>

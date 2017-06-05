@@ -13,7 +13,7 @@ return [
     'NAV_ADMIN_GROUPS' => 'Groups',
     'NAV_ADMIN_WAREHOUSES' => 'Warehouses',
     'NAV_ADMIN_CROPS' => 'Crops',
-    'NAV_ADMIN_PRICES' => 'Prices',
+    'NAV_ADMIN_PRICES' => 'Products',
     
     'ERROR_MESSAGE_GLOBAL' => 'The above error occurred while the Web server was processing your request.<br>Please contact us if you think this is a server error. Thank you.',
 ];

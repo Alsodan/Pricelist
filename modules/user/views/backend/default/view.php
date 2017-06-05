@@ -55,6 +55,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'groups',
                             'format' => 'html',
                         ],
+                        [
+                            'attribute' => 'warehouses',
+                            'format' => 'html',
+                        ],                        
                     ],
                 ]) ?>
             </div>

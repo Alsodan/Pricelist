@@ -20,6 +20,7 @@ return [
         'app\modules\main\Bootstrap',
         'app\modules\user\Bootstrap',
         'app\modules\group\Bootstrap',
+        'app\modules\warehouse\Bootstrap',
     ],
     'components' => [
         'db' => [

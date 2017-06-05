@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => LinkColumn::className(),
             ],
             'email:email',
-            [
+            /*[
                 'filter' => DatePicker::widget([
                     'model' => $searchModel,
                     'attribute' => 'dateFrom',
@@ -45,11 +45,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]),
                 'attribute' => 'created_at',
                 'format' => 'datetime',
-            ],
+            ],*/
             'profileName',
             'profilePhone',
             [
                 'attribute' => 'groups',
+                'format' => 'html',
+            ],
+            [
+                'attribute' => 'warehouses',
                 'format' => 'html',
             ],
             [

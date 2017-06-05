@@ -9,6 +9,8 @@ use app\modules\user\models\common\query\ProfileQuery;
 use app\modules\user\Module;
 use app\modules\group\models\Group;
 use app\modules\group\models\ProfileGroups;
+use app\modules\warehouse\models\Warehouse;
+use app\modules\warehouse\models\WarehouseProfiles;
 use \app\components\behaviors\ManyHasManyBehavior;
 
 /**
@@ -129,6 +131,15 @@ class Profile extends ActiveRecord
     }
     
     /**
+     * List of User Warehouses
+     */
+    public function getWarehouses()
+    {
+        return $this->hasMany(Warehouse::className(), ['id' => 'warehouse_id'])
+            ->viaTable(WarehouseProfiles::tableName(), ['profile_id' => 'id']);
+    }
+    
+    /**
      * Get Group Titles array
      */
     public function getGroupsTitleArray()
@@ -139,4 +150,16 @@ class Profile extends ActiveRecord
         }
         return $result;
     }
+    
+    /**
+     * Get Warehouses Titles array
+     */
+    public function getWarehousesTitleArray()
+    {
+        $result = [];
+        foreach ($this->warehouses as $item){
+            $result[] = $item->title;
+        }
+        return $result;
+    }    
 }

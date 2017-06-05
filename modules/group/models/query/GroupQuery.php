@@ -1,11 +1,11 @@
 <?php
 
-namespace app\modules\user\models\common\query;
+namespace app\modules\group\models\query;
 
 /**
- * This is the ActiveQuery class for [[\app\modules\user\models\common\Group]].
+ * This is the ActiveQuery class for [[\app\modules\group\models\Group]].
  *
- * @see \app\modules\user\models\common\Group
+ * @see \app\modules\group\models\Group
  */
 class GroupQuery extends \yii\db\ActiveQuery
 {

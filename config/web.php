@@ -43,6 +43,12 @@ $config = [
                     'controllerNamespace' => 'app\modules\group\controllers\backend',
                     'viewPath' => '@app/modules/group/views/backend',
                 ],
+                'warehouse' => [
+                    'class' => 'app\modules\warehouse\Module',
+                    'layout' => '@app/views/layouts/admin',
+                    'controllerNamespace' => 'app\modules\warehouse\controllers\backend',
+                    'viewPath' => '@app/modules/warehouse/views/backend',
+                ],                
             ]
         ],
         'main' => [
@@ -60,6 +66,11 @@ $config = [
             'controllerNamespace' => 'app\modules\group\controllers\frontend',
             'viewPath' => '@app/modules/group/views/frontend',
         ],
+        'warehouse' => [
+            'class' => 'app\modules\warehouse\Module',
+            'controllerNamespace' => 'app\modules\warehouse\controllers\frontend',
+            'viewPath' => '@app/modules/warehouse/views/frontend',
+        ],        
     ], 
 ];
 
