@@ -13,6 +13,9 @@ return [
     'LINK_CREATE_USER' => 'Create User',
     'LINK_UPDATE' => 'Update',
     
+    'USER' => 'User',
+    'PROFILE' => 'Profile',
+    
     'USER_ID' => 'ID',
     'USER_USERNAME' => 'Username',
     'USER_EMAIL' => 'Email',
@@ -25,6 +28,15 @@ return [
     'USER_NEW_PASSWORD' => 'New password',
     'USER_REPEAT_PASSWORD' => 'Repeat password',
     'USER_CURRENT_PASSWORD' => 'Current password',
+    
+    'USER_NAME' => 'Name',
+    'USER_PHONE' => 'Phone',
+    'USER_GROUPS' => 'Groups',
+    'USER_WAREHOUSES' => 'Warehouses',
+    
+    'USER_BLOCK_CONFIRM' => 'Are you sure you want to block this user?',
+    'USER_BLOCK' => 'Block User',
+    'USER_UNBLOCK' => 'Unblock User',
     
     'USER_STATUS_BLOCKED' => 'Blocked',
     'USER_STATUS_ACTIVE' => 'Active',
@@ -69,11 +81,20 @@ return [
     'USER_PASSWORD_CHANGE_TITLE' => 'Password Change',
     'USER_PASSWORD_CHANGE_ERROR_WRONG_CURRENT_PASSWORD' => 'Wrong current password',
 
+    'USER_PROFILE_NAME' => 'Name',
+    'USER_PROFILE_PHONE' => 'Phone',
+    'USER_PROFILE_WORK_EMAIL' => 'Work Email',
+    'USER_PROFILE_WORK_EMAIL_IS_SAME_AS_USER_EMAIL' => 'Work email is same as user email',
+    
+    'USER_PROFILE_GROUP' => 'Group',
+    
     'ADMIN_USERS_INDEX_TITLE' => 'Users',
     'ADMIN_USERS_CREATE_USER_TITLE' => 'Create User',
     'ADMIN_USERS_UPDATE_TITLE' => 'Update User',
     'ADMIN_USERS_VIEW_USER_TITLE' => 'View User',
     'ADMIN_USERS_DELETE_USER_CONFIRM' => 'Are you sure you want to delete this item?',
+    
+    'ADMIN_USERS_ROLES_INDEX_TITLE' => 'User access managment',
     
     'HELLO {username}' => 'Hello, {username}!',
     'FOLLOW_TO_RESET_PASSWORD' => 'Follow the link below to reset your password:',

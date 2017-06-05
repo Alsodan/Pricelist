@@ -8,7 +8,12 @@ return [
     'NAV_LOGOUT' => 'Выход',
     'NAV_PROFILE' => 'Профиль',
     'NAV_ADMIN' => 'Администрирование',
+    'NAV_ADMIN_PANEL' => 'Панель управления',
     'NAV_ADMIN_USERS' => 'Пользователи',
+    'NAV_ADMIN_GROUPS' => 'Группы',
+    'NAV_ADMIN_WAREHOUSES' => 'Склады',
+    'NAV_ADMIN_CROPS' => 'Культуры',
+    'NAV_ADMIN_PRODUCTS' => 'Продукция',
     
     'ERROR_MESSAGE_GLOBAL' => 'При обработке вашего запроса произошла ошибка.<br>Если вы считаете, что это ошибка сервера, пожалуйста напишите нам. Спасибо!',
 ];

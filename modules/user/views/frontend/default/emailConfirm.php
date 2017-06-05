@@ -7,7 +7,7 @@ use app\modules\user\Module;
 /* @var $model app\modules\user\forms\SignupForm */
 
 use yii\helpers\Html;
-use app\widgets\Alert;
+use app\components\widgets\Alert;
 
 $this->title = Module::t('user', 'USER_EMAIL_CONFIRM');
 $this->params['breadcrumbs'][] = $this->title;

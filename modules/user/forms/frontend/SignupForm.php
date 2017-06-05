@@ -5,6 +5,7 @@ namespace app\modules\user\forms\frontend;
 use Yii;
 use yii\base\Model;
 use app\modules\user\models\common\User;
+use app\modules\user\models\common\Profile;
 use app\modules\user\Module;
 
 /**
@@ -17,7 +18,11 @@ class SignupForm extends Model
     public $email;
     public $password;
     public $verifyCode;
- 
+    
+    public $name;
+    public $phone;
+    public $workEmail;
+
     public function rules()
     {
         return [
@@ -36,6 +41,11 @@ class SignupForm extends Model
             ['password', 'string', 'min' => 6],
  
             ['verifyCode', 'captcha', 'captchaAction' => '/user/default/captcha'],
+            
+            [['name', 'phone', 'workEmail'], 'required'],
+            
+            ['workEmail', 'filter', 'filter' => 'trim'],
+            ['workEmail', 'email'],
         ];
     }
  
@@ -49,6 +59,9 @@ class SignupForm extends Model
             'email' => Module::t('user', 'USER_EMAIL'),
             'password' => Module::t('user', 'USER_PASSWORD'),
             'verifyCode' => Module::t('user', 'USER_VERIFY_CODE'),
+            'name' => Module::t('user', 'USER_PROFILE_NAME'),
+            'phone' => Module::t('user', 'USER_PROFILE_PHONE'),
+            'workEmail' => Module::t('user', 'USER_PROFILE_WORK_EMAIL'),
         ];
     }
     
@@ -69,6 +82,14 @@ class SignupForm extends Model
             $user->generateEmailConfirmToken();
  
             if ($user->save()) {
+                $profile = new Profile();
+                $profile->user_id = $user->id;
+                $profile->phone = $this->phone;
+                $profile->name = $this->name;
+                $profile->work_email = $this->workEmail;
+                
+                $profile->save();
+                
                 Yii::$app->mailer->compose('@app/modules/user/mails/emailConfirm', ['user' => $user])
                     ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
                     ->setReplyTo(Yii::$app->params['adminEmail'])

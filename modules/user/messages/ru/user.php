@@ -13,18 +13,30 @@ return [
     'LINK_CREATE_USER' => 'Создать пользователя',
     'LINK_UPDATE' => 'Редактировать',    
     
+    'USER' => 'Пользователь',
+    'PROFILE' => 'Профиль',
+    'USER_GROUPS' => 'Группы',
+    'USER_WAREHOUSES' => 'Склады',
+    
     'USER_ID' => 'ИД',
     'USER_USERNAME' => 'Имя пользователя',
     'USER_EMAIL' => 'Электронная почта',
     'USER_PASSWORD' => 'Пароль',
     'USER_REMEMBER_ME' => 'Запомнить меня',
     'USER_STATUS' => 'Статус',
-    'USER_CREATED' => 'Создано',
-    'USER_UPDATED' => 'Изменено',
+    'USER_CREATED' => 'Создан',
+    'USER_UPDATED' => 'Изменен',
     'USER_VERIFY_CODE' => 'Проверочный код',
     'USER_NEW_PASSWORD' => 'Новый пароль',
     'USER_REPEAT_PASSWORD' => 'Повторите новый пароль',
     'USER_CURRENT_PASSWORD' => 'Текущий пароль',
+    
+    'USER_NAME' => 'Имя',
+    'USER_PHONE' => 'Телефон',
+    
+    'USER_BLOCK_CONFIRM' => 'Вы точно хотите заблокировать этого пользователя?',
+    'USER_BLOCK' => 'Заблокировать',
+    'USER_UNBLOCK' => 'Разблокировать',
     
     'USER_STATUS_BLOCKED' => 'Заблокирован',
     'USER_STATUS_ACTIVE' => 'Активен',
@@ -69,11 +81,19 @@ return [
     'USER_PASSWORD_RESET_REQUEST_TITLE' => 'Запрос на изменение пароля',
     'USER_PASSWORD_RESET_REQUEST_SUBTITLE' => 'Укажите действующий адрес электронной почты. На него будет отправлена ссылка для изменения пароля.',
     
+    'USER_PROFILE_NAME' => 'Имя',
+    'USER_PROFILE_PHONE' => 'Телефон',
+    'USER_PROFILE_WORK_EMAIL' => 'Электронная почта (рабочая)',
+    'USER_PROFILE_WORK_EMAIL_IS_SAME_AS_USER_EMAIL' => 'Рабочая почта совпадает с почтой пользователя',
+    'USER_PROFILE_GROUP' => 'Группа',
+    
     'ADMIN_USERS_INDEX_TITLE' => 'Пользователи',
     'ADMIN_USERS_VIEW_USER_TITLE' => 'Просмотр пользователя',
     'ADMIN_USERS_UPDATE_TITLE' => 'Редактирование пользователя',
     'ADMIN_USERS_CREATE_USER_TITLE' => 'Создание пользователя',
     'ADMIN_USERS_DELETE_USER_CONFIRM' => 'Вы точно хотите удалить этого пользователя?',
+    
+    'ADMIN_USERS_ROLES_INDEX_TITLE' => 'Управление доступом пользователей',
     
     'HELLO {username}' => 'Здравствуйте, {username}!',
     'FOLLOW_TO_RESET_PASSWORD' => 'Для смены пароля пройдите по ссылке:',

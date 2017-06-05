@@ -74,6 +74,11 @@ class User extends ActiveRecord implements IdentityInterface
             'status' => Module::t('user', 'USER_STATUS'),
             'created_at' => Module::t('user', 'USER_CREATED'),
             'updated_at' => Module::t('user', 'USER_UPDATED'),
+            
+            'profileName' => Module::t('user', 'USER_NAME'),
+            'profilePhone' => Module::t('user', 'USER_PHONE'),
+            'groups' => Module::t('user', 'USER_GROUPS'),
+            'warehouses' => Module::t('user', 'USER_WAREHOUSES'),
         ];
     }
     
@@ -290,5 +295,63 @@ class User extends ActiveRecord implements IdentityInterface
     public function removeEmailConfirmToken()
     {
         $this->email_confirm_token = null;
+    }
+    
+    /**
+     * Get User Profile
+     */
+    public function getProfile()
+    {
+        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
+    }
+    
+    /**
+     * Get User Profile Name
+     */
+    public function getProfileName()
+    {
+        return $this->profile->name;
+    }
+    
+    /**
+     * Get User Profile Phone
+     */
+    public function getProfilePhone()
+    {
+        return $this->profile->phone;
+    }
+    
+    /**
+     * Get User Groups
+     */
+    public function getGroups()
+    {
+        return implode('<br>', $this->profile->groupsTitleArray);
+    }
+
+    /**
+     * Get User Warehouses
+     */
+    public function getWarehouses()
+    {
+        return implode('<br>', $this->profile->warehousesTitleArray);
+    }
+    
+    /**
+     * Block User
+     */
+    public function block()
+    {
+        $this->status = User::STATUS_BLOCKED;
+        return $this->save(false);
+    }
+
+    /**
+     * Unblock User
+     */
+    public function unblock()
+    {
+        $this->status = User::STATUS_ACTIVE;
+        return $this->save(false);
     }
 }

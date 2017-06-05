@@ -34,17 +34,27 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => LinkColumn::className(),
             ],
             'email:email',
-            [
+            /*[
                 'filter' => DatePicker::widget([
                     'model' => $searchModel,
-                    'attribute' => 'date_from',
-                    'attribute2' => 'date_to',
+                    'attribute' => 'dateFrom',
+                    'attribute2' => 'dateTo',
                     'type' => DatePicker::TYPE_RANGE,
                     'separator' => '-',
                     'pluginOptions' => ['format' => 'yyyy-mm-dd']
                 ]),
                 'attribute' => 'created_at',
                 'format' => 'datetime',
+            ],*/
+            'profileName',
+            'profilePhone',
+            [
+                'attribute' => 'groups',
+                'format' => 'html',
+            ],
+            [
+                'attribute' => 'warehouses',
+                'format' => 'html',
             ],
             [
                 'class' => SetColumn::className(),
@@ -58,7 +68,31 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
 
-            ['class' => ActionColumn::className()],
+            [
+                'class' => ActionColumn::className(),
+                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{change}',
+                'buttons' => [
+                    'change' => function ($url, $model, $key) {
+                        return $model->status ?
+                            Html::a('<span class="glyphicon glyphicon-off"></span>', ['block', 'id' => $model->id, 'view' => 'index'], [
+                                'class' => 'btn btn-xs btn-danger',
+                                'data' => [
+                                    'confirm' => Module::t('user', 'USER_BLOCK_CONFIRM'),
+                                    'method' => 'post',
+                                ],
+                                'title' => Module::t('user', 'USER_BLOCK'),
+                            ]) :
+                            Html::a('<span class="glyphicon glyphicon-off"></span>', ['unblock', 'id' => $model->id, 'view' => 'index'], [
+                                'class' => 'btn btn-xs btn-success',
+                                'data' => [
+                                    'method' => 'post',
+                                ],
+                                'title' => Module::t('user', 'USER_UNBLOCK'),
+                            ]);
+                    },
+                ],
+                'contentOptions' => ['style' => 'width: 90px;']
+            ],
         ],
     ]); ?>
 </div>

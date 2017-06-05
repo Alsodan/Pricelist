@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\main\controllers;
+namespace app\modules\main\controllers\frontend;
 
 use Yii;
 use yii\web\Controller;
-use app\modules\main\models\ContactForm;
+use app\modules\main\forms\ContactForm;
 
 class ContactController extends Controller
 {

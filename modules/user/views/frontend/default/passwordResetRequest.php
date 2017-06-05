@@ -6,7 +6,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use app\widgets\Alert;
+use app\components\widgets\Alert;
 use app\modules\user\Module;
 
 $this->title = Module::t('user', 'USER_PASSWORD_RESET_REQUEST_TITLE');

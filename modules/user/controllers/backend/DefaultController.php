@@ -4,10 +4,12 @@ namespace app\modules\user\controllers\backend;
 
 use Yii;
 use app\modules\user\models\backend\User;
+use app\modules\user\models\common\Profile;
 use app\modules\user\models\backend\search\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\modules\user\forms\backend\UserCreateForm;
 
 /**
  * DefaultController implements the CRUD actions for User model.
@@ -51,8 +53,12 @@ class DefaultController extends Controller
      */
     public function actionView($id)
     {
+        $user = $this->findModel($id);
+        $profile = $user->profile;
+        
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'user' => $user,
+            'profile' => $profile,
         ]);
     }
 
@@ -63,17 +69,25 @@ class DefaultController extends Controller
      */
     public function actionCreate()
     {
-        $model = new User();
-        $model->scenario = User::SCENARIO_ADMIN_CREATE;
-        $model->status = User::STATUS_ACTIVE;
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $user = new User();
+        $user->scenario = User::SCENARIO_ADMIN_CREATE;
+        $user->status = User::STATUS_ACTIVE;
+        
+        $profile = new Profile();
+        
+        if ($user->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
+            if ($user->validate() && $profile->validate()) {
+                $user->save(false);
+                $profile->user_id = $user->id;
+                $profile->save(false);
+                return $this->redirect(['view', 'id' => $user->id]);
+            }
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'user' => $user,
+                'profile' => $profile,
             ]);
-        }
+        }       
     }
 
     /**
@@ -84,14 +98,20 @@ class DefaultController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-        $model->scenario = User::SCENARIO_ADMIN_UPDATE;
+        $user = $this->findModel($id);
+        $user->scenario = User::SCENARIO_ADMIN_UPDATE;
+        $profile = $user->profile;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($user->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
+            if ($user->validate() && $profile->validate()) {
+                $user->save(false);
+                $profile->save(false);
+                return $this->redirect(['view', 'id' => $user->id]);
+            }
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'user' => $user,
+                'profile' => $profile,
             ]);
         }
     }
@@ -102,12 +122,12 @@ class DefaultController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    /*public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
+    }*/
 
     /**
      * Finds the User model based on its primary key value.
@@ -124,4 +144,26 @@ class DefaultController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    /**
+     * Block User
+     */
+    public function actionBlock($id, $view)
+    {
+        $model = $this->findModel($id);
+        $model->block();
+        
+        return $this->redirect([$view, 'id' => $id]);
+    }
+    
+    /**
+     * Unblock User
+     */
+    public function actionUnblock($id, $view)
+    {
+        $model = $this->findModel($id);
+        $model->unblock();
+        
+        return $this->redirect([$view, 'id' => $id]);
+    }    
 }
