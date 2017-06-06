@@ -1,15 +1,15 @@
 <?php
 
 use yii\helpers\Html;
-use app\modules\warehouse\Module;
+use app\modules\product\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\main\models\Group */
+/* @var $model app\modules\product\models\Product */
 
-$this->title = Module::t('warehouse', 'WAREHOUSE_UPDATE') . ': ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => Module::t('warehouse', 'WAREHOUSE_TITLE'), 'url' => ['index']];
+$this->title = Module::t('product', 'PRODUCT_UPDATE') . ': ' . $model->title;
+$this->params['breadcrumbs'][] = ['label' => Module::t('product', 'PRODUCTS_TITLE'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Module::t('warehouse', 'WAREHOUSE_UPDATE');
+$this->params['breadcrumbs'][] = Module::t('product', 'PRODUCT_UPDATE');
 ?>
 <div class="group-update">
 

@@ -15,20 +15,20 @@ use app\modules\warehouse\models\Warehouse;
 /* @var $searchModel app\modules\product\models\ProductSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('product', 'PRODUCT_USERS_MANAGE');
+$this->title = Module::t('product', 'PRODUCT_WAREHOUSES_MANAGE');
 $this->params['breadcrumbs'][] = ['label' => Module::t('product', 'PRODUCTS_TITLE'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $product->title, 'url' => ['view', 'id' => $product->id]];
 $this->params['breadcrumbs'][] = $this->title;
 
-$ajaxUrl = Yii::$app->urlManager->createUrl(['/admin/product/default/user-change', 'id' => $product->id]);
+$ajaxUrl = Yii::$app->urlManager->createUrl(['/admin/product/default/warehouse-change', 'id' => $product->id]);
 $this->registerJs('
     $("input.siw").change(function () {
-        $.post( "' . $ajaxUrl . '", { users: $("input[name=\'product-users\']").val() })
+        $.post( "' . $ajaxUrl . '", { warehouses: $("input[name=\'product-warehouses\']").val() })
     });
 ');
 ?>
-<div class="product-users">
-    
+<div class="user-index">
+
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title"><b><?= $this->title ?>: <?= $product->title . ($product->subtitle ? ' (' . $product->subtitle . ')' : '') ?></b></h3>
@@ -39,19 +39,19 @@ $this->registerJs('
                     <span class="glyphicon glyphicon-info-sign" style="font-size: 48px;"></span>
                 </p>
                 <p class="col-lg-11 col-md-11 col-sm-10">
-                    <p><?= Module::t('product', 'MANAGE_USERS_HINT {from} {to}', [
-                        'from' => Module::t('product', 'ALL_USERS'),
-                        'to' => Module::t('product', 'PRODUCT_USERS'),
+                    <p><?= Module::t('product', 'MANAGE_WAREHOUSES_HINT {from} {to}', [
+                        'from' => Module::t('product', 'ALL_WAREHOUSES'),
+                        'to' => Module::t('product', 'PRODUCT_WAREHOUSES'),
                     ]) ?></p>
                 </p>
             </div>
             
             <div class="row">
                 <div class="col-lg-3 col-lg-offset-2 col-md-3 col-md-offset-2 col-sm-5">
-                <h5 class="text-center"><b><?= Module::t('product', 'PRODUCT_USERS') ?></b></h5>
+                <h5 class="text-center"><b><?= Module::t('product', 'PRODUCT_WAREHOUSES') ?></b></h5>
                 <?= SortableInput::widget([
-                    'name'=>'product-users',
-                    'items' => $productUsers,
+                    'name'=>'product-warehouses',
+                    'items' => $productWarehouses,
                     'hideInput' => true,
                     'sortableOptions' => [
                         'connected' => true,
@@ -65,10 +65,10 @@ $this->registerJs('
                 ]);?>
                 </div>
                 <div class="col-lg-3 col-lg-offset-2 col-md-3 col-md-offset-2 col-sm-5 col-sm-offset-2">
-                    <h5 class="text-center"><b><?= Module::t('product', 'ALL_USERS') ?></b></h5>
+                    <h5 class="text-center"><b><?= Module::t('product', 'ALL_WAREHOUSES') ?></b></h5>
                 <?= SortableInput::widget([
-                    'name'=>'all-users',
-                    'items' => $allUsers,
+                    'name'=>'all-warehouses',
+                    'items' => $allWarehouses,
                     'hideInput' => true,
                     'sortableOptions' => [
                         'itemOptions'=>['class'=>'alert alert-info'],
@@ -81,10 +81,10 @@ $this->registerJs('
                     ]
                 ]);?>
                 </div>
-            </div>            
+            </div>           
         </div>
         <div class="panel-footer">
             <?= Html::a(Module::t('product', 'BUTTON_BACK'), [$view, 'id' => $product->id], ['class' => 'btn btn-lg btn-primary']) ?>
         </div>
-    </div>
+    </div>    
 </div>

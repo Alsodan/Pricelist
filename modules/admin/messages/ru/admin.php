@@ -10,7 +10,7 @@ return [
     'LINK_ADMIN_GROUPS' => 'Группы',
     'LINK_ADMIN_WAREHOUSES' => 'Склады',
     'LINK_ADMIN_CROPS' => 'Культуры',
-    'LINK_ADMIN_PRODUCTS' => 'Продукты',
+    'LINK_ADMIN_PRODUCTS' => 'Продукция',
     
     'ADMIN_TITLE' => 'Администрирование',
 ];

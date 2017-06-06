@@ -55,6 +55,12 @@ $config = [
                     'controllerNamespace' => 'app\modules\crop\controllers\backend',
                     'viewPath' => '@app/modules/crop/views/backend',
                 ],
+                'product' => [
+                    'class' => 'app\modules\product\Module',
+                    'layout' => '@app/views/layouts/admin',
+                    'controllerNamespace' => 'app\modules\product\controllers\backend',
+                    'viewPath' => '@app/modules/product/views/backend',
+                ],
             ]
         ],
         'main' => [
@@ -67,7 +73,7 @@ $config = [
             'controllerNamespace' => 'app\modules\user\controllers\frontend',
             'viewPath' => '@app/modules/user/views/frontend',
         ],
-        'group' => [
+        /*'group' => [
             'class' => 'app\modules\group\Module',
             'controllerNamespace' => 'app\modules\group\controllers\frontend',
             'viewPath' => '@app/modules/group/views/frontend',
@@ -82,6 +88,11 @@ $config = [
             'controllerNamespace' => 'app\modules\crop\controllers\frontend',
             'viewPath' => '@app/modules/crop/views/frontend',
         ],
+        'product' => [
+            'class' => 'app\modules\product\Module',
+            'controllerNamespace' => 'app\modules\product\controllers\frontend',
+            'viewPath' => '@app/modules/product/views/frontend',
+        ],*/
     ], 
 ];
 

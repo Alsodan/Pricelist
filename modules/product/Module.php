@@ -1,12 +1,12 @@
 <?php
 
-namespace app\modules\warehouse;
+namespace app\modules\product;
 
 use Yii;
 use yii\filters\AccessControl;
 
 /**
- * admin module definition class
+ * product module definition class
  */
 class Module extends \yii\base\Module
 {
@@ -28,6 +28,6 @@ class Module extends \yii\base\Module
     
     public static function t($category, $message, $params = [], $language = null)
     {
-        return Yii::t('modules/warehouse/' . $category, $message, $params, $language);
+        return Yii::t('modules/product/' . $category, $message, $params, $language);
     }
 }

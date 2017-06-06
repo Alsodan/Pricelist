@@ -1,15 +1,15 @@
 <?php
 
-namespace app\modules\warehouse\models\search;
+namespace app\modules\product\models\search;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\warehouse\models\Warehouse;
+use app\modules\product\models\Product;
 
 /**
- * WarehouseSearch represents the model behind the search form about `app\modules\warehouse\models\Warehouse`.
+ * ProductSearch represents the model behind the search form about `app\modules\product\models\Product`.
  */
-class WarehouseSearch extends Warehouse
+class ProductSearch extends Product
 {
     /**
      * @inheritdoc
@@ -17,18 +17,10 @@ class WarehouseSearch extends Warehouse
     public function rules()
     {
         return [
-            [['id', 'status'], 'integer'],
-            [['title'], 'safe'],
+            [['status', 'group_id', 'crop_id', 'grade'], 'integer'],
+            [['price_no_tax', 'price_with_tax'], 'double'],
+            [['title', 'subtitle'], 'string', 'max' => 100],
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function scenarios()
-    {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
     }
 
     /**
@@ -40,7 +32,7 @@ class WarehouseSearch extends Warehouse
      */
     public function search($params)
     {
-        $query = Warehouse::find();
+        $query = Product::find();
 
         // add conditions that should always apply here
 

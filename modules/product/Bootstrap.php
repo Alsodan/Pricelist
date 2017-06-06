@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\warehouse;
+namespace app\modules\product;
  
 use yii\base\BootstrapInterface;
  
@@ -8,12 +8,12 @@ class Bootstrap implements BootstrapInterface
 {
     public function bootstrap($app)
     {
-        $app->i18n->translations['modules/warehouse/*'] = [
+        $app->i18n->translations['modules/product/*'] = [
             'class' => 'yii\i18n\PhpMessageSource',
             'forceTranslation' => true,
-            'basePath' => '@app/modules/warehouse/messages',
+            'basePath' => '@app/modules/product/messages',
             'fileMap' => [
-                'modules/warehouse/warehouse' => 'warehouse.php',
+                'modules/product/product' => 'product.php',
             ],
         ];
     }

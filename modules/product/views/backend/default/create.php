@@ -1,13 +1,13 @@
 <?php
 
 use yii\helpers\Html;
-use app\modules\warehouse\Module;
+use app\modules\product\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\main\models\Group */
+/* @var $model app\modules\product\models\Product */
 
-$this->title = Module::t('warehouse', 'WAREHOUSE_CREATE');
-$this->params['breadcrumbs'][] = ['label' => Module::t('warehouse', 'WAREHOUSE_TITLE'), 'url' => ['index']];
+$this->title = Module::t('product', 'PRODUCT_CREATE');
+$this->params['breadcrumbs'][] = ['label' => Module::t('product', 'PRODUCTS_TITLE'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="group-create">

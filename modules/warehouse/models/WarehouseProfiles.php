@@ -31,9 +31,9 @@ class WarehouseProfiles extends ActiveRecord
     public function rules()
     {
         return [
-            [['profile_id', '$warehouse_id'], 'integer'],
-            [['profile_id', '$warehouse_id'], 'unique', 'targetAttribute' => ['profile_id', '$warehouse_id'], 'message' => 'The combination of Profile ID and Warehouse ID has already been taken.'],
-            [['$warehouse_id'], 'exist', 'skipOnError' => true, 'targetClass' => Warehouse::className(), 'targetAttribute' => ['$warehouse_id' => 'id']],
+            [['profile_id', 'warehouse_id'], 'integer'],
+            [['profile_id', 'warehouse_id'], 'unique', 'targetAttribute' => ['profile_id', 'warehouse_id'], 'message' => 'The combination of Profile ID and Warehouse ID has already been taken.'],
+            [['warehouse_id'], 'exist', 'skipOnError' => true, 'targetClass' => Warehouse::className(), 'targetAttribute' => ['warehouse_id' => 'id']],
             [['profile_id'], 'exist', 'skipOnError' => true, 'targetClass' => Profile::className(), 'targetAttribute' => ['profile_id' => 'id']],
         ];
     }
@@ -43,7 +43,7 @@ class WarehouseProfiles extends ActiveRecord
      */
     public function getWarehouse()
     {
-        return $this->hasOne(Warehouse::className(), ['id' => '$warehouse_id']);
+        return $this->hasOne(Warehouse::className(), ['id' => 'warehouse_id']);
     }
 
     /**
