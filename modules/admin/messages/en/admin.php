@@ -9,6 +9,8 @@ return [
     'LINK_ADMIN_ROLES' => 'Manage Roles',
     'LINK_ADMIN_GROUPS' => 'Manage Groups',
     'LINK_ADMIN_WAREHOUSES' => 'Manage Warehouses',
+    'LINK_ADMIN_CROPS' => 'Manage Crops',
+    'LINK_ADMIN_PRODUCTS' => 'Manage Products',
     
     'ADMIN_TITLE' => 'Administration',
 ];

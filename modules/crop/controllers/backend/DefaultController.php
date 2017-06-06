@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\warehouse\controllers\backend;
+namespace app\modules\crop\controllers\backend;
 
 use Yii;
-use app\modules\warehouse\models\Warehouse;
-use app\modules\warehouse\models\search\WarehouseSearch;
+use app\modules\crop\models\Crop;
+use app\modules\crop\models\search\CropSearch;
 use app\modules\user\models\common\Profile;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 use \yii\data\ArrayDataProvider;
 
 /**
- * DefaultController implements the CRUD actions for Group model.
+ * DefaultController implements the CRUD actions for Crop model.
  */
 class DefaultController extends Controller
 {
@@ -37,7 +37,7 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new WarehouseSearch();
+        $searchModel = new CropSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,40 +47,27 @@ class DefaultController extends Controller
     }
 
     /**
-     * Displays a single Warehouse model.
+     * Displays a single Crop model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
-        $warehouse = $this->findModel($id);
-        $users = new ArrayDataProvider([
-            'allModels' => $warehouse->activeProfiles,
-            'sort' => false,
-            'pagination' => false,
-        ]);
-        $groups = new ArrayDataProvider([
-            'allModels' => $warehouse->activeGroups,
-            'sort' => false,
-            'pagination' => false,
-        ]);
+        $crop = $this->findModel($id);
         
         return $this->render('view', [
-            'warehouse' => $warehouse,
-            'users' => $users,
-            'groups' => $groups,
+            'crop' => $crop,
         ]);
     }
 
     /**
-     * Creates a new Warehouse model.
+     * Creates a new Crop model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate($view, $id = null)
     {
-        $model = new Warehouse();
-        $model->status = Warehouse::STATUS_ACTIVE;
+        $model = new Crop();
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect([$view, 'id' => $model->id]);
@@ -92,7 +79,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * Updates an existing Warehouse model.
+     * Updates an existing Crop model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -111,7 +98,7 @@ class DefaultController extends Controller
     }
     
     /**
-     * Disable an existing Warehouse model.
+     * Disable an existing Crop model.
      * @param integer $id
      * @return mixed
      */
@@ -124,7 +111,7 @@ class DefaultController extends Controller
     } 
 
     /**
-     * Enable an existing Warehouse model.
+     * Enable an existing Crop model.
      * @param integer $id
      * @return mixed
      */
@@ -137,15 +124,15 @@ class DefaultController extends Controller
     } 
     
     /**
-     * Finds the Warehouse model based on its primary key value.
+     * Finds the Crop model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Warehouse the loaded model
+     * @return Crop the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Warehouse::findOne($id)) !== null) {
+        if (($model = Crop::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -153,20 +140,20 @@ class DefaultController extends Controller
     }
     
     /**
-     * Manage Warehouse Users
+     * Manage Crop Users
      * @param integer $id
      * @return string
      */
     public function actionUsers($id, $view = 'view')
     {
-        $warehouse = $this->findModel($id);
-        $warehouseUsers = $warehouse->preparedForSIWActiveProfiles();
+        $crop = $this->findModel($id);
+        $cropUsers = $crop->preparedForSIWActiveProfiles();
         $allUsers = Profile::preparedForSIWActiveProfiles();
         
         return $this->render('users', [
-                'warehouse' => $warehouse,
-                'allUsers' => array_diff_key($allUsers, $warehouseUsers),
-                'warehouseUsers' => $warehouseUsers,
+                'crop' => $crop,
+                'allUsers' => array_diff_key($allUsers, $cropUsers),
+                'warehouseUsers' => $cropUsers,
                 'view' => $view,
             ]);
     }
@@ -174,11 +161,11 @@ class DefaultController extends Controller
     public function actionUserChange($id)
     {
         if (Yii::$app->request->isAjax) {
-            $warehouse = $this->findModel($id);
+            $crop = $this->findModel($id);
             $usersString = Yii::$app->request->post('users');
-            $warehouse->profilesList = empty($usersString) ? [] : explode(',', $usersString);
+            $crop->profilesList = empty($usersString) ? [] : explode(',', $usersString);
             
-            return $warehouse->save(false);
+            return $crop->save(false);
         }
         
         return false;

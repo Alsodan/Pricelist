@@ -174,11 +174,11 @@ class DefaultController extends Controller
     public function actionUserChange($id)
     {
         if (Yii::$app->request->isAjax) {
-            $warehouse = $this->findModel($id);
+            $group = $this->findModel($id);
             $usersString = Yii::$app->request->post('users');
-            $warehouse->profilesList = empty($usersString) ? [] : explode(',', $usersString);
+            $group->profilesList = empty($usersString) ? [] : explode(',', $usersString);
             
-            return $warehouse->save(false);
+            return $group->save(false);
         }
         
         return false;

@@ -5,10 +5,12 @@ return [
     'BUTTON_UPDATE' => 'Редактировать',
     'BUTTON_DELETE' => 'Удалить',
     
-    'LINK_ADMIN_USERS' => 'Управление пользователями',
-    'LINK_ADMIN_ROLES' => 'Управление доступом',
-    'LINK_ADMIN_GROUPS' => 'Управление группами',
-    'LINK_ADMIN_WAREHOUSES' => 'Управление складами',
+    'LINK_ADMIN_USERS' => 'Пользователи',
+    'LINK_ADMIN_ROLES' => 'Доступ',
+    'LINK_ADMIN_GROUPS' => 'Группы',
+    'LINK_ADMIN_WAREHOUSES' => 'Склады',
+    'LINK_ADMIN_CROPS' => 'Культуры',
+    'LINK_ADMIN_PRODUCTS' => 'Продукты',
     
     'ADMIN_TITLE' => 'Администрирование',
 ];

@@ -1,0 +1,180 @@
+<?php
+
+namespace app\modules\main\models;
+
+use app\modules\main\Module;
+use \app\modules\user\models\common\query\GroupQuery;
+use yii\helpers\ArrayHelper;
+use app\modules\user\models\common\Profile;
+use app\modules\main\models\ProfileGroups;
+use \app\modules\user\models\common\User;
+
+/**
+ * This is the model class for table "{{%group}}".
+ *
+ * @property integer $id
+ * @property string $title
+ * @property integer $active
+ */
+class Group extends \yii\db\ActiveRecord
+{
+    //Group Activity
+    const STATUS_DISABLED = 0;
+    const STATUS_ACTIVE = 1;
+    
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return '{{%group}}';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['active'], 'integer'],
+            [['title'], 'string', 'max' => 255],
+            ['profilesList', 'safe'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => Module::t('main', 'GROUP_ID'),
+            'title' => Module::t('main', 'GROUP_TITLE'),
+            'active' => Module::t('main', 'GROUP_ACTIVE'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \app\components\behaviors\ManyHasManyBehavior::className(),
+                'relations' => [
+                    'profiles' => 'profilesList',                   
+                ],
+            ],
+        ];
+    }
+    
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $this->profilesList = $this->profilesList;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * @inheritdoc
+     * @return GroupQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new GroupQuery(get_called_class());
+    }
+    
+    /**
+     * Change Group activity
+     * @return boolean
+     */
+    public function changeActivity(){
+        $this->active = !$this->active;
+        return $this->save(false);
+    }
+    
+    /**
+     * Get Group Activity names array
+     * 
+     * @return array
+     */
+    public static function getActivityArray()
+    {
+        return [
+            self::STATUS_DISABLED => Module::t('main', 'GROUP_ACTIVITY_DISABLED'),
+            self::STATUS_ACTIVE => Module::t('main', 'GROUP_ACTIVITY_ACTIVE'),
+        ];
+    }
+    
+    /**
+     * Get Group activity name
+     * 
+     * @return string
+     */
+    public function getActivityName()
+    {
+        return ArrayHelper::getValue(self::getActivityArray(), $this->active);
+    }
+    
+    /**
+     * Get Profiles
+     * 
+     * @return array profiles
+     */
+    public function getProfiles()
+    {
+        return $this->hasMany(Profile::className(), ['id' => 'profile_id'])
+            ->viaTable(ProfileGroups::tableName(), ['group_id' => 'id']);
+    }
+    
+    /**
+     * Get only active Profiles
+     * 
+     * @return array profiles
+     */
+    public function getActiveProfiles()
+    {
+        $result = [];
+        foreach ($this->profiles as $profile) {
+            if ($profile->user->status == User::STATUS_ACTIVE) {
+                $result[] = $profile;
+            }
+        }
+        
+        return $result;
+    }
+
+    /**
+     * Get only active Profiles string
+     * 
+     * @return array profiles
+     */
+    public function getProfilesAsStringArray()
+    {
+        $result = [];
+        foreach ($this->activeProfiles as $profile) {
+            $result[$profile->id] = $profile->name . ' (' . $profile->phone . ')';
+        }
+        
+        return $result;
+    }    
+    
+    /**
+     * Get Profiles Name and Phone as string
+     * 
+     * @return array profiles data
+     */
+    public function preparedForSIWActiveProfiles()
+    {
+        $result = [];
+        foreach ($this->activeProfiles as $profile) {
+            $result[$profile->id] = ['content' => $profile->name . ' (' . $profile->phone . ')'];
+        }
+        
+        return $result;
+    }
+}

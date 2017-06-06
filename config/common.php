@@ -21,6 +21,7 @@ return [
         'app\modules\user\Bootstrap',
         'app\modules\group\Bootstrap',
         'app\modules\warehouse\Bootstrap',
+        'app\modules\crop\Bootstrap',
     ],
     'components' => [
         'db' => [

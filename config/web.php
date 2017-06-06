@@ -48,7 +48,13 @@ $config = [
                     'layout' => '@app/views/layouts/admin',
                     'controllerNamespace' => 'app\modules\warehouse\controllers\backend',
                     'viewPath' => '@app/modules/warehouse/views/backend',
-                ],                
+                ],
+                'crop' => [
+                    'class' => 'app\modules\crop\Module',
+                    'layout' => '@app/views/layouts/admin',
+                    'controllerNamespace' => 'app\modules\crop\controllers\backend',
+                    'viewPath' => '@app/modules/crop/views/backend',
+                ],
             ]
         ],
         'main' => [
@@ -70,7 +76,12 @@ $config = [
             'class' => 'app\modules\warehouse\Module',
             'controllerNamespace' => 'app\modules\warehouse\controllers\frontend',
             'viewPath' => '@app/modules/warehouse/views/frontend',
-        ],        
+        ],
+        'crop' => [
+            'class' => 'app\modules\crop\Module',
+            'controllerNamespace' => 'app\modules\crop\controllers\frontend',
+            'viewPath' => '@app/modules/crop/views/frontend',
+        ],
     ], 
 ];
 
