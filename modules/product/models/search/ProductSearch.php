@@ -2,9 +2,11 @@
 
 namespace app\modules\product\models\search;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\product\models\Product;
+use yii\helpers\ArrayHelper;
 
 /**
  * ProductSearch represents the model behind the search form about `app\modules\product\models\Product`.
@@ -17,7 +19,7 @@ class ProductSearch extends Product
     public function rules()
     {
         return [
-            [['status', 'group_id', 'crop_id', 'grade'], 'integer'],
+            [['status', 'crop_id', 'grade'], 'integer'],
             [['price_no_tax', 'price_with_tax'], 'double'],
             [['title', 'subtitle'], 'string', 'max' => 100],
         ];
@@ -57,5 +59,21 @@ class ProductSearch extends Product
         $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
+    }
+    
+    public function searchWithGroup()
+    {
+        $products = Yii::$app->user->identity->profile->activeProducts;
+        
+        $data = [];
+        foreach ($products as $item) {
+            $data[] = ArrayHelper::toArray($item, [
+            Product::className() => [
+                'id', 'title', 'subtitle', 'price_no_tax', 'price_with_tax'
+            ]
+            ]);
+        }
+        
+        return $data;
     }
 }

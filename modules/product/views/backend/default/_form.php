@@ -24,10 +24,10 @@ $this->registerJs('
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'group_id')->widget(Select2::className(), [
+    <?= $form->field($model, 'groupsList')->widget(Select2::className(), [
         'data' => Group::getGroupsDropdown(),
         'options' => ['placeholder' => Module::t('product', 'PRODUCT_SELECT_FROM_LIST_HINT')],
-    ]) ?>
+    ])->label(Module::t('product', 'GROUP')) ?>
     
     <?= $form->field($model, 'crop_id')->widget(Select2::className(), [
         'data' => Crop::getCropsDropdown(),

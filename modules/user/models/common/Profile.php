@@ -151,13 +151,64 @@ class Profile extends ActiveRecord
     }    
     
     /**
+     * Get only active Groups
+     * 
+     * @return array Groups[]
+     */
+    public function getActiveGroups()
+    {
+        $result = [];
+        foreach ($this->groups as $group) {
+            if ($group->status == Group::STATUS_ACTIVE) {
+                $result[] = $group;
+            }
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Get only active Warehouses
+     * 
+     * @return array Warehouses[]
+     */
+    public function getActiveWarehouses()
+    {
+        $result = [];
+        foreach ($this->warehouses as $warehouse) {
+            if ($warehouse->status == Warehouse::STATUS_ACTIVE) {
+                $result[] = $warehouse;
+            }
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Get only active Products
+     * 
+     * @return array Products[]
+     */
+    public function getActiveProducts()
+    {
+        $result = [];
+        foreach ($this->products as $product) {
+            if ($product->status == Product::STATUS_ACTIVE) {
+                $result[] = $product;
+            }
+        }
+        
+        return $result;
+    }
+    
+    /**
      * Get Group Titles array
      */
     public function getGroupsTitleArray()
     {
         $result = [];
-        foreach ($this->groups as $group){
-            $result[] = $group->title;
+        foreach ($this->activeGroups as $group){
+            $result[$group->id] = $group->title;
         }
         return $result;
     }
@@ -168,8 +219,8 @@ class Profile extends ActiveRecord
     public function getWarehousesTitleArray()
     {
         $result = [];
-        foreach ($this->warehouses as $item){
-            $result[] = $item->title;
+        foreach ($this->activeWarehouses as $item){
+            $result[$item->id] = $item->title;
         }
         return $result;
     }
@@ -180,8 +231,8 @@ class Profile extends ActiveRecord
     public function getProductsTitleArray()
     {
         $result = [];
-        foreach ($this->products as $item){
-            $result[] = $item->title . ($item->subtitle ? ' (' . $item->subtitle . ')' : '');
+        foreach ($this->activeProducts as $item){
+            $result[$item->id] = $item->title . ($item->subtitle ? ' (' . $item->subtitle . ')' : '');
         }
         return $result;
     }  

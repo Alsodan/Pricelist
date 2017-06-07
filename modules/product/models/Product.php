@@ -14,12 +14,12 @@ use app\modules\product\models\ProfileProducts;
 use app\modules\product\models\WarehouseProducts;
 use app\modules\user\models\common\User;
 use app\components\behaviors\ManyHasManyBehavior;
+use app\modules\product\models\ProductGroups;
 
 /**
  * This is the model class for table "{{%product}}".
  *
  * @property integer $id
- * @property integer $group_id
  * @property integer $crop_id
  * @property integer $grade
  * @property string $title
@@ -51,7 +51,7 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'group_id', 'crop_id', 'grade'], 'integer'],
+            [['status', 'crop_id', 'grade'], 'integer'],
             [['price_no_tax', 'price_with_tax'], 'double'],
             [['title', 'subtitle'], 'string', 'max' => 100],
             [['title', 'group_id', 'crop_id'], 'required'],
@@ -66,7 +66,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             'id' => Module::t('product', 'PRODUCT_ID'),
-            'group_id' => Module::t('product', 'GROUP'),
+            'groupsList' => Module::t('product', 'GROUP'),
             'crop_id' => Module::t('product', 'CROP'),
             'grade' => Module::t('product', 'PRODUCT_GRADE'),
             'title' => Module::t('product', 'PRODUCT_TITLE'),
@@ -97,7 +97,13 @@ class Product extends \yii\db\ActiveRecord
                 'relations' => [
                     'warehouses' => 'warehousesList',                   
                 ],
-            ],            
+            ],
+            [
+                'class' => ManyHasManyBehavior::className(),
+                'relations' => [
+                    'group' => 'groupsList',                   
+                ],
+            ],
         ];
     }
     
@@ -106,6 +112,7 @@ class Product extends \yii\db\ActiveRecord
         if (parent::beforeSave($insert)) {
             $this->profilesList = $this->profilesList;
             $this->warehousesList = $this->warehousesList;
+            $this->groupsList = $this->groupsList;
             if ($this->call_with_tax == 1) {
                 $this->price_with_tax = -1;
             }
@@ -175,7 +182,8 @@ class Product extends \yii\db\ActiveRecord
      */
     public function getGroup()
     {
-        return $this->hasOne(Group::className(), ['id' => 'group_id']);
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])
+            ->viaTable(ProductGroups::tableName(), ['product_id' => 'id']);
     }
        
     /**

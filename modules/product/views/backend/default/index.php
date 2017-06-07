@@ -34,17 +34,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'title',
                 'class' => LinkColumn::className(),
                 'value' => function ($model) { return $model->title . ($model->subtitle ? ' (' . $model->subtitle . ')' : ''); },
-                ],
+            ],
             [
-                'value' => function ($model) { return $model->group->title; },
+                'value' => function ($model) { return $model->group[0]->title; },
                 'format' => 'html',
                 'label' => Module::t('product', 'GROUP')
-            ],  
+            ],
             [
                 'value' => function ($model) { return implode('<br>', $model->warehousesAsStringArray);},
                 'format' => 'html',
                 'label' => Module::t('product', 'WAREHOUSES')
-            ],            
+            ],
             [
                 'value' => function ($model) { return implode('<br>', $model->profilesAsStringArray);},
                 'format' => 'html',

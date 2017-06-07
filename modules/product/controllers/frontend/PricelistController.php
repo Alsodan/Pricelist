@@ -21,10 +21,13 @@ class PricelistController extends Controller
     public function actionIndex()
     {
         $searchModel = new ProductSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $searchModel->searchWithGroup(),
+            'pagination' => false,
+            'sort' => false,
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }

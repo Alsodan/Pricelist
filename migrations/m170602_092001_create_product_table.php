@@ -14,7 +14,6 @@ class m170602_092001_create_product_table extends Migration
     {
         $this->createTable('{{%product}}', [
             'id' => $this->primaryKey(),
-            'group_id' => $this->integer()->notNull(),
             'crop_id' => $this->integer(),
             'grade' => $this->integer(),
             'title' => $this->string(100)->notNull(),
