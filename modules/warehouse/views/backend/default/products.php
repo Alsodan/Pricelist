@@ -6,32 +6,32 @@ use app\modules\user\models\backend\User;
 use app\components\grid\SetColumn;
 use app\components\grid\LinkColumn;
 use kartik\date\DatePicker;
-use app\modules\group\Module;
+use app\modules\warehouse\Module;
 use kartik\sortinput\SortableInput;
 use app\components\widgets\LinkedItemsWidget;
-use app\modules\group\models\Group;
+use app\modules\warehouse\models\Warehouse;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\group\models\UserSearch */
+/* @var $searchModel app\modules\warehouse\models\WarehouseSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('group', 'GROUP_USERS_MANAGE');
-$this->params['breadcrumbs'][] = ['label' => Module::t('group', 'GROUPS_TITLE'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $group->title, 'url' => ['view', 'id' => $group->id]];
+$this->title = Module::t('warehouse', 'WAREHOUSE_PRODUCTS_MANAGE');
+$this->params['breadcrumbs'][] = ['label' => Module::t('warehouse', 'WAREHOUSES_TITLE'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $warehouse->title, 'url' => ['view', 'id' => $warehouse->id]];
 $this->params['breadcrumbs'][] = $this->title;
 
-$ajaxUrl = Yii::$app->urlManager->createUrl(['/admin/group/default/user-change', 'id' => $group->id]);
+$ajaxUrl = Yii::$app->urlManager->createUrl(['/admin/warehouse/default/product-change', 'id' => $warehouse->id]);
 $this->registerJs('
     $("input.siw").change(function () {
-        $.post( "' . $ajaxUrl . '", { users: $("input[name=\'group-users\']").val() })
+        $.post( "' . $ajaxUrl . '", { products: $("input[name=\'warehouse-products\']").val() })
     });
 ');
 ?>
-<div class="group-users">
+<div class="warehouse-products">
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title"><b><?= $this->title ?>: <?= $group->title ?></b></h3>
+            <h3 class="panel-title"><b><?= $this->title ?>: <?= $warehouse->title ?></b></h3>
         </div>
         <div class="panel-body">
             <div class="alert alert-info">
@@ -39,19 +39,19 @@ $this->registerJs('
                     <span class="glyphicon glyphicon-info-sign" style="font-size: 48px;"></span>
                 </p>
                 <p class="col-lg-11 col-md-11 col-sm-10">
-                    <p><?= Module::t('group', 'MANAGE_USERS_HINT {from} {to}', [
-                        'from' => Module::t('group', 'ALL_USERS'),
-                        'to' => Module::t('group', 'GROUP_USERS'),
+                    <p><?= Module::t('warehouse', 'MANAGE_PRODUCTS_HINT {from} {to}', [
+                        'from' => Module::t('warehouse', 'ALL_PRODUCTS'),
+                        'to' => Module::t('warehouse', 'WAREHOUSE_PRODUCTS'),
                     ]) ?></p>
                 </p>
             </div>
             
             <div class="row">
                 <div class="col-lg-3 col-lg-offset-2 col-md-3 col-md-offset-2 col-sm-5">
-                <h5 class="text-center"><b><?= Module::t('group', 'GROUP_USERS') ?></b></h5>
+                <h5 class="text-center"><b><?= Module::t('warehouse', 'WAREHOUSE_PRODUCTS') ?></b></h5>
                 <?= SortableInput::widget([
-                    'name'=>'group-users',
-                    'items' => $groupUsers,
+                    'name'=>'warehouse-products',
+                    'items' => $warehouseProducts,
                     'hideInput' => true,
                     'sortableOptions' => [
                         'connected' => true,
@@ -65,10 +65,10 @@ $this->registerJs('
                 ]);?>
                 </div>
                 <div class="col-lg-3 col-lg-offset-2 col-md-3 col-md-offset-2 col-sm-5 col-sm-offset-2">
-                    <h5 class="text-center"><b><?= Module::t('group', 'ALL_USERS') ?></b></h5>
+                    <h5 class="text-center"><b><?= Module::t('warehouse', 'ALL_PRODUCTS') ?></b></h5>
                 <?= SortableInput::widget([
-                    'name'=>'all-users',
-                    'items' => $allUsers,
+                    'name'=>'all-products',
+                    'items' => $allProducts,
                     'hideInput' => true,
                     'sortableOptions' => [
                         'itemOptions'=>['class'=>'alert alert-info'],
@@ -84,7 +84,7 @@ $this->registerJs('
             </div>
         </div>
         <div class="panel-footer">
-            <?= Html::a(Module::t('group', 'BUTTON_BACK'), [$view, 'id' => $group->id], ['class' => 'btn btn-lg btn-primary']) ?>
+            <?= Html::a(Module::t('warehouse', 'BUTTON_BACK'), [$view, 'id' => $warehouse->id], ['class' => 'btn btn-lg btn-primary']) ?>
         </div>
     </div>
 </div>

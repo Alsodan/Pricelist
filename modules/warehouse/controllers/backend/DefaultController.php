@@ -6,6 +6,7 @@ use Yii;
 use app\modules\warehouse\models\Warehouse;
 use app\modules\warehouse\models\search\WarehouseSearch;
 use app\modules\user\models\common\Profile;
+use app\modules\product\models\Product;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -64,11 +65,17 @@ class DefaultController extends Controller
             'sort' => false,
             'pagination' => false,
         ]);
+        $products = new ArrayDataProvider([
+            'allModels' => $warehouse->activeProducts,
+            'sort' => false,
+            'pagination' => false,
+        ]);
         
         return $this->render('view', [
             'warehouse' => $warehouse,
             'users' => $users,
             'groups' => $groups,
+            'products' => $products,
         ]);
     }
 
@@ -97,7 +104,7 @@ class DefaultController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($view = 'view', $id)
+    public function actionUpdate($id, $view = 'view')
     {
         $model = $this->findModel($id);
 
@@ -171,12 +178,54 @@ class DefaultController extends Controller
             ]);
     }
     
+    /**
+     * Manage Warehouse Products
+     * @param integer $id
+     * @return string
+     */
+    public function actionProducts($id, $view = 'view')
+    {
+        $warehouse = $this->findModel($id);
+        $warehouseProducts = $warehouse->preparedForSIWActiveProducts();
+        $allProducts = Product::preparedForSIWActiveProducts();
+        
+        return $this->render('products', [
+                'warehouse' => $warehouse,
+                'allProducts' => array_diff_key($allProducts, $warehouseProducts),
+                'warehouseProducts' => $warehouseProducts,
+                'view' => $view,
+            ]);
+    }
+    
+    /**
+     * Ajax Users managment
+     * @param type $id
+     * @return boolean
+     */
     public function actionUserChange($id)
     {
         if (Yii::$app->request->isAjax) {
             $warehouse = $this->findModel($id);
             $usersString = Yii::$app->request->post('users');
             $warehouse->profilesList = empty($usersString) ? [] : explode(',', $usersString);
+            
+            return $warehouse->save(false);
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Ajax Products managment
+     * @param type $id
+     * @return boolean
+     */
+    public function actionProductChange($id)
+    {
+        if (Yii::$app->request->isAjax) {
+            $warehouse = $this->findModel($id);
+            $productsString = Yii::$app->request->post('products');
+            $warehouse->productsList = empty($productsString) ? [] : explode(',', $productsString);
             
             return $warehouse->save(false);
         }

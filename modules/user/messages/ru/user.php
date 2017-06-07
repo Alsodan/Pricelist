@@ -17,6 +17,7 @@ return [
     'PROFILE' => 'Профиль',
     'USER_GROUPS' => 'Группы',
     'USER_WAREHOUSES' => 'Склады',
+    'USER_PRODUCTS' => 'Продукция',
     
     'USER_ID' => 'ИД',
     'USER_USERNAME' => 'Имя пользователя',

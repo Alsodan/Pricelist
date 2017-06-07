@@ -10,6 +10,8 @@ use app\modules\user\Module;
 use app\modules\group\models\Group;
 use app\modules\group\models\ProfileGroups;
 use app\modules\warehouse\models\Warehouse;
+use app\modules\product\models\Product;
+use app\modules\product\models\ProfileProducts;
 use app\modules\warehouse\models\WarehouseProfiles;
 use \app\components\behaviors\ManyHasManyBehavior;
 
@@ -140,6 +142,15 @@ class Profile extends ActiveRecord
     }
     
     /**
+     * List of User Products
+     */
+    public function getProducts()
+    {
+        return $this->hasMany(Product::className(), ['id' => 'product_id'])
+            ->viaTable(ProfileProducts::tableName(), ['profile_id' => 'id']);
+    }    
+    
+    /**
      * Get Group Titles array
      */
     public function getGroupsTitleArray()
@@ -161,5 +172,17 @@ class Profile extends ActiveRecord
             $result[] = $item->title;
         }
         return $result;
-    }    
+    }
+    
+    /**
+     * Get Products Titles array
+     */
+    public function getProductsTitleArray()
+    {
+        $result = [];
+        foreach ($this->products as $item){
+            $result[] = $item->title . ($item->subtitle ? ' (' . $item->subtitle . ')' : '');
+        }
+        return $result;
+    }  
 }

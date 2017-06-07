@@ -7,6 +7,7 @@ use app\modules\group\Module;
 use app\components\grid\SetColumn;
 use app\components\grid\LinkColumn;
 use app\modules\group\models\Group;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\main\models\search\GroupSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -54,8 +55,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => Module::t('group', 'WAREHOUSES')
             ],
             [
+                'value' => function ($model) { return implode('<br>', $model->productsAsStringArray); },
+                'format' => 'html',
+                'label' => Module::t('group', 'PRODUCTS')
+            ],
+            [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{users}&nbsp;&nbsp;{crops}&nbsp;&nbsp;{warehouses}&nbsp;&nbsp;{change}',
+                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{users}&nbsp;&nbsp;{warehouses}&nbsp;&nbsp;{products}&nbsp;&nbsp;{change}',
                 'buttons' => [
                     'change' => function ($url, $model, $key) {
                         return $model->status == Group::STATUS_ACTIVE ?
@@ -83,9 +89,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         return 
                             Html::a('<span class="glyphicon glyphicon-user"></span>', ['users', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('group', 'USERS')]);
                     },
-                    'crops' => function ($url, $model, $key) {
+                    'products' => function ($url, $model, $key) {
                         return 
-                            Html::a('<span class="glyphicon glyphicon-leaf"></span>', ['crops', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('group', 'CROPS')]);
+                            Html::a('<span class="glyphicon glyphicon-gift"></span>', ['products', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('group', 'PRODUCTS')]);
                     },
                     'warehouses' => function ($url, $model, $key) {
                         return 

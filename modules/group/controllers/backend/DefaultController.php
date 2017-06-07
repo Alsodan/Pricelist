@@ -7,6 +7,7 @@ use app\modules\group\models\Group;
 use app\modules\group\models\search\GroupSearch;
 use app\modules\user\models\common\Profile;
 use app\modules\warehouse\models\Warehouse;
+use app\modules\product\models\Product;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -65,12 +66,18 @@ class DefaultController extends Controller
             'allModels' => $group->activeWarehouses,
             'sort' => false,
             'pagination' => false,
-        ]);        
+        ]);
+        $products = new ArrayDataProvider([
+            'allModels' => $group->activeProducts,
+            'sort' => false,
+            'pagination' => false,
+        ]);  
         
         return $this->render('view', [
             'group' => $group,
             'users' => $users,
             'warehouses' => $warehouses,
+            'products' => $products,
         ]);
     }
 
@@ -82,6 +89,7 @@ class DefaultController extends Controller
     public function actionCreate()
     {
         $model = new Group();
+        $model->status = Group::STATUS_ACTIVE;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -164,7 +172,7 @@ class DefaultController extends Controller
         $groupUsers = $group->preparedForSIWActiveProfiles();
         $allUsers = Profile::preparedForSIWActiveProfiles();
         
-        return $this->render('user', [
+        return $this->render('users', [
                 'group' => $group,
                 'allUsers' => array_diff_key($allUsers, $groupUsers),
                 'groupUsers' => $groupUsers,
@@ -190,11 +198,31 @@ class DefaultController extends Controller
                 'view' => $view,
             ]);
     }
+    
+    /**
+     * Manage Group Products
+     * @param integer $id
+     * @return string
+     */
+    public function actionProducts($id, $view = 'view')
+    {
+        $group = $this->findModel($id);
+        $groupProducts = $group->preparedForSIWActiveProducts();
+        $allProducts = Product::preparedForSIWActiveProducts();
+        
+        return $this->render('products', [
+                'group' => $group,
+                'allProducts' => array_diff_key($allProducts, $groupProducts),
+                'groupProducts' => $groupProducts,
+                'view' => $view,
+            ]);
+    }
+    
     /**
      * Manage Groups Users
      * @return string
      */
-    /*public function actionUsers($id = -1)
+    /*public function actionUsers0($id = -1)
     {
         $groups = ArrayHelper::map(Group::find()->select(['id', 'title'])->asArray()->all(), 'id', 'title');
         if ($id == -1) {
@@ -207,6 +235,11 @@ class DefaultController extends Controller
             ]);
     }*/
     
+    /**
+     * Ajax Users management
+     * @param type $id
+     * @return boolean
+     */
     public function actionUserChange($id)
     {
         if (Yii::$app->request->isAjax) {
@@ -220,6 +253,11 @@ class DefaultController extends Controller
         return false;
     }
     
+    /**
+     * Ajax Warehouses managment
+     * @param type $id
+     * @return boolean
+     */
     public function actionWarehouseChange($id)
     {
         if (Yii::$app->request->isAjax) {
@@ -231,5 +269,23 @@ class DefaultController extends Controller
         }
         
         return false;
-    }    
+    }
+    
+    /**
+     * Ajax Products managment
+     * @param type $id
+     * @return boolean
+     */
+    public function actionProductChange($id)
+    {
+        if (Yii::$app->request->isAjax) {
+            $group = $this->findModel($id);
+            $productsString = Yii::$app->request->post('products');
+            $group->productsList = empty($productsString) ? [] : explode(',', $productsString);
+            
+            return $group->save(false);
+        }
+        
+        return false;
+    }     
 }

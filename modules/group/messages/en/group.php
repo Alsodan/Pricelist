@@ -8,6 +8,7 @@ return [
     'USERS' => 'Users',
     'CROPS' => 'Crops',
     'WAREHOUSES' => 'Warehouses',
+    'PRODUCTS' => 'Products',
     
     'GROUP_ID' => 'ID',
     'GROUP_TITLE' => 'Title',
@@ -23,6 +24,7 @@ return [
     
     'GROUP_USERS_MANAGE' => 'Manage Group Users',
     'GROUP_WAREHOUSES_MANAGE' => 'Manage Group Warehouses',
+    'GROUP_PRODUCTS_MANAGE' => 'Manage Group Products',
     
     'GROUP_USERS' => 'Group Users',
     'ALL_USERS' => 'All Users',
@@ -31,4 +33,8 @@ return [
     'GROUP_WAREHOUSES' => 'Group Warehouses',
     'ALL_WAREHOUSES' => 'All Warehouses',
     'MANAGE_WAREHOUSES_HINT {from} {to}' => 'Choose warehouse from list "{from}" and drag-and-drop it to list "{to}". <br> Drag it back to list "{from}" to remove warehouse from group.',
+    
+    'GROUP_PRODUCTS' => 'Group Products',
+    'ALL_PRODUCTS' => 'All Products',
+    'MANAGE_PRODUCTS_HINT {from} {to}' => 'Choose product from list "{from}" and drag-and-drop it to list "{to}". <br> Drag it back to list "{from}" to remove product from group.',
 ];

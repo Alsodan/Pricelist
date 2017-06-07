@@ -3,15 +3,16 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use app\modules\warehouse\Module;
+use app\modules\product\Module;
 use app\components\grid\SetColumn;
 use app\components\grid\LinkColumn;
-use app\modules\warehouse\models\Warehouse;
+use app\modules\product\models\Product;
+
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\main\models\search\GroupSearch */
+/* @var $searchModel app\modules\product\models\search\ProductSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('warehouse', 'WAREHOUSES_TITLE');
+$this->title = Module::t('product', 'PRODUCTS_TITLE');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="group-index">
@@ -19,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Module::t('warehouse', 'WAREHOUSE_CREATE'), ['create', 'view' => 'index'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Module::t('product', 'PRODUCT_CREATE'), ['create', 'view' => 'index'], ['class' => 'btn btn-success']) ?>
     </p>
     
 <?php Pjax::begin(); ?>    
@@ -32,65 +33,66 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'title',
                 'class' => LinkColumn::className(),
-            ],
+                'value' => function ($model) { return $model->title . ($model->subtitle ? ' (' . $model->subtitle . ')' : ''); },
+                ],
             [
-                'class' => SetColumn::className(),
-                'filter' => Warehouse::getStatusArray(),
-                'attribute' => 'status',
-                'name' => 'StatusName',
-                'cssClasses' => [
-                    Warehouse::STATUS_ACTIVE => 'success',
-                    Warehouse::STATUS_DISABLED => 'warning',
-                ]
-            ],
-            [
-                'value' => function ($model) { return implode('<br>', $model->groupsAsStringArray);},
+                'value' => function ($model) { return $model->group->title; },
                 'format' => 'html',
-                'label' => Module::t('warehouse', 'GROUPS')
+                'label' => Module::t('product', 'GROUP')
+            ],  
+            [
+                'value' => function ($model) { return implode('<br>', $model->warehousesAsStringArray);},
+                'format' => 'html',
+                'label' => Module::t('product', 'WAREHOUSES')
             ],            
             [
                 'value' => function ($model) { return implode('<br>', $model->profilesAsStringArray);},
                 'format' => 'html',
-                'label' => Module::t('warehouse', 'USERS')
+                'label' => Module::t('product', 'USERS')
             ],
             [
-                'value' => function ($model) { return implode('<br>', $model->productsAsStringArray);},
-                'format' => 'html',
-                'label' => Module::t('warehouse', 'PRODUCTS')
+                'class' => SetColumn::className(),
+                'filter' => Product::getStatusArray(),
+                'attribute' => 'status',
+                'name' => 'StatusName',
+                'cssClasses' => [
+                    Product::STATUS_ACTIVE => 'success',
+                    Product::STATUS_DISABLED => 'warning',
+                ]
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{users}&nbsp;&nbsp;{products}&nbsp;&nbsp;{change}',
+                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{users}&nbsp;&nbsp;{warehouses}&nbsp;&nbsp;{change}',
                 'buttons' => [
                     'update' => function ($url, $model, $key) {
                         return 
-                            Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('warehouse', 'WAREHOUSE_UPDATE')]);
+                            Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('product', 'PRODUCT_UPDATE')]);
                     },
                     'change' => function ($url, $model, $key) {
-                        return $model->status == Warehouse::STATUS_ACTIVE ?
+                        return $model->status == Product::STATUS_ACTIVE ?
                             Html::a('<span class="glyphicon glyphicon-off"></span>', ['block', 'id' => $model->id, 'view' => 'index'], [
                                 'class' => 'btn btn-xs btn-danger',
                                 'data' => [
-                                    'confirm' => Module::t('warehouse', 'WAREHOUSE_DISABLE_CONFIRM'),
+                                    'confirm' => Module::t('product', 'PRODUCT_DISABLE_CONFIRM'),
                                     'method' => 'post',
                                 ],
-                                'title' => Module::t('warehouse', 'WAREHOUSE_DISABLE'),
+                                'title' => Module::t('product', 'PRODUCT_DISABLE'),
                             ]) :
                             Html::a('<span class="glyphicon glyphicon-off"></span>', ['unblock', 'id' => $model->id, 'view' => 'index'], [
                                 'class' => 'btn btn-xs btn-success',
                                 'data' => [
                                     'method' => 'post',
                                 ],
-                                'title' => Module::t('warehouse', 'WAREHOUSE_ENABLE'),
+                                'title' => Module::t('product', 'PRODUCT_ENABLE'),
                             ]);
                     },
                     'users' => function ($url, $model, $key) {
                         return 
-                            Html::a('<span class="glyphicon glyphicon-user"></span>', ['users', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('warehouse', 'USERS')]);
+                            Html::a('<span class="glyphicon glyphicon-user"></span>', ['users', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('product', 'USERS')]);
                     },
-                    'products' => function ($url, $model, $key) {
+                    'warehouses' => function ($url, $model, $key) {
                         return 
-                            Html::a('<span class="glyphicon glyphicon-gift"></span>', ['products', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('warehouse', 'PRODUCTS')]);
+                            Html::a('<span class="glyphicon glyphicon-home"></span>', ['warehouses', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('product', 'WAREHOUSES')]);
                     },
                 ],
                 'contentOptions' => ['style' => 'width: 130px;']

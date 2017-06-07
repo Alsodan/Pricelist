@@ -18,28 +18,31 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title"><b><?= Module::t('user', 'USER') ?></b></h3>
+            <h3 class="panel-title"><b><?= Module::t('user', 'USER') ?>: <?= $this->title ?></b></h3>
         </div>
-        <div class="panel-body">
-                   
-            <?= Html::a(Module::t('user', 'BUTTON_UPDATE'), ['update', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
-            <?= $user->status ?
-                    Html::a(Module::t('user', 'USER_BLOCK'), ['block', 'id' => $user->id, 'view' => 'view'], [
-                        'class' => 'btn btn-danger',
-                        'data' => [
-                            'confirm' => Module::t('user', 'USER_BLOCK_CONFIRM'),
-                            'method' => 'post',
-                        ],
-                    ]) :
-                    Html::a(Module::t('user', 'USER_UNBLOCK'), ['unblock', 'id' => $user->id, 'view' => 'view'], [
-                        'class' => 'btn btn-success',
-                        'data' => [
-                            'method' => 'post',
-                        ],
-                    ]);
-            ?>
-
+        <div class="panel-body text-center">
+            <div class="btn-group" role="group">
+                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span><br>' . Module::t('user', 'BUTTON_UPDATE'), ['update', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
+                <?= $user->status ?
+                        Html::a('<span class="glyphicon glyphicon-off"></span><br>' . Module::t('user', 'USER_BLOCK'), ['block', 'id' => $user->id, 'view' => 'view'], [
+                            'class' => 'btn btn-danger',
+                            'data' => [
+                                'confirm' => Module::t('user', 'USER_BLOCK_CONFIRM'),
+                                'method' => 'post',
+                            ],
+                        ]) :
+                        Html::a('<span class="glyphicon glyphicon-off"></span><br>' . Module::t('user', 'USER_UNBLOCK'), ['unblock', 'id' => $user->id, 'view' => 'view'], [
+                            'class' => 'btn btn-success',
+                            'data' => [
+                                'method' => 'post',
+                            ],
+                        ]);
+                ?>
+            </div>
         </div>
+        
+        <hr>
+        
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <?= DetailView::widget([
@@ -58,7 +61,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'warehouses',
                             'format' => 'html',
-                        ],                        
+                        ],
+                        [
+                            'attribute' => 'products',
+                            'format' => 'html',
+                        ],   
                     ],
                 ]) ?>
             </div>

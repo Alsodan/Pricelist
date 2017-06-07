@@ -6,7 +6,7 @@ return [
     
     'GROUPS' => 'Groups',
     'USERS' => 'Users',
-    'CROPS' => 'Crops',
+    'PRODUCTS' => 'Products',
     'WAREHOUSES' => 'Warehouses',
     'WAREHOUSE' => 'Warehouse',
     
@@ -21,12 +21,16 @@ return [
     'WAREHOUSE_DISABLE_CONFIRM' => 'Are you sure you want to disable this Warehouse?',
     'WAREHOUSE_STATUS_DISABLED' => 'Disabled',
     'WAREHOUSE_STATUS_ACTIVE' => 'Active',
-    
-    'WAREHOUSE_USERS' => 'Warehouse Users',
+
     'WAREHOUSE_USERS_MANAGE' => 'Manage Users',
-    'WAREHOUSE_GROUPS' => 'Warehouse Groups',
-    'WAREHOUSE_CROPS_MANAGE' => 'Manage Crops',
-    
+    'WAREHOUSE_USERS' => 'Warehouse Users',
     'ALL_USERS' => 'All Users',
     'MANAGE_USERS_HINT {from} {to}' => 'Choose user from list "{from}" and drag-and-drop it to list "{to}". <br> Drag user back to list "{from}" to remove user from Warehouse.',
+    
+    'WAREHOUSE_GROUPS' => 'Warehouse Groups',
+    
+    'WAREHOUSE_PRODUCTS' => 'Warehouse Products',
+    'WAREHOUSE_PRODUCTS_MANAGE' => 'Manage Products',
+    'ALL_PRODUCTS' => 'All Products',
+    'MANAGE_PRODUCTS_HINT {from} {to}' => 'Choose product from list "{from}" and drag-and-drop it to list "{to}". <br> Drag product back to list "{from}" to remove it from Warehouse.',
 ];

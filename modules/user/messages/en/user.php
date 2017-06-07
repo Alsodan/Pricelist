@@ -33,6 +33,7 @@ return [
     'USER_PHONE' => 'Phone',
     'USER_GROUPS' => 'Groups',
     'USER_WAREHOUSES' => 'Warehouses',
+    'USER_PRODUCTS' => 'Products',
     
     'USER_BLOCK_CONFIRM' => 'Are you sure you want to block this user?',
     'USER_BLOCK' => 'Block User',

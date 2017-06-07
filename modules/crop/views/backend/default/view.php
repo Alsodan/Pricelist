@@ -20,9 +20,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <h3 class="panel-title"><b><?= Module::t('crop', 'CROP') ?>: <?= $crop->title ?></b></h3>
         </div>
         <div class="panel-body text-center">
-            <?= Html::a(Module::t('crop', 'CROP_UPDATE'), ['update', 'id' => $crop->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-pencil"></span><br>' . Module::t('crop', 'CROP_UPDATE'), ['update', 'id' => $crop->id], ['class' => 'btn btn-primary']) ?>
         </div>
 
+        <hr>
+        
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <?= DetailView::widget([

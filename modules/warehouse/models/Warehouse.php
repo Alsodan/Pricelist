@@ -11,6 +11,8 @@ use app\modules\group\models\WarehouseGroups;
 use app\modules\user\models\common\User;
 use app\modules\group\models\Group;
 use app\components\behaviors\ManyHasManyBehavior;
+use app\modules\product\models\Product;
+use app\modules\product\models\WarehouseProducts;
 
 /**
  * This is the model class for table "{{%warehouse}}".
@@ -41,7 +43,7 @@ class Warehouse extends \yii\db\ActiveRecord
         return [
             [['status'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['profilesList', 'groupsList'], 'safe'],
+            [['profilesList', 'groupsList', 'productsList'], 'safe'],
         ];
     }
 
@@ -74,7 +76,13 @@ class Warehouse extends \yii\db\ActiveRecord
                 'relations' => [
                     'groups' => 'groupsList',                   
                 ],
-            ],            
+            ],
+            [
+                'class' => ManyHasManyBehavior::className(),
+                'relations' => [
+                    'products' => 'productsList',                   
+                ],
+            ],
         ];
     }
     
@@ -83,6 +91,7 @@ class Warehouse extends \yii\db\ActiveRecord
         if (parent::beforeSave($insert)) {
             $this->profilesList = $this->profilesList;
             $this->groupsList = $this->groupsList;
+            $this->productsList = $this->productsList;
             return true;
         } else {
             return false;
@@ -157,8 +166,19 @@ class Warehouse extends \yii\db\ActiveRecord
      */
     public function getGroups()
     {
-        return $this->hasMany(\app\modules\group\models\Group::className(), ['id' => 'group_id'])
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])
             ->viaTable(WarehouseGroups::tableName(), ['warehouse_id' => 'id']);
+    }
+    
+    /**
+     * Get Products
+     * 
+     * @return array Products[]
+     */
+    public function getProducts()
+    {
+        return $this->hasMany(Product::className(), ['id' => 'product_id'])
+            ->viaTable(WarehouseProducts::tableName(), ['warehouse_id' => 'id']);
     }
     
     /**
@@ -196,6 +216,23 @@ class Warehouse extends \yii\db\ActiveRecord
     }
     
     /**
+     * Get only active Products
+     * 
+     * @return array Products
+     */
+    public function getActiveProducts()
+    {
+        $result = [];
+        foreach ($this->products as $product) {
+            if ($product->status == Product::STATUS_ACTIVE) {
+                $result[] = $product;
+            }
+        }
+        
+        return $result;
+    }
+    
+    /**
      * Get only active Profiles string
      * 
      * @return array profiles
@@ -208,7 +245,7 @@ class Warehouse extends \yii\db\ActiveRecord
         }
         
         return $result;
-    }    
+    }
     
     /**
      * Get only active Groups string
@@ -223,8 +260,23 @@ class Warehouse extends \yii\db\ActiveRecord
         }
         
         return $result;
-    }    
+    }
     
+    /**
+     * Get only active Products string
+     * 
+     * @return array Products[]
+     */
+    public function getProductsAsStringArray()
+    {
+        $result = [];
+        foreach ($this->activeProducts as $product) {
+            $result[$product->id] = $product->title . ($product->subtitle ? ' (' . $product->subtitle . ')' : '');
+        }
+        
+        return $result;
+    }
+
     /**
      * Get Profiles Name and Phone as string
      * 
@@ -235,6 +287,21 @@ class Warehouse extends \yii\db\ActiveRecord
         $result = [];
         foreach ($this->activeProfiles as $profile) {
             $result[$profile->id] = ['content' => $profile->name . ' (' . $profile->phone . ')'];
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Get Products titles as string
+     * 
+     * @return array Products data
+     */
+    public function preparedForSIWActiveProducts()
+    {
+        $result = [];
+        foreach ($this->activeProducts as $product) {
+            $result[$product->id] = ['content' => $product->title . ($product->subtitle ? ' (' . $product->subtitle . ')' : '')];
         }
         
         return $result;

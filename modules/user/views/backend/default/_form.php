@@ -51,10 +51,10 @@ $this->registerJs('
     
     <hr>
     
-    <?= $form->field($profile, 'groupsList')->widget(Select2::className(), [
+    <?= ''/*$form->field($profile, 'groupsList')->widget(Select2::className(), [
         'data' => Group::getGroupsDropdown(),
         'options' => ['multiple' => true],
-    ])->label(Module::t('user', 'USER_PROFILE_GROUP')) ?>
+    ])->label(Module::t('user', 'USER_PROFILE_GROUP'))*/ ?>
 
     <div class="form-group">
         <?= Html::submitButton(Module::t('user', 'BUTTON_SAVE'), ['class' => $user->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

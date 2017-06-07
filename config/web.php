@@ -87,12 +87,12 @@ $config = [
             'class' => 'app\modules\crop\Module',
             'controllerNamespace' => 'app\modules\crop\controllers\frontend',
             'viewPath' => '@app/modules/crop/views/frontend',
-        ],
+        ],*/
         'product' => [
             'class' => 'app\modules\product\Module',
             'controllerNamespace' => 'app\modules\product\controllers\frontend',
             'viewPath' => '@app/modules/product/views/frontend',
-        ],*/
+        ],
     ], 
 ];
 

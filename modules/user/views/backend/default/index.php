@@ -57,6 +57,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
             ],
             [
+                'attribute' => 'products',
+                'format' => 'html',
+            ],
+            [
                 'class' => SetColumn::className(),
                 'filter' => User::getStatusesArray(),
                 'attribute' => 'status',

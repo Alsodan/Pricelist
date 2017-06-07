@@ -21,18 +21,18 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="panel-body text-center">
             <div class="btn-group" role="group">
-                <?= Html::a(Module::t('product', 'PRODUCT_UPDATE'), ['update', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
-                <?= Html::a(Module::t('product', 'PRODUCT_USERS_MANAGE'), ['users', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
-                <?= Html::a(Module::t('product', 'PRODUCT_WAREHOUSES_MANAGE'), ['warehouses', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span><br>' . Module::t('product', 'PRODUCT_UPDATE'), ['update', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-user"></span><br>' . Module::t('product', 'PRODUCT_USERS_MANAGE'), ['users', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-home"></span><br>' . Module::t('product', 'PRODUCT_WAREHOUSES_MANAGE'), ['warehouses', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
                 <?= $product->status == Product::STATUS_ACTIVE ?
-                    Html::a(Module::t('product', 'PRODUCT_DISABLE'), ['block', 'id' => $product->id, 'view' => 'view'], [
+                    Html::a('<span class="glyphicon glyphicon-off"></span><br>' . Module::t('product', 'PRODUCT_DISABLE'), ['block', 'id' => $product->id, 'view' => 'view'], [
                     'class' => 'btn btn-danger',
                     'data' => [
                         'confirm' => Module::t('product', 'PRODUCT_DISABLE_CONFIRM'),
                         'method' => 'post',
                     ],
                 ]) :
-                Html::a(Module::t('product', 'PRODUCT_ENABLE'), ['unblock', 'id' => $product->id, 'view' => 'view'], [
+                Html::a('<span class="glyphicon glyphicon-off"></span><br>' . Module::t('product', 'PRODUCT_ENABLE'), ['unblock', 'id' => $product->id, 'view' => 'view'], [
                     'class' => 'btn btn-success',
                     'data' => [
                         'method' => 'post',
@@ -42,6 +42,8 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
 
+        <hr>
+        
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <?= DetailView::widget([
@@ -92,7 +94,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="text-center">
-                    <h4><b><?= Module::t('product', 'USERS') ?></b></h4>
+                    <h4><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;<b><?= Module::t('product', 'USERS') ?></b></h4>
                 </div>
                 <?= GridView::widget([
                     'dataProvider' => $users,
@@ -108,7 +110,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="text-center">
-                    <h4><b><?= Module::t('product', 'WAREHOUSES') ?></b></h4>
+                    <h4><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;<b><?= Module::t('product', 'WAREHOUSES') ?></b></h4>
                 </div>
                 <?= GridView::widget([
                     'dataProvider' => $warehouses,

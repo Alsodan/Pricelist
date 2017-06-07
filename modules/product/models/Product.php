@@ -315,7 +315,7 @@ class Product extends \yii\db\ActiveRecord
 
         $result = [];
         foreach ($all as $item){
-            $result[$item->id] = ['content' => $item->title];
+            $result[$item->id] = ['content' => $item->title . ($item->subtitle ? ' (' . $item->subtitle . ')' : '')];
         }
         
         return $result;

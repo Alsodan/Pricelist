@@ -5,6 +5,7 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
+use yii\helpers\Html;
  
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -23,8 +24,10 @@ if (isset($this->params['breadcrumbs'])) {
 <?php $this->beginContent('@app/views/layouts/layout.php'); ?>
  
 <?php
+    $brandImage = Html::img('/images/logo_only_8.png', ['alt' => Yii::$app->id, 'width' => "40", 'title' => "На главную", 'style' => 'display: table-cell;']);
+    $title = Html::tag('div', 'Прайс', ['class' => 'time', 'style' => 'display: table-cell; padding-left: 10px;  padding-top: 4px; vertical-align: top;']);
 NavBar::begin([
-    'brandLabel' => Yii::t('app', 'NAV_HOME'),
+    'brandLabel' => Html::tag('div', $brandImage . $title, ['style' => 'display: table;']),
     'brandUrl' => Yii::$app->homeUrl,
     'options' => [
         'class' => 'navbar-inverse navbar-fixed-top',
