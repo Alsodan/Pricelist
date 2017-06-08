@@ -45,17 +45,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
             [
-                'value' => function ($model) { return implode('<br>', $model->profilesAsStringArray); },
+                //'value' => function ($model) { return implode('<br>', $model->profilesAsStringArray); },
                 'format' => 'html',
                 'label' => Module::t('group', 'USERS')
             ],
             [
-                'value' => function ($model) { return implode('<br>', $model->warehousesAsStringArray); },
+                //'value' => function ($model) { return implode('<br>', $model->warehousesAsStringArray); },
                 'format' => 'html',
                 'label' => Module::t('group', 'WAREHOUSES')
             ],
             [
-                'value' => function ($model) { return implode('<br>', $model->productsAsStringArray); },
+                //'value' => function ($model) { return implode('<br>', $model->productsAsStringArray); },
                 'format' => 'html',
                 'label' => Module::t('group', 'PRODUCTS')
             ],

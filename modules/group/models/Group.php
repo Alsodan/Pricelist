@@ -27,6 +27,10 @@ class Group extends \yii\db\ActiveRecord
     const STATUS_DISABLED = 0;
     const STATUS_ACTIVE = 1;
     
+    //Scenarios
+    const SCENARIO_ADMIN_EDIT = 'admin_edit';
+    const SCENARIO_EDITOR_EDIT = 'editor_edit';
+    
     /**
      * @inheritdoc
      */
@@ -43,10 +47,23 @@ class Group extends \yii\db\ActiveRecord
         return [
             [['status'], 'integer'],
             [['title'], 'string', 'max' => 255],
+            ['title', 'required'],
             [['profilesList', 'warehousesList', 'productsList'], 'safe'],
         ];
     }
-
+    
+    /**
+     * Scenarios
+     * @return string
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_ADMIN_EDIT] = ['status', 'title'];
+        $scenarios[self::SCENARIO_EDITOR_EDIT] = ['title'];
+        return $scenarios;
+    }
+    
     /**
      * @inheritdoc
      */

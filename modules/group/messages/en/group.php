@@ -18,9 +18,13 @@ return [
     'GROUP_UPDATE' => 'Upadate Group',
     'GROUP_DISABLE' => 'Disable Group',
     'GROUP_ENABLE' => 'Enable Group',
+    'GROUP_INFO' => 'Group Info',
     'GROUP_DISABLE_CONFIRM' => 'Are you sure you want to disable this group?',
     'GROUP_ACTIVITY_DISABLED' => 'Disabled',
     'GROUP_ACTIVITY_ACTIVE' => 'Active',
+    
+    'GROUP_MANAGMENT' => 'Group managment',
+    'GROUP_EDIT_SUCCESS' => 'Group title successfully changed',
     
     'GROUP_USERS_MANAGE' => 'Manage Group Users',
     'GROUP_WAREHOUSES_MANAGE' => 'Manage Group Warehouses',

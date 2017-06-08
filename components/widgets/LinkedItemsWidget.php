@@ -4,6 +4,7 @@ namespace app\components\widgets;
 
 use yii\base\Widget;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /**
  * Bootstrap List group - Linked Items Widget
@@ -23,23 +24,30 @@ class LinkedItemsWidget extends Widget
     public $links;
     public $options = [];
     public $selectedKey = 0;
-    private $html;
+    public $linkRoute = [];
+    
+    private $_html;
 
     public function init() 
     {
         parent::init();
 
+        $keyField = array_search('key', $this->linkRoute);
+        
         if (is_array($this->links)){
             foreach ($this->links as $key => $value){
-                $this->html .= Html::a($value, '#', ['class' => $key == $this->selectedKey ? 'list-group-item active' : 'list-group-item']);
+                if ($keyField) {
+                    $this->linkRoute[$keyField] = $key;
+                }
+                $this->_html .= Html::a($value, empty($this->linkRoute) ? '#' : Url::to($this->linkRoute), ['class' => $key == $this->selectedKey ? 'list-group-item active' : 'list-group-item']);
             }
         }
-        
-        $this->html = Html::tag('div', $this->html, array_merge(['class' => 'list-group'], $this->options));
+
+        $this->_html = Html::tag('div', $this->_html, array_merge(['class' => 'list-group'], $this->options));
     }
     
     public function run()
     {
-        return $this->html;
+        return $this->_html;
     }
 }

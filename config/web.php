@@ -76,12 +76,12 @@ $config = [
             'controllerNamespace' => 'app\modules\user\controllers\frontend',
             'viewPath' => '@app/modules/user/views/frontend',
         ],
-        /*'group' => [
+        'group' => [
             'class' => 'app\modules\group\Module',
             'controllerNamespace' => 'app\modules\group\controllers\frontend',
             'viewPath' => '@app/modules/group/views/frontend',
         ],
-        'warehouse' => [
+        /*'warehouse' => [
             'class' => 'app\modules\warehouse\Module',
             'controllerNamespace' => 'app\modules\warehouse\controllers\frontend',
             'viewPath' => '@app/modules/warehouse/views/frontend',

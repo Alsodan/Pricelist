@@ -30,6 +30,9 @@ use yii\helpers\Html;
             !Yii::$app->user->isGuest ?
                 ['label' => Yii::t('app', 'NAV_PRICELIST'), 'url' => ['/product/pricelist/index']] :
                 false,
+            !Yii::$app->user->isGuest ?
+                ['label' => Yii::t('app', 'NAV_MANAGE'), 'url' => ['/group/default/manage', 'id' => Yii::$app->user->identity->profile->groups[0]->id], 'active' => $this->context->module->id == 'group'] :
+                false,
             Yii::$app->user->isGuest ?
                 ['label' => Yii::t('app', 'NAV_SIGNUP'), 'url' => ['/user/default/signup']] :
                 false,

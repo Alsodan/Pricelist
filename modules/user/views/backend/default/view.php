@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'status',
                             'value' => $user->statusName
                         ],
-                        [
+                        /*[
                             'attribute' => 'groups',
                             'format' => 'html',
                         ],
@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'products',
                             'format' => 'html',
-                        ],   
+                        ],*/
                     ],
                 ]) ?>
             </div>

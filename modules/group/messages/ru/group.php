@@ -18,9 +18,13 @@ return [
     'GROUP_UPDATE' => 'Редактировать группу',
     'GROUP_DISABLE' => 'Отключить группу',
     'GROUP_ENABLE' => 'Включить группу',
+    'GROUP_INFO' => 'Информация',
     'GROUP_DISABLE_CONFIRM' => 'Вы точно хотите отключить эту группу?',
     'GROUP_ACTIVITY_DISABLED' => 'Отключена',
     'GROUP_ACTIVITY_ACTIVE' => 'Активна',
+    
+    'GROUP_MANAGMENT' => 'Управление группой',
+    'GROUP_EDIT_SUCCESS' => 'Название группы успешно изменено',
     
     'GROUP_USERS' => 'Пользователи группы',
     'GROUP_USERS_MANAGE' => 'Управление пользователями',

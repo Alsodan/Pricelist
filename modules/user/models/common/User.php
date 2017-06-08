@@ -77,9 +77,9 @@ class User extends ActiveRecord implements IdentityInterface
             
             'profileName' => Module::t('user', 'USER_NAME'),
             'profilePhone' => Module::t('user', 'USER_PHONE'),
-            'groups' => Module::t('user', 'USER_GROUPS'),
-            'warehouses' => Module::t('user', 'USER_WAREHOUSES'),
-            'products' => Module::t('user', 'USER_PRODUCTS'),
+            //'groups' => Module::t('user', 'USER_GROUPS'),
+            //'warehouses' => Module::t('user', 'USER_WAREHOUSES'),
+            //'products' => Module::t('user', 'USER_PRODUCTS'),
         ];
     }
     
@@ -325,27 +325,27 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Get User Groups
      */
-    public function getGroups()
+    /*public function getGroups()
     {
         return implode('<br>', $this->profile->groupsTitleArray);
-    }
+    }*/
 
     /**
      * Get User Warehouses
      */
-    public function getWarehouses()
+    /*public function getWarehouses()
     {
         return implode('<br>', $this->profile->warehousesTitleArray);
-    }
+    }*/
     
 
     /**
      * Get User Products
      */
-    public function getProducts()
+    /*public function getProducts()
     {
         return implode('<br>', $this->profile->productsTitleArray);
-    }
+    }*/
     
     /**
      * Block User

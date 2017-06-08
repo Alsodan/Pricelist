@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="text-center">
                     <h4><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;<b><?= Module::t('group', 'USERS') ?></b></h4>
                 </div>
-                <?= GridView::widget([
+                <?= ''/*GridView::widget([
                     'dataProvider' => $users,
                     'showHeader' => false,
                     'layout' => "{items}",
@@ -81,14 +81,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             'value' => function ($model) { return $model->name . ' (' . $model->phone . ')'; }
                         ]
                     ]
-                ])
+                ])*/
                 ?>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <div class="text-center">
                     <h4><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;<b><?= Module::t('group', 'WAREHOUSES') ?></b></h4>
                 </div>
-                <?= GridView::widget([
+                <?= ''/*GridView::widget([
                     'dataProvider' => $warehouses,
                     'showHeader' => false,
                     'layout' => "{items}",
@@ -97,14 +97,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             'value' => function ($model) { return $model->title; }
                         ]
                     ]
-                ])
+                ])*/
                 ?>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <div class="text-center">
                     <h4><span class="glyphicon glyphicon-gift"></span>&nbsp;&nbsp;<b><?= Module::t('group', 'PRODUCTS') ?></b></h4>
                 </div>
-                <?= GridView::widget([
+                <?= ''/*GridView::widget([
                     'dataProvider' => $products,
                     'showHeader' => false,
                     'layout' => "{items}",
@@ -113,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'value' => function ($model) { return $model->title . ($model->subtitle ? ' (' . $model->subtitle . ')' : ''); }
                         ]
                     ]
-                ])
+                ])*/
                 ?>
             </div>         
         </div>
