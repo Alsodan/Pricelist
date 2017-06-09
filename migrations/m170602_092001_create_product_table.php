@@ -10,7 +10,7 @@ class m170602_092001_create_product_table extends Migration
     /**
      * @inheritdoc
      */
-    public function up()
+    public function safeUp()
     {
         $this->createTable('{{%product}}', [
             'id' => $this->primaryKey(),
@@ -19,8 +19,6 @@ class m170602_092001_create_product_table extends Migration
             'title' => $this->string(100)->notNull(),
             'subtitle' => $this->string(100),
             'specification' => $this->text(),
-            'price_no_tax' => $this->decimal(10, 2),
-            'price_with_tax' => $this->decimal(10, 2),
             'status' => $this->integer(),
         ]);
         
@@ -31,7 +29,7 @@ class m170602_092001_create_product_table extends Migration
     /**
      * @inheritdoc
      */
-    public function down()
+    public function safeDown()
     {
         $this->dropTable('{{%product}}');
     }

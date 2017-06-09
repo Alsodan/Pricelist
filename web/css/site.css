@@ -163,3 +163,7 @@ h1 {
     -o-animation: spin .9s infinite linear;
     animation: spin .9s infinite linear;
 }
+/**/
+.btn-medium-width {
+    width: 130px;
+}

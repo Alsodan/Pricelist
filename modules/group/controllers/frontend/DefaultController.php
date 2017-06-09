@@ -8,6 +8,7 @@ use app\modules\group\models\search\GroupSearch;
 use app\modules\user\models\common\Profile;
 use app\modules\warehouse\models\Warehouse;
 use app\modules\product\models\Product;
+use app\modules\product\models\search\ProductSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -80,14 +81,22 @@ class DefaultController extends Controller
      */
     public function actionUsers($id)
     {
-        $group = $this->findModel($id);
-        $groupUsers = $group->preparedForSIWActiveProfiles();
+        $model = $this->findModel($id);
+        $groupUsers = $model->preparedForSIWActiveProfiles();
         $allUsers = Profile::preparedForSIWActiveProfiles();
+                
+        $searchModel = new ProductSearch();
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $searchModel->searchWithGroup(),
+            'pagination' => false,
+            'sort' => false,
+        ]);
         
         return $this->render('users', [
-                'group' => $group,
+                'model' => $model,
                 'allUsers' => array_diff_key($allUsers, $groupUsers),
                 'groupUsers' => $groupUsers,
+                'dataProvider' => $dataProvider,
             ]);
     }
 
@@ -98,12 +107,12 @@ class DefaultController extends Controller
      */
     public function actionWarehouses($id)
     {
-        $group = $this->findModel($id);
-        $groupWarehouses = $group->preparedForSIWActiveWarehouses();
+        $model = $this->findModel($id);
+        $groupWarehouses = $model->preparedForSIWActiveWarehouses();
         $allWarehouses = Warehouse::preparedForSIWActiveWarehouses();
         
         return $this->render('warehouses', [
-                'group' => $group,
+                'model' => $model,
                 'allWarehouses' => array_diff_key($allWarehouses, $groupWarehouses),
                 'groupWarehouses' => $groupWarehouses,
             ]);
@@ -116,17 +125,17 @@ class DefaultController extends Controller
      */
     public function actionProducts($id, $wh = null)
     {
-        $group = $this->findModel($id);
-        $groupProducts = $group->preparedForSIWActiveProducts();
+        $model = $this->findModel($id);
+        $groupProducts = $model->preparedForSIWActiveProducts();
         $allProducts = Product::preparedForSIWActiveProducts();
-        $warehouses = ArrayHelper::map($group->warehouses, 'id', 'title');
+        $warehouses = ArrayHelper::map($model->warehouses, 'id', 'title');
         
         if (is_null($wh)) {
             $wh = key($warehouses);
         }
         
         return $this->render('products', [
-                'group' => $group,
+                'model' => $model,
                 'allProducts' => array_diff_key($allProducts, $groupProducts),
                 'groupProducts' => $groupProducts,
                 'warehouses' => $warehouses,
@@ -140,28 +149,28 @@ class DefaultController extends Controller
      */
     public function actionManage($id)
     {
-        $group = $this->findModel($id);
+        $model = $this->findModel($id);
         $users = new ArrayDataProvider([
-            'allModels' => $group->activeProfiles,
+            'allModels' => $model->activeUsers,
             'sort' => false,
             'pagination' => false,
         ]);
         $warehouses = new ArrayDataProvider([
-            'allModels' => $group->activeWarehouses,
+            'allModels' => $model->activeWarehouses,
             'sort' => false,
             'pagination' => false,
         ]);
-        $products = new ArrayDataProvider([
-            'allModels' => $group->activeProducts,
+        /*$products = new ArrayDataProvider([
+            'allModels' => $model->activeProducts,
             'sort' => false,
             'pagination' => false,
-        ]);
+        ]);*/
         
         return $this->render('manage', [
-            'group' => $group,
+            'model' => $model,
             'users' => $users,
             'warehouses' => $warehouses,
-            'products' => $products,
+            /*'products' => $products,*/
         ]);
     }
     

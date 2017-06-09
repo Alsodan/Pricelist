@@ -4,10 +4,10 @@ namespace app\modules\group\models;
 
 use \yii\db\ActiveRecord;
 use app\modules\group\models\Group;
-use app\modules\user\models\common\Profile;
+use app\modules\user\models\common\User;
 
 /**
- * This is the model class for table "{{%profile_groups}}".
+ * This is the model class for table "{{%group_users}}".
  *
  * @property integer $profile_id
  * @property integer $group_id
@@ -15,14 +15,14 @@ use app\modules\user\models\common\Profile;
  * @property Group $group
  * @property Profile $profile
  */
-class ProfileGroups extends ActiveRecord
+class GroupUsers extends ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%profile_groups}}';
+        return '{{%group_users}}';
     }
 
     /**
@@ -31,10 +31,10 @@ class ProfileGroups extends ActiveRecord
     public function rules()
     {
         return [
-            [['profile_id', 'group_id'], 'integer'],
-            [['profile_id', 'group_id'], 'unique', 'targetAttribute' => ['profile_id', 'group_id'], 'message' => 'The combination of Profile ID and Group ID has already been taken.'],
+            [['user_id', 'group_id'], 'integer'],
+            [['user_id', 'group_id'], 'unique', 'targetAttribute' => ['user_id', 'group_id'], 'message' => 'The combination of User ID and Group ID has already been taken.'],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['group_id' => 'id']],
-            [['profile_id'], 'exist', 'skipOnError' => true, 'targetClass' => Profile::className(), 'targetAttribute' => ['profile_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -49,8 +49,8 @@ class ProfileGroups extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProfile()
+    public function getUser()
     {
-        return $this->hasOne(Profile::className(), ['id' => 'profile_id']);
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }

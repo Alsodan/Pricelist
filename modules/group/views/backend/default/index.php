@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
             [
-                //'value' => function ($model) { return implode('<br>', $model->profilesAsStringArray); },
+                'value' => function ($model) { return implode('<br>', $model->activeUsersNames); },
                 'format' => 'html',
                 'label' => Module::t('group', 'USERS')
             ],

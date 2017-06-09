@@ -17,6 +17,11 @@ use yii\helpers\Url;
  *  <a href="#" class="list-group-item">Vestibulum at eros</a>
  * </div>
  *
+ * @property array $links Array of list items
+ * @property array $options Html options for <div class="list-group">
+ * @property int|string $selectedKey Key from $links, that will add css class "active"
+ * @property array $linkRoute Params for Url::to(), if param value is "key", then it will be changed to key of $links
+ * 
  * @author chebotarevae
  */
 class LinkedItemsWidget extends Widget

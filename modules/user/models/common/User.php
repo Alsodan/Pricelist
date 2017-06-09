@@ -10,6 +10,8 @@ use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 use app\modules\user\Module;
 use app\modules\user\models\common\query\UserQuery;
+use app\modules\group\models\Group;
+use app\modules\group\models\GroupUsers;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -320,6 +322,17 @@ class User extends ActiveRecord implements IdentityInterface
     public function getProfilePhone()
     {
         return $this->profile->phone;
+    }
+    
+    /**
+     * Get Groups
+     * 
+     * @return array app/modules/group/models/Group[]
+     */
+    public function getGroups()
+    {
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])
+            ->viaTable(GroupUsers::tableName(), ['user_id' => 'id']);
     }
     
     /**

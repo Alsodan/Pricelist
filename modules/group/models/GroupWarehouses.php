@@ -7,7 +7,7 @@ use app\modules\group\models\Group;
 use app\modules\warehouse\models\Warehouse;
 
 /**
- * This is the model class for table "{{%warehouse_groups}}".
+ * This is the model class for table "{{%group_warehouses}}".
  *
  * @property integer $warehouse_id
  * @property integer $group_id
@@ -15,14 +15,14 @@ use app\modules\warehouse\models\Warehouse;
  * @property Group $group
  * @property Warehouse $warehouse
  */
-class WarehouseGroups extends ActiveRecord
+class GroupWarehouses extends ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%warehouse_groups}}';
+        return '{{%group_warehouses}}';
     }
 
     /**

@@ -26,9 +26,10 @@ return [
     'GROUP_MANAGMENT' => 'Group managment',
     'GROUP_EDIT_SUCCESS' => 'Group title successfully changed',
     
-    'GROUP_USERS_MANAGE' => 'Manage Group Users',
-    'GROUP_WAREHOUSES_MANAGE' => 'Manage Group Warehouses',
-    'GROUP_PRODUCTS_MANAGE' => 'Manage Group Products',
+    'GROUP_USERS_MANAGE' => 'Users',
+    'GROUP_WAREHOUSES_MANAGE' => 'Warehouses',
+    'GROUP_PRODUCTS_MANAGE' => 'Products',
+    'GROUP_PRODUCTS_USERS_MANAGE' => 'Managers',
     
     'GROUP_USERS' => 'Group Users',
     'ALL_USERS' => 'All Users',

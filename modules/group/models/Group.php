@@ -5,14 +5,12 @@ namespace app\modules\group\models;
 use app\modules\group\Module;
 use app\modules\group\models\query\GroupQuery;
 use yii\helpers\ArrayHelper;
-use app\modules\user\models\common\Profile;
-use app\modules\group\models\ProfileGroups;
 use app\modules\user\models\common\User;
 use app\components\behaviors\ManyHasManyBehavior;
 use app\modules\warehouse\models\Warehouse;
-use app\modules\group\models\WarehouseGroups;
 use app\modules\product\models\Product;
-use app\modules\product\models\ProductGroups;
+use app\modules\group\models\GroupUsers;
+use app\modules\group\models\GroupWarehouses;
 
 /**
  * This is the model class for table "{{%group}}".
@@ -48,7 +46,7 @@ class Group extends \yii\db\ActiveRecord
             [['status'], 'integer'],
             [['title'], 'string', 'max' => 255],
             ['title', 'required'],
-            [['profilesList', 'warehousesList', 'productsList'], 'safe'],
+            [['usersList', 'warehousesList', 'productsList'], 'safe'],
         ];
     }
     
@@ -85,30 +83,30 @@ class Group extends \yii\db\ActiveRecord
             [
                 'class' => ManyHasManyBehavior::className(),
                 'relations' => [
-                    'profiles' => 'profilesList',                   
+                    'users' => 'usersList',
                 ],
             ],
             [
                 'class' => ManyHasManyBehavior::className(),
                 'relations' => [
-                    'warehouses' => 'warehousesList',                   
+                    'warehouses' => 'warehousesList',
                 ],
             ],
-            [
+            /*[
                 'class' => ManyHasManyBehavior::className(),
                 'relations' => [
-                    'products' => 'productsList',                   
+                    'products' => 'productsList',
                 ],
-            ],
+            ],*/
         ];
     }
     
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-            $this->profilesList = $this->profilesList;
+            $this->usersList = $this->usersList;
             $this->warehousesList = $this->warehousesList;
-            $this->productsList = $this->productsList;
+            //$this->productsList = $this->productsList;
             return true;
         } else {
             return false;
@@ -166,14 +164,14 @@ class Group extends \yii\db\ActiveRecord
     }
     
     /**
-     * Get Profiles
+     * Get Users
      * 
-     * @return array profiles
+     * @return array User[]
      */
-    public function getProfiles()
+    public function getUsers()
     {
-        return $this->hasMany(Profile::className(), ['id' => 'profile_id'])
-            ->viaTable(ProfileGroups::tableName(), ['group_id' => 'id']);
+        return $this->hasMany(User::className(), ['id' => 'user_id'])
+                ->viaTable(GroupUsers::tableName(), ['group_id' => 'id']);
     }
     
     /**
@@ -184,7 +182,7 @@ class Group extends \yii\db\ActiveRecord
     public function getWarehouses()
     {
         return $this->hasMany(Warehouse::className(), ['id' => 'warehouse_id'])
-            ->viaTable(WarehouseGroups::tableName(), ['group_id' => 'id']);
+            ->viaTable(GroupWarehouses::tableName(), ['group_id' => 'id']);
     }
     
     /**
@@ -199,20 +197,15 @@ class Group extends \yii\db\ActiveRecord
     }
     
     /**
-     * Get only active Profiles
+     * Get only active Users
      * 
-     * @return array profiles
+     * @return array User[]
      */
-    public function getActiveProfiles()
+    public function getActiveUsers()
     {
-        $result = [];
-        foreach ($this->profiles as $profile) {
-            if ($profile->user->status == User::STATUS_ACTIVE) {
-                $result[] = $profile;
-            }
-        }
-        
-        return $result;
+        return $this->hasMany(User::className(), ['id' => 'user_id'])
+                    ->viaTable(GroupUsers::tableName(), ['group_id' => 'id'])
+                    ->andWhere(['status' => User::STATUS_ACTIVE]);
     }
 
     /**
@@ -222,14 +215,9 @@ class Group extends \yii\db\ActiveRecord
      */
     public function getActiveWarehouses()
     {
-        $result = [];
-        foreach ($this->warehouses as $warehouse) {
-            if ($warehouse->status == Warehouse::STATUS_ACTIVE) {
-                $result[] = $warehouse;
-            }
-        }
-        
-        return $result;
+        return $this->hasMany(Warehouse::className(), ['id' => 'warehouse_id'])
+                    ->viaTable(GroupWarehouses::tableName(), ['group_id' => 'id'])
+                    ->andWhere(['status' => User::STATUS_ACTIVE]);
     }
 
     /**
@@ -250,15 +238,15 @@ class Group extends \yii\db\ActiveRecord
     }
     
     /**
-     * Get only active Profiles string
+     * Get only active Users names
      * 
-     * @return array profiles
+     * @return array names[]
      */
-    public function getProfilesAsStringArray()
+    public function getActiveUsersNames()
     {
         $result = [];
-        foreach ($this->activeProfiles as $profile) {
-            $result[$profile->id] = $profile->name . ' (' . $profile->phone . ')';
+        foreach ($this->activeUsers as $item) {
+            $result[$item->id] = $item->profile->name . ' (' . $item->profile->phone . ')';
         }
         
         return $result;
@@ -299,7 +287,7 @@ class Group extends \yii\db\ActiveRecord
      * 
      * @return array profiles data
      */
-    public function preparedForSIWActiveProfiles()
+    /*public function preparedForSIWActiveProfiles()
     {
         $result = [];
         foreach ($this->activeProfiles as $profile) {
@@ -307,7 +295,7 @@ class Group extends \yii\db\ActiveRecord
         }
         
         return $result;
-    }
+    }*/
 
     /**
      * Get Warehouse title as string

@@ -1,15 +1,7 @@
 <?php
 use yii\helpers\Html;
-use yii\grid\GridView;
-use app\components\grid\ActionColumn;
-use app\modules\user\models\backend\User;
-use app\components\grid\SetColumn;
-use app\components\grid\LinkColumn;
-use kartik\date\DatePicker;
 use app\modules\group\Module;
 use kartik\sortinput\SortableInput;
-use app\components\widgets\LinkedItemsWidget;
-use app\modules\group\models\Group;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\group\models\UserSearch */

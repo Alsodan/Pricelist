@@ -170,13 +170,13 @@ class DefaultController extends Controller
     public function actionUsers($id, $view = 'view')
     {
         $group = $this->findModel($id);
-        $groupUsers = $group->preparedForSIWActiveProfiles();
-        $allUsers = Profile::preparedForSIWActiveProfiles();
+        //$groupUsers = $group->preparedForSIWActiveProfiles();
+        //$allUsers = Profile::preparedForSIWActiveProfiles();
         
         return $this->render('users', [
                 'group' => $group,
-                'allUsers' => array_diff_key($allUsers, $groupUsers),
-                'groupUsers' => $groupUsers,
+                //'allUsers' => array_diff_key($allUsers, $groupUsers),
+                //'groupUsers' => $groupUsers,
                 'view' => $view,
             ]);
     }
