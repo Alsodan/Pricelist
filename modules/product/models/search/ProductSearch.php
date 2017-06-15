@@ -20,7 +20,6 @@ class ProductSearch extends Product
     {
         return [
             [['status', 'crop_id', 'grade'], 'integer'],
-            [['price_no_tax', 'price_with_tax'], 'double'],
             [['title', 'subtitle'], 'string', 'max' => 100],
         ];
     }
@@ -61,7 +60,7 @@ class ProductSearch extends Product
         return $dataProvider;
     }
     
-    public function searchWithGroup()
+    /*public function searchWithGroup()
     {
         $products = Yii::$app->user->identity->profile->activeProducts;
         
@@ -75,5 +74,5 @@ class ProductSearch extends Product
         }
         
         return $data;
-    }
+    }*/
 }

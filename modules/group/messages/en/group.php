@@ -10,6 +10,10 @@ return [
     'WAREHOUSES' => 'Warehouses',
     'PRODUCTS' => 'Products',
     
+    'NO_USERS' => 'No users',
+    'SELECT_USERS' => 'Select Users',
+    'SELECT_USERS_FULL' => 'Select Users from list',
+    
     'GROUP_ID' => 'ID',
     'GROUP_TITLE' => 'Title',
     'GROUP_STATUS' => 'Status',
@@ -42,4 +46,9 @@ return [
     'GROUP_PRODUCTS' => 'Group Products',
     'ALL_PRODUCTS' => 'All Products',
     'MANAGE_PRODUCTS_HINT {from} {to}' => 'Choose product from list "{from}" and drag-and-drop it to list "{to}". <br> Drag it back to list "{from}" to remove product from group.',
+    
+    'GROUP_WAREHOUSE_PRODUCTS' => 'Warehouse Products',
+    'MANAGE_WAREHOUSE_PRODUCTS_HINT {from} {to}' => 'Select Warehouse first. Choose product from list "{from}" and drag-and-drop it to list "{to}". <br> Drag it back to list "{from}" to remove product from group.',
+    
+    'MANAGE_PRODUCTS_USERS_HINT' => 'Select managers in table and edit the list',
 ];

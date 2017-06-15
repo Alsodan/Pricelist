@@ -45,6 +45,8 @@ class Price extends \yii\db\ActiveRecord
             [['warehouse_id', 'product_id'], 'integer'],
             [['price_no_tax', 'price_with_tax'], 'double'],
             [['warehouse_id', 'product_id'], 'required'],
+            [['call_no_tax', 'call_with_tax'], 'safe'],
+            ['usersList', 'safe'],
         ];
     }
 
@@ -59,17 +61,44 @@ class Price extends \yii\db\ActiveRecord
             'product_id' => Module::t('product', 'PRODUCT_ID'),
             'call_no_tax' => Module::t('product', 'CALL_FOR_PRICE'),
             'call_with_tax' => Module::t('product', 'CALL_FOR_PRICE'),
+            'price_no_tax' => Module::t('product', 'PRODUCT_PRICE_NO_TAX'),
+            'price_with_tax' => Module::t('product', 'PRODUCT_PRICE_WITH_TAX'),
         ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => ManyHasManyBehavior::className(),
+                'relations' => [
+                    'users' => 'usersList',
+                ],
+            ],
+        ];
+    }
+    
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $this->usersList = $this->usersList;
+            return true;
+        } else {
+            return false;
+        }
     }
     
     /**
      * @inheritdoc
      * @return ProductQuery the active query used by this AR class.
      */
-    public static function find()
+    /*public static function find()
     {
         return new PriceQuery(get_called_class());
-    }
+    }*/
     
     /**
      * Get Users
@@ -109,15 +138,9 @@ class Price extends \yii\db\ActiveRecord
      */
     public function getActiveUsers()
     {
-        /*$result = [];
-        foreach ($this->users as $item) {
-            if ($item->status == User::STATUS_ACTIVE) {
-                $result[$item->id] = $item;
-            }
-        }
-        
-        return $result;*/
-        return $this->users->andWhere(['status' => User::STATUS_ACTIVE]);
+        return $this->hasMany(User::className(), ['id' => 'user_id'])
+                ->viaTable(PriceUsers::tableName(), ['price_id' => 'id'])
+                ->andWhere(['status' => User::STATUS_ACTIVE]);
     }
     
     /**
@@ -129,7 +152,7 @@ class Price extends \yii\db\ActiveRecord
     {
         $result = [];
         foreach ($this->activeUsers as $item) {
-            $result[$profile->id] = $profile->name . ' (' . $profile->phone . ')';
+            $result[$item->profile->id] = $item->profile->name . ' (' . $item->profile->phone . ')';
         }
         
         return $result;
@@ -143,8 +166,8 @@ class Price extends \yii\db\ActiveRecord
     public function getWarehousesAsStringArray()
     {
         $result = [];
-        foreach ($this->activeWarehouses as $warehouse) {
-            $result[$warehouse->id] = $warehouse->title;
+        foreach ($this->activeWarehouses as $item) {
+            $result[$item->id] = $item->title;
         }
         
         return $result;
@@ -158,51 +181,11 @@ class Price extends \yii\db\ActiveRecord
     public function preparedForSIWActiveProfiles()
     {
         $result = [];
-        foreach ($this->activeProfiles as $profile) {
-            $result[$profile->id] = ['content' => $profile->name . ' (' . $profile->phone . ')'];
+        foreach ($this->activeUsers as $item) {
+            $result[$item->profile->id] = ['content' => $item->profile->name . ' (' . $item->profile->phone . ')'];
         }
         
         return $result;
-    }
-    
-    /**
-     * Get Warehouses titles as string
-     * 
-     * @return array warehouses data
-     */
-    public function preparedForSIWActiveWarehouses()
-    {
-        $result = [];
-        foreach ($this->activeWarehouses as $warehouse) {
-            $result[$warehouse->id] = ['content' => $warehouse->title];
-        }
-        
-        return $result;
-    }
-    
-    /**
-     * Get Active Products list for Sorted Input widget
-     */
-    public static function preparedForSIWActiveProducts()
-    {
-        $all = static::find()
-                ->where(['status' => static::STATUS_ACTIVE])
-                ->all();
-
-        $result = [];
-        foreach ($all as $item){
-            $result[$item->id] = ['content' => $item->title . ($item->subtitle ? ' (' . $item->subtitle . ')' : '')];
-        }
-        
-        return $result;
-    }
-    
-    /**
-     * Get Products Dropdown
-     */
-    public static function getDropdown()
-    {
-        return ArrayHelper::map(static::find()->all(), 'id', 'title');
     }
     
     /**

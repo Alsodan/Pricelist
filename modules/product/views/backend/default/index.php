@@ -36,19 +36,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) { return $model->title . ($model->subtitle ? ' (' . $model->subtitle . ')' : ''); },
             ],
             [
-                'value' => function ($model) { return $model->group[0]->title; },
-                'format' => 'html',
-                'label' => Module::t('product', 'GROUP')
-            ],
-            [
-                'value' => function ($model) { return implode('<br>', $model->warehousesAsStringArray);},
+                'value' => function ($model) { return implode('<br>', $model->activeWarehousesTitles);},
                 'format' => 'html',
                 'label' => Module::t('product', 'WAREHOUSES')
-            ],
-            [
-                'value' => function ($model) { return implode('<br>', $model->profilesAsStringArray);},
-                'format' => 'html',
-                'label' => Module::t('product', 'USERS')
             ],
             [
                 'class' => SetColumn::className(),
@@ -62,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{users}&nbsp;&nbsp;{warehouses}&nbsp;&nbsp;{change}',
+                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{warehouses}&nbsp;&nbsp;{prices}&nbsp;&nbsp;{change}',
                 'buttons' => [
                     'update' => function ($url, $model, $key) {
                         return 
@@ -86,13 +76,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'title' => Module::t('product', 'PRODUCT_ENABLE'),
                             ]);
                     },
-                    'users' => function ($url, $model, $key) {
-                        return 
-                            Html::a('<span class="glyphicon glyphicon-user"></span>', ['users', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('product', 'USERS')]);
-                    },
                     'warehouses' => function ($url, $model, $key) {
                         return 
                             Html::a('<span class="glyphicon glyphicon-home"></span>', ['warehouses', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('product', 'WAREHOUSES')]);
+                    },
+                    'prices' => function ($url, $model, $key) {
+                        return 
+                            Html::a('<span class="glyphicon glyphicon-rub"></span>', ['prices', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('product', 'PRICES')]);
                     },
                 ],
                 'contentOptions' => ['style' => 'width: 130px;']

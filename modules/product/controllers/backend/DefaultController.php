@@ -56,11 +56,11 @@ class DefaultController extends Controller
     {
         $product = $this->findModel($id);
         
-        $users = new ArrayDataProvider([
+        /*$users = new ArrayDataProvider([
             'allModels' => $product->activeProfiles,
             'sort' => false,
             'pagination' => false,
-        ]);
+        ]);*/
         $warehouses = new ArrayDataProvider([
             'allModels' => $product->activeWarehouses,
             'sort' => false,
@@ -69,7 +69,7 @@ class DefaultController extends Controller
         
         return $this->render('view', [
             'product' => $product,
-            'users' => $users,
+            //'users' => $users,
             'warehouses' => $warehouses,
         ]);
     }
@@ -148,7 +148,7 @@ class DefaultController extends Controller
     protected function findModel($id)
     {
         if (($model = Product::findOne($id)) !== null) {
-            return $model->prepared();
+            return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

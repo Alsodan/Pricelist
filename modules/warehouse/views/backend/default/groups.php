@@ -15,15 +15,15 @@ use app\modules\warehouse\models\Warehouse;
 /* @var $searchModel app\modules\warehouse\models\WarehouseSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('warehouse', 'WAREHOUSE_USERS_MANAGE');
+$this->title = Module::t('warehouse', 'WAREHOUSE_GROUPS_MANAGE');
 $this->params['breadcrumbs'][] = ['label' => Module::t('warehouse', 'WAREHOUSES_TITLE'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $warehouse->title, 'url' => ['view', 'id' => $warehouse->id]];
 $this->params['breadcrumbs'][] = $this->title;
 
-$ajaxUrl = Yii::$app->urlManager->createUrl(['/admin/warehouse/default/user-change', 'id' => $warehouse->id]);
+$ajaxUrl = Yii::$app->urlManager->createUrl(['/admin/warehouse/default/group-change', 'id' => $warehouse->id]);
 $this->registerJs('
     $("input.siw").change(function () {
-        $.post( "' . $ajaxUrl . '", { users: $("input[name=\'warehouse-users\']").val() })
+        $.post( "' . $ajaxUrl . '", { groups: $("input[name=\'warehouse-groups\']").val() })
     });
 ');
 ?>
@@ -39,19 +39,19 @@ $this->registerJs('
                     <span class="glyphicon glyphicon-info-sign" style="font-size: 48px;"></span>
                 </p>
                 <p class="col-lg-11 col-md-11 col-sm-10">
-                    <p><?= Module::t('warehouse', 'MANAGE_USERS_HINT {from} {to}', [
-                        'from' => Module::t('warehouse', 'ALL_USERS'),
-                        'to' => Module::t('warehouse', 'WAREHOUSE_USERS'),
+                    <p><?= Module::t('warehouse', 'MANAGE_GROUPS_HINT {from} {to}', [
+                        'from' => Module::t('warehouse', 'ALL_GROUPS'),
+                        'to' => Module::t('warehouse', 'WAREHOUSE_GROUPS'),
                     ]) ?></p>
                 </p>
             </div>
             
             <div class="row">
                 <div class="col-lg-3 col-lg-offset-2 col-md-3 col-md-offset-2 col-sm-5">
-                <h5 class="text-center"><b><?= Module::t('warehouse', 'WAREHOUSE_USERS') ?></b></h5>
+                <h5 class="text-center"><b><?= Module::t('warehouse', 'WAREHOUSE_GROUPS') ?></b></h5>
                 <?= SortableInput::widget([
-                    'name'=>'warehouse-users',
-                    'items' => $warehouseUsers,
+                    'name'=>'warehouse-groups',
+                    'items' => $warehouseGroups,
                     'hideInput' => true,
                     'sortableOptions' => [
                         'connected' => true,
@@ -65,10 +65,10 @@ $this->registerJs('
                 ]);?>
                 </div>
                 <div class="col-lg-3 col-lg-offset-2 col-md-3 col-md-offset-2 col-sm-5 col-sm-offset-2">
-                    <h5 class="text-center"><b><?= Module::t('warehouse', 'ALL_USERS') ?></b></h5>
+                    <h5 class="text-center"><b><?= Module::t('warehouse', 'ALL_GROUPS') ?></b></h5>
                 <?= SortableInput::widget([
-                    'name'=>'all-users',
-                    'items' => $allUsers,
+                    'name'=>'all-groups',
+                    'items' => $allGroups,
                     'hideInput' => true,
                     'sortableOptions' => [
                         'itemOptions'=>['class'=>'alert alert-info'],

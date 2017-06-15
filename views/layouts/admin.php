@@ -43,7 +43,7 @@ echo Nav::widget([
         ['label' => Yii::t('app', 'NAV_ADMIN_GROUPS'), 'url' => ['/admin/group/default/index'], 'active' => $context->module->id == 'group'],
         ['label' => Yii::t('app', 'NAV_ADMIN_WAREHOUSES'), 'url' => ['/admin/warehouse/default/index'], 'active' => $context->module->id == 'warehouse'],
         ['label' => Yii::t('app', 'NAV_ADMIN_CROPS'), 'url' => ['/admin/crop/default/index'], 'active' => $context->module->id == 'crop'],
-        ['label' => Yii::t('app', 'NAV_ADMIN_PRODUCTS'), 'url' => ['/admin/product/default/index'], 'active' => $context->module->id == 'price'],
+        ['label' => Yii::t('app', 'NAV_ADMIN_PRODUCTS'), 'url' => ['/admin/product/default/index'], 'active' => $context->module->id == 'product'],
         
         ['label' => Yii::t('app', 'NAV_LOGOUT'), 'url' => ['/user/default/logout'], 'linkOptions' => ['data-method' => 'post']],
     ]),

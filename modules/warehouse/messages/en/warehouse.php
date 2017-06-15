@@ -22,10 +22,10 @@ return [
     'WAREHOUSE_STATUS_DISABLED' => 'Disabled',
     'WAREHOUSE_STATUS_ACTIVE' => 'Active',
 
-    'WAREHOUSE_USERS_MANAGE' => 'Manage Users',
-    'WAREHOUSE_USERS' => 'Warehouse Users',
-    'ALL_USERS' => 'All Users',
-    'MANAGE_USERS_HINT {from} {to}' => 'Choose user from list "{from}" and drag-and-drop it to list "{to}". <br> Drag user back to list "{from}" to remove user from Warehouse.',
+    'WAREHOUSE_GROUPS_MANAGE' => 'Manage Groups',
+    'WAREHOUSE_GROUPS' => 'Warehouse Groups',
+    'ALL_GROUPS' => 'All Groups',
+    'MANAGE_GROUPS_HINT {from} {to}' => 'Choose group from list "{from}" and drag-and-drop it to list "{to}". <br> Drag group back to list "{from}" to remove it from Warehouse.',
     
     'WAREHOUSE_GROUPS' => 'Warehouse Groups',
     

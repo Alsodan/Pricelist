@@ -5,7 +5,7 @@ namespace app\modules\warehouse\controllers\backend;
 use Yii;
 use app\modules\warehouse\models\Warehouse;
 use app\modules\warehouse\models\search\WarehouseSearch;
-use app\modules\user\models\common\Profile;
+use app\modules\group\models\Group;
 use app\modules\product\models\Product;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -55,11 +55,6 @@ class DefaultController extends Controller
     public function actionView($id)
     {
         $warehouse = $this->findModel($id);
-        $users = new ArrayDataProvider([
-            'allModels' => $warehouse->activeProfiles,
-            'sort' => false,
-            'pagination' => false,
-        ]);
         $groups = new ArrayDataProvider([
             'allModels' => $warehouse->activeGroups,
             'sort' => false,
@@ -73,7 +68,6 @@ class DefaultController extends Controller
         
         return $this->render('view', [
             'warehouse' => $warehouse,
-            'users' => $users,
             'groups' => $groups,
             'products' => $products,
         ]);
@@ -88,6 +82,7 @@ class DefaultController extends Controller
     {
         $model = new Warehouse();
         $model->status = Warehouse::STATUS_ACTIVE;
+        $model->scenario = Warehouse::SCENARIO_ADMIN_EDIT;
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect([$view, 'id' => $model->id]);
@@ -107,6 +102,7 @@ class DefaultController extends Controller
     public function actionUpdate($id, $view = 'view')
     {
         $model = $this->findModel($id);
+        $model->scenario = Warehouse::SCENARIO_EDITOR_EDIT;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect([$view, 'id' => $model->id]);
@@ -160,20 +156,20 @@ class DefaultController extends Controller
     }
     
     /**
-     * Manage Warehouse Users
+     * Manage Warehouse Groups
      * @param integer $id
      * @return string
      */
-    public function actionUsers($id, $view = 'view')
+    public function actionGroups($id, $view = 'view')
     {
         $warehouse = $this->findModel($id);
-        $warehouseUsers = $warehouse->preparedForSIWActiveProfiles();
-        $allUsers = Profile::preparedForSIWActiveProfiles();
+        $warehouseGroups = $warehouse->preparedForSIWActiveGroups();
+        $allGroups = Group::preparedForSIWActiveGroups();
         
-        return $this->render('users', [
+        return $this->render('groups', [
                 'warehouse' => $warehouse,
-                'allUsers' => array_diff_key($allUsers, $warehouseUsers),
-                'warehouseUsers' => $warehouseUsers,
+                'allGroups' => array_diff_key($allGroups, $warehouseGroups),
+                'warehouseGroups' => $warehouseGroups,
                 'view' => $view,
             ]);
     }
@@ -198,16 +194,16 @@ class DefaultController extends Controller
     }
     
     /**
-     * Ajax Users managment
+     * Ajax Groups managment
      * @param type $id
      * @return boolean
      */
-    public function actionUserChange($id)
+    public function actionGroupChange($id)
     {
         if (Yii::$app->request->isAjax) {
             $warehouse = $this->findModel($id);
-            $usersString = Yii::$app->request->post('users');
-            $warehouse->profilesList = empty($usersString) ? [] : explode(',', $usersString);
+            $groupsString = Yii::$app->request->post('groups');
+            $warehouse->groupsList = empty($groupsString) ? [] : explode(',', $groupsString);
             
             return $warehouse->save(false);
         }

@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="group-index">
     
-<?php Pjax::begin(); ?>    
+<?php Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'hover' => true,

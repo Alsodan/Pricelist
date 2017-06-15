@@ -5,6 +5,7 @@ return [
     'USERS' => 'Users',
     'GROUP' => 'Group',
     'CROP' => 'Crop',
+    'PRICES' => 'Prices',
     'PRODUCT' => 'Product',
     'PRODUCTS_TITLE' => 'Products',
     'PRODUCT_TITLE' => 'Title',
@@ -32,7 +33,7 @@ return [
     'PRODUCT_ENABLE' => 'Enable Warehouse',
     'PRODUCT_DISABLE_CONFIRM' => 'Are you sure you want to disable this Product?',
     
-    'PRODUCT_USERS_MANAGE' => 'Manage Users',
+    'PRODUCT_PRICES_MANAGE' => 'Manage Prices',
     'PRODUCT_WAREHOUSES_MANAGE' => 'Manage Warehouses',
 
     'BUTTON_BACK' => '&lt;&nbsp;Back',

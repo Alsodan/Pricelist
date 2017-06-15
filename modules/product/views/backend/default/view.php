@@ -21,19 +21,18 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="panel-body text-center">
             <div class="btn-group" role="group">
-                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span><br>' . Module::t('product', 'PRODUCT_UPDATE'), ['update', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
-                <?= Html::a('<span class="glyphicon glyphicon-user"></span><br>' . Module::t('product', 'PRODUCT_USERS_MANAGE'), ['users', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
-                <?= Html::a('<span class="glyphicon glyphicon-home"></span><br>' . Module::t('product', 'PRODUCT_WAREHOUSES_MANAGE'), ['warehouses', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span><br>' . Module::t('product', 'PRODUCT_UPDATE'), ['update', 'id' => $product->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-home"></span><br>' . Module::t('product', 'PRODUCT_WAREHOUSES_MANAGE'), ['warehouses', 'id' => $product->id], ['class' => 'btn btn-primary btn-medium-width']) ?>                <?= Html::a('<span class="glyphicon glyphicon-user"></span><br>' . Module::t('product', 'PRODUCT_PRICES_MANAGE'), ['prices', 'id' => $product->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
                 <?= $product->status == Product::STATUS_ACTIVE ?
                     Html::a('<span class="glyphicon glyphicon-off"></span><br>' . Module::t('product', 'PRODUCT_DISABLE'), ['block', 'id' => $product->id, 'view' => 'view'], [
-                    'class' => 'btn btn-danger',
+                    'class' => 'btn btn-danger btn-medium-width',
                     'data' => [
                         'confirm' => Module::t('product', 'PRODUCT_DISABLE_CONFIRM'),
                         'method' => 'post',
                     ],
                 ]) :
                 Html::a('<span class="glyphicon glyphicon-off"></span><br>' . Module::t('product', 'PRODUCT_ENABLE'), ['unblock', 'id' => $product->id, 'view' => 'view'], [
-                    'class' => 'btn btn-success',
+                    'class' => 'btn btn-success btn-medium-width',
                     'data' => [
                         'method' => 'post',
                     ],
@@ -74,17 +73,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             'value' => function ($model) { return $model->crop->title; },
                             'label' => Module::t('product', 'CROP'),
                         ],
-                                                [
-                            'value' => function ($model) { return $model->group->title; },
+                        [
+                            'value' => function ($model) { return implode('<br>', $model->activeGroupsTitles); },
                             'label' => Module::t('product', 'GROUP'),
-                        ],
-                        [
-                            'attribute' => 'price_no_tax',
-                            'value' => function ($model) { return $model->getPrice('price_no_tax'); },
-                        ],
-                        [
-                            'attribute' => 'price_with_tax',
-                            'value' => function ($model) { return $model->getPrice('price_with_tax'); },
+                            'format' => 'html',
                         ],
                     ],
                 ]) ?>
@@ -96,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="text-center">
                     <h4><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;<b><?= Module::t('product', 'USERS') ?></b></h4>
                 </div>
-                <?= GridView::widget([
+                <?= ''/*GridView::widget([
                     'dataProvider' => $users,
                     'showHeader' => false,
                     'layout' => "{items}",
@@ -105,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'value' => function ($model) { return $model->name . ' (' . $model->phone . ')'; }
                         ]
                     ]
-                ])
+                ])*/
                 ?>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">

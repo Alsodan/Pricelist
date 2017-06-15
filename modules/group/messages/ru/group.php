@@ -10,6 +10,10 @@ return [
     'WAREHOUSES' => 'Склады',
     'PRODUCTS' => 'Продукция',
     
+    'NO_USERS' => 'Нет менеджеров',
+    'SELECT_USERS' => 'Выберите...',
+    'SELECT_USERS_FULL' => 'Начните вводить имя или выберите из списка',
+    
     'GROUP_ID' => 'ИД',
     'GROUP_TITLE' => 'Название',
     'GROUP_STATUS' => 'Статус',
@@ -29,7 +33,7 @@ return [
     'GROUP_USERS' => 'Пользователи группы',
     'GROUP_USERS_MANAGE' => 'Пользователи',
     'GROUP_WAREHOUSES_MANAGE' => 'Склады',
-    'GROUP_PRODUCTS_MANAGE' => 'продукция',
+    'GROUP_PRODUCTS_MANAGE' => 'Продукция',
     'GROUP_PRODUCTS_USERS_MANAGE' => 'Менеджеры',
     
     'ALL_USERS' => 'Все пользователи',
@@ -37,10 +41,15 @@ return [
     
     'GROUP_WAREHOUSES' => 'Склады группы',
     'ALL_WAREHOUSES' => 'Все склады',
-    'MANAGE_WAREHOUSES_HINT {from} {to}' => 'Выберите склад из списка "{from}" и перетащите его в список "{to}". <br> Чтобы убрать склад - перетащите его обратно в список "{from}".',    
+    'MANAGE_WAREHOUSES_HINT {from} {to}' => 'Выберите склад из списка "{from}" и перетащите его в список "{to}". <br> Чтобы убрать склад - перетащите его обратно в список "{from}".',
     
     'GROUP_PRODUCTS' => 'Продукция группы',
     'ALL_PRODUCTS' => 'Вся продукция',
-    'MANAGE_PRODUCTS_HINT {from} {to}' => 'Выберите продукцию из списка "{from}" и перетащите её в список "{to}". <br> Чтобы убрать продукцию - перетащите её обратно в список "{from}".',    
+    'MANAGE_PRODUCTS_HINT {from} {to}' => 'Выберите продукцию из списка "{from}" и перетащите её в список "{to}". <br> Чтобы убрать продукцию - перетащите её обратно в список "{from}".',
+    
+    'GROUP_WAREHOUSE_PRODUCTS' => 'Продукция склада',
+    'MANAGE_WAREHOUSE_PRODUCTS_HINT {from} {to}' => 'Сначала выберите склад в списке.<br>Потом выберите продукцию из списка "{from}" и перетащите её в список "{to}". <br> Чтобы убрать продукцию - перетащите её обратно в список "{from}".',
+    
+    'MANAGE_PRODUCTS_USERS_HINT' => 'Нажмите на список менеджеров в таблице и отредактируйте его.',
 
 ];

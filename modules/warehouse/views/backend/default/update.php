@@ -7,7 +7,7 @@ use app\modules\warehouse\Module;
 /* @var $model app\modules\main\models\Group */
 
 $this->title = Module::t('warehouse', 'WAREHOUSE_UPDATE') . ': ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => Module::t('warehouse', 'WAREHOUSE_TITLE'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('warehouse', 'WAREHOUSES_TITLE'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Module::t('warehouse', 'WAREHOUSE_UPDATE');
 ?>

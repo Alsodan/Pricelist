@@ -11,6 +11,7 @@ use app\modules\warehouse\models\Warehouse;
 use app\modules\product\models\Product;
 use app\modules\group\models\GroupUsers;
 use app\modules\group\models\GroupWarehouses;
+use app\modules\product\models\Price;
 
 /**
  * This is the model class for table "{{%group}}".
@@ -192,10 +193,58 @@ class Group extends \yii\db\ActiveRecord
      */
     public function getProducts()
     {
-        return $this->hasMany(Product::className(), ['id' => 'product_id'])
-            ->viaTable(ProductGroups::tableName(), ['group_id' => 'id']);
+        $warehousesIDs = ArrayHelper::getColumn($this->warehouses, 'id');
+        $prices = Price::findAll(['warehouse_id' => $warehousesIDs]);
+        
+        return Product::findAll(['id' => array_unique(ArrayHelper::getColumn($prices, 'id'))]);
+        /*$this->hasMany(Product::className(), ['id' => 'product_id'])
+            ->viaTable(ProductGroups::tableName(), ['group_id' => 'id']);*/
     }
-    
+
+    public function getPricesTable()
+    {
+        $cyr = [
+            'а','б','в','г','д','е','ё','ж','з','и','й','к','л','м','н','о','п',
+            'р','с','т','у','ф','х','ц','ч','ш','щ','ъ','ы','ь','э','ю','я',
+            'А','Б','В','Г','Д','Е','Ё','Ж','З','И','Й','К','Л','М','Н','О','П',
+            'Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ъ','Ы','Ь','Э','Ю','Я'
+        ];
+        $lat = [
+            'a','b','v','g','d','e','io','zh','z','i','y','k','l','m','n','o','p',
+            'r','s','t','u','f','h','ts','ch','sh','sht','a','i','y','e','yu','ya',
+            'A','B','V','G','D','E','Io','Zh','Z','I','Y','K','L','M','N','O','P',
+            'R','S','T','U','F','H','Ts','Ch','Sh','Sht','A','I','Y','e','Yu','Ya'
+        ];
+        
+        //Массив соответствия транслитерированных и обычных названий складов
+        $whColumns = [];
+        $columns = [];
+        foreach ($this->activeWarehouses as $item) {
+            $whColumns = array_merge($whColumns, [preg_replace('~[^-a-z0-9_]+~u', '', strtolower(str_replace($cyr, $lat, $item->title))) => ['title' => $item->title, 'id' => $item->id]]);
+            $columns = array_merge($columns, [preg_replace('~[^-a-z0-9_]+~u', '', strtolower(str_replace($cyr, $lat, $item->title))) => '']);
+        }
+        
+        //Расширяем массив до количества продукции
+        $base = [];
+        foreach ($this->activeProducts as $item) {
+            $base[$item->id] = array_merge(['title' => $item->title . ($item->subtitle ? '<br>(' . $item->subtitle . ')' : '')], $columns);
+        }
+
+        $data = Price::find()
+                ->where(['warehouse_id' => ArrayHelper::getColumn($this->activeWarehouses, 'id')])
+                ->andWhere(['product_id' => ArrayHelper::getColumn($this->activeProducts, 'id')])
+                ->all();
+        
+        //Заполняем массив данными
+        foreach ($data as $item) {
+            $base[$item->product_id][preg_replace('~[^-a-z0-9_]+~u', '', strtolower(str_replace($cyr, $lat, $item->warehouse->title)))] = $item;
+        }
+        
+        $result['columns'] = $whColumns;
+        $result['data'] = $base;
+        
+        return $result;
+    }
     /**
      * Get only active Users
      * 
@@ -225,16 +274,17 @@ class Group extends \yii\db\ActiveRecord
      * 
      * @return array Products[]
      */
-    public function getActiveProducts()
+    public function getActiveProducts($warehousesIDs = [])
     {
-        $result = [];
-        foreach ($this->products as $product) {
-            if ($product->status == Product::STATUS_ACTIVE) {
-                $result[] = $product;
-            }
+        if (empty($warehousesIDs)) {
+            $warehousesIDs = ArrayHelper::getColumn($this->activeWarehouses, 'id');
         }
-        
-        return $result;
+        $prices = Price::findAll(['warehouse_id' => $warehousesIDs]);
+
+        return Product::find()
+                ->where(['id' => array_unique(ArrayHelper::getColumn($prices, 'product_id'))])
+                ->active()
+                ->all();
     }
     
     /**
@@ -253,11 +303,11 @@ class Group extends \yii\db\ActiveRecord
     }    
     
     /**
-     * Get only active Warehouses string
+     * Get active Warehouses titles
      * 
      * @return array warehouses titles
      */
-    public function getWarehousesAsStringArray()
+    public function getActiveWarehousesTitles()
     {
         $result = [];
         foreach ($this->activeWarehouses as $warehouse) {
@@ -268,11 +318,11 @@ class Group extends \yii\db\ActiveRecord
     }  
     
     /**
-     * Get only active Products string
+     * Get active Products titles
      * 
      * @return array Products titles
      */
-    public function getProductsAsStringArray()
+    public function getActiveProductsTitles()
     {
         $result = [];
         foreach ($this->activeProducts as $product) {
@@ -283,19 +333,19 @@ class Group extends \yii\db\ActiveRecord
     }  
     
     /**
-     * Get Profiles Name and Phone as string
+     * Get User Name and Phone
      * 
-     * @return array profiles data
+     * @return array
      */
-    /*public function preparedForSIWActiveProfiles()
+    public function preparedForSIWActiveUsers()
     {
         $result = [];
-        foreach ($this->activeProfiles as $profile) {
-            $result[$profile->id] = ['content' => $profile->name . ' (' . $profile->phone . ')'];
+        foreach ($this->activeUsers as $item) {
+            $result[$item->profile->id] = ['content' => $item->profile->name . ' (' . $item->profile->phone . ')'];
         }
         
         return $result;
-    }*/
+    }
 
     /**
      * Get Warehouse title as string
@@ -317,11 +367,29 @@ class Group extends \yii\db\ActiveRecord
      * 
      * @return array Products data
      */
-    public function preparedForSIWActiveProducts()
+    public function preparedForSIWActiveProducts($warehouses = [])
     {
         $result = [];
-        foreach ($this->activeProducts as $item) {
+        foreach ($this->getActiveProducts($warehouses) as $item) {
             $result[$item->id] = ['content' => $item->title . ($item->subtitle ? ' (' . $item->subtitle . ')' : '')];
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Get Active Groups list for Sorted Input widget
+     */
+    public static function preparedForSIWActiveGroups()
+    {
+        $all = static::find()
+                ->select(['id', 'title'])
+                ->where(['status' => self::STATUS_ACTIVE])
+                ->all();
+
+        $result = [];
+        foreach ($all as $item){
+            $result[$item->id] = ['content' => $item->title];
         }
         
         return $result;

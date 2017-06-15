@@ -34,6 +34,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => LinkColumn::className(),
             ],
             [
+                'value' => function ($model) { return implode('<br>', $model->activeGroupsTitles);},
+                'format' => 'html',
+                'label' => Module::t('warehouse', 'GROUPS')
+            ],            
+            [
+                'value' => function ($model) { return implode('<br>', $model->activeProductsTitles);},
+                'format' => 'html',
+                'label' => Module::t('warehouse', 'PRODUCTS')
+            ],
+            [
                 'class' => SetColumn::className(),
                 'filter' => Warehouse::getStatusArray(),
                 'attribute' => 'status',
@@ -44,23 +54,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
             [
-                'value' => function ($model) { return implode('<br>', $model->groupsAsStringArray);},
-                'format' => 'html',
-                'label' => Module::t('warehouse', 'GROUPS')
-            ],            
-            [
-                'value' => function ($model) { return implode('<br>', $model->profilesAsStringArray);},
-                'format' => 'html',
-                'label' => Module::t('warehouse', 'USERS')
-            ],
-            [
-                'value' => function ($model) { return implode('<br>', $model->productsAsStringArray);},
-                'format' => 'html',
-                'label' => Module::t('warehouse', 'PRODUCTS')
-            ],
-            [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{users}&nbsp;&nbsp;{products}&nbsp;&nbsp;{change}',
+                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{groups}&nbsp;&nbsp;{products}&nbsp;&nbsp;{change}',
                 'buttons' => [
                     'update' => function ($url, $model, $key) {
                         return 
@@ -84,9 +79,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'title' => Module::t('warehouse', 'WAREHOUSE_ENABLE'),
                             ]);
                     },
-                    'users' => function ($url, $model, $key) {
+                    'groups' => function ($url, $model, $key) {
                         return 
-                            Html::a('<span class="glyphicon glyphicon-user"></span>', ['users', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('warehouse', 'USERS')]);
+                            Html::a('<span class="glyphicon glyphicon-folder-open"></span>', ['groups', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('warehouse', 'GROUPS')]);
                     },
                     'products' => function ($url, $model, $key) {
                         return 

@@ -47,7 +47,7 @@ $this->registerJs('
             </div>
             
             <div class="row">
-                <div class="col-lg-3 col-lg-offset-2 col-md-3 col-md-offset-2 col-sm-5">
+                <div class="col-lg-5 col-lg-offset-1 col-md-5 col-md-offset-1 col-sm-5">
                 <h5 class="text-center"><b><?= Module::t('warehouse', 'WAREHOUSE_PRODUCTS') ?></b></h5>
                 <?= SortableInput::widget([
                     'name'=>'warehouse-products',
@@ -64,7 +64,7 @@ $this->registerJs('
                     ]
                 ]);?>
                 </div>
-                <div class="col-lg-3 col-lg-offset-2 col-md-3 col-md-offset-2 col-sm-5 col-sm-offset-2">
+                <div class="col-lg-5 col-md-5 col-sm-5">
                     <h5 class="text-center"><b><?= Module::t('warehouse', 'ALL_PRODUCTS') ?></b></h5>
                 <?= SortableInput::widget([
                     'name'=>'all-products',

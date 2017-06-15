@@ -5,6 +5,7 @@ return [
     'USERS' => 'Пользователи',
     'WAREHOUSES' => 'Склады',
     'CROP' => 'Культура',
+    'PRICES' => 'Цены',
     'PRODUCT' => 'Продукция',
     'PRODUCTS_TITLE' => 'Продукция',
     'PRODUCT_TITLE' => 'Название',
@@ -32,8 +33,8 @@ return [
     'PRODUCT_ENABLE' => 'Включить',
     'PRODUCT_DISABLE_CONFIRM' => 'Вы точно хотите отключить эту продукцию?',
     
-    'PRODUCT_USERS_MANAGE' => 'Управление пользователями',
-    'PRODUCT_WAREHOUSES_MANAGE' => 'Управление складами',
+    'PRODUCT_PRICES_MANAGE' => 'Цены',
+    'PRODUCT_WAREHOUSES_MANAGE' => 'Склады',
     
     'BUTTON_BACK' => '&lt;&nbsp;Назад',
     'PRODUCT_USERS' => 'Пользователи продукции',

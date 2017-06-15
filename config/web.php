@@ -24,6 +24,11 @@ $config = [
     'modules' => [
         'gridview' => [
             'class' => '\kartik\grid\Module',
+            'i18n' => [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'basePath' => '@kvgrid/messages',
+                'forceTranslation' => false
+            ]
         ],
         'admin' => [
             'class' => 'app\modules\admin\Module',
