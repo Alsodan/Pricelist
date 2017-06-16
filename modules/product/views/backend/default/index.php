@@ -36,9 +36,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) { return $model->title . ($model->subtitle ? ' (' . $model->subtitle . ')' : ''); },
             ],
             [
-                'value' => function ($model) { return implode('<br>', $model->activeWarehousesTitles);},
+                'value' => function ($model) { return implode('<hr>', $model->linkedDataList);},
                 'format' => 'html',
-                'label' => Module::t('product', 'WAREHOUSES')
+                'label' => Module::t('product', 'DATA_TITLE')
             ],
             [
                 'class' => SetColumn::className(),
@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{warehouses}&nbsp;&nbsp;{prices}&nbsp;&nbsp;{change}',
+                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{warehouses}&nbsp;&nbsp;{managers}&nbsp;&nbsp;{prices}&nbsp;&nbsp;{change}',
                 'buttons' => [
                     'update' => function ($url, $model, $key) {
                         return 
@@ -84,8 +84,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         return 
                             Html::a('<span class="glyphicon glyphicon-rub"></span>', ['prices', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('product', 'PRICES')]);
                     },
+                    'managers' => function ($url, $model, $key) {
+                        return 
+                            Html::a('<span class="glyphicon glyphicon-tags"></span>', ['products-users', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('product', 'USERS')]);
+                    },
                 ],
-                'contentOptions' => ['style' => 'width: 130px;']
+                'contentOptions' => ['style' => 'width: 150px;']
             ],
         ],
     ]); ?>

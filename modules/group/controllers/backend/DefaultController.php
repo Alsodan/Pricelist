@@ -227,6 +227,12 @@ class DefaultController extends Controller
             ]);
     }
 
+    /**
+     * Manage Products Managers
+     * @param type $id
+     * @param type $view
+     * @return type
+     */
     public function actionProductsUsers($id, $view = 'view')
     {
         $model = $this->findModel($id);

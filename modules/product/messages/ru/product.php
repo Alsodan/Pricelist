@@ -2,7 +2,7 @@
 
 return [
     'GROUP' => 'Группа',
-    'USERS' => 'Пользователи',
+    'USERS' => 'Менеджеры',
     'WAREHOUSES' => 'Склады',
     'CROP' => 'Культура',
     'PRICES' => 'Цены',
@@ -28,6 +28,9 @@ return [
     
     'BUTTON_SAVE' => 'Сохранить',
     
+    'DATA_TITLE' => 'Склад -> Менеджер -> Цена без НДС / Цена с НДС',
+    'NO_MANAGERS' => 'Менеджер не назначен',
+    
     'PRODUCT_UPDATE' => 'Редактировать',
     'PRODUCT_DISABLE' => 'Отключить',
     'PRODUCT_ENABLE' => 'Включить',
@@ -35,6 +38,7 @@ return [
     
     'PRODUCT_PRICES_MANAGE' => 'Цены',
     'PRODUCT_WAREHOUSES_MANAGE' => 'Склады',
+    'PRODUCT_USERS_MANAGE' => 'Менеждеры',
     
     'BUTTON_BACK' => '&lt;&nbsp;Назад',
     'PRODUCT_USERS' => 'Пользователи продукции',

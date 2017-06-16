@@ -336,6 +336,15 @@ class User extends ActiveRecord implements IdentityInterface
     }
     
     /**
+     * Get Profile Name and Phone
+     * @return string
+     */
+    public function getProfileData()
+    {
+        return $this->profile->name . ' (' . $this->profile->phone . ')';
+    }
+    
+    /**
      * Get User Groups
      */
     /*public function getGroups()

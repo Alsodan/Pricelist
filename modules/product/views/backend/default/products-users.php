@@ -1,15 +1,15 @@
 <?php
 
 use yii\helpers\Html;
-use app\modules\group\Module;
+use app\modules\product\Module;
 use kartik\sortinput\SortableInput;
 use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $group app\modules\group\models\Group */
 
-$this->title = Module::t('group', 'GROUP_MANAGMENT') . ': ' . $group->title;
-$this->params['breadcrumbs'][] = ['label' => Module::t('group', 'GROUPS_TITLE'), 'url' => ['index']];
+$this->title = Module::t('product', 'GROUP_MANAGMENT') . ': ' . $group->title;
+$this->params['breadcrumbs'][] = ['label' => Module::t('product', 'GROUPS_TITLE'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $group->title, 'url' => ['view', 'id' => $group->id]];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -24,7 +24,7 @@ $this->registerJs('
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title"><b><?= Module::t('group', 'GROUP') ?>: <?= $group->title ?></b></h3>
+            <h3 class="panel-title"><b><?= Module::t('product', 'GROUP') ?>: <?= $group->title ?></b></h3>
         </div>
         <div class="panel-body text-center">
             <div class="alert alert-info">
@@ -32,7 +32,7 @@ $this->registerJs('
                     <span class="glyphicon glyphicon-info-sign" style="font-size: 48px;"></span>
                 </p>
                 <p class="col-lg-11 col-md-11 col-sm-10">
-                    <p><br><?= Module::t('group', 'MANAGE_PRODUCTS_USERS_HINT') ?><br></p>
+                    <p><br><?= Module::t('product', 'MANAGE_PRODUCTS_USERS_HINT') ?><br></p>
                 </p>
             </div>
         </div>
@@ -48,14 +48,14 @@ $this->registerJs('
 
         <?php
             $gridColumns = [
-                [
+                /*[
                     'attribute' => 'title',
                     'label' => Module::t('group', 'PRODUCTS'),
                     'width' => '300px',
                     'hAlign' => 'center',
                     'vAlign' => 'middle',
                     'format' => 'html',
-                ]
+                ]*/
             ];
 
             foreach ($columns as $arrkey => $value) {
@@ -66,7 +66,7 @@ $this->registerJs('
                         'class' => 'kartik\grid\EditableColumn',
                         'editableOptions'=> function ($model) use ($arrkey, $group) {
                             return [
-                                'header' => Module::t('group', 'GROUP_PRODUCTS_USERS_MANAGE'),
+                                'header' => Module::t('product', 'GROUP_PRODUCTS_USERS_MANAGE'),
                                 'size'=>'md',
                                 'asPopover' => false,
                                 'buttonsTemplate' => '{submit}',
@@ -88,14 +88,14 @@ $this->registerJs('
                                 'options' => [
                                     'pluginOptions' => [
                                         'multiple' => true,
-                                        'placeholder' => Module::t('group', 'SELECT_USERS'),
+                                        'placeholder' => Module::t('product', 'SELECT_USERS'),
                                     ],
                                     'data' => $group->activeUsersNames,
                                 ],
                                 'name' => 'users',
                                 'value' => $model[$arrkey]->usersList,
                                 'size' => 'md',
-                                'beforeInput' => Module::t('group', 'SELECT_USERS_FULL'),
+                                'beforeInput' => Module::t('product', 'SELECT_USERS_FULL'),
                             ];
                         },
                         'readonly' => function($model) use ($arrkey) {
@@ -130,7 +130,7 @@ $this->registerJs('
         </div>
     
         <div class="panel-footer">
-            <?= Html::a(Module::t('group', 'BUTTON_BACK'), [$view, 'id' => $group->id], ['class' => 'btn btn-lg btn-primary']) ?>
+            <?= Html::a(Module::t('product', 'BUTTON_BACK'), [$view, 'id' => $group->id], ['class' => 'btn btn-lg btn-primary']) ?>
         </div>
     </div>
 </div>

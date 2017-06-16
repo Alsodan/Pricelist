@@ -26,8 +26,6 @@ use app\modules\product\models\Price;
  * @property string $title
  * @property string $subtitle
  * @property string $specification
- * @property double $price_no_tax
- * @property double $price_with_tax
  * @property integer $status
  */
 class Product extends \yii\db\ActiveRecord
@@ -36,8 +34,10 @@ class Product extends \yii\db\ActiveRecord
     const STATUS_DISABLED = 0;
     const STATUS_ACTIVE = 1;
     
-    public $call_with_tax;
-    public $call_no_tax;
+    //Scenarios
+    const SCENARIO_ADMIN_EDIT = 'admin_edit';
+    const SCENARIO_EDITOR_EDIT = 'editor_edit';
+    
     /**
      * @inheritdoc
      */
@@ -54,12 +54,24 @@ class Product extends \yii\db\ActiveRecord
         return [
             [['status', 'crop_id', 'grade'], 'integer'],
             [['title', 'subtitle'], 'string', 'max' => 100],
-            [['title', 'group_id', 'crop_id'], 'required'],
+            [['title', 'crop_id'], 'required'],
             ['specification', 'safe'],
             ['warehousesList', 'safe'],
         ];
     }
 
+    /**
+     * Scenarios
+     * @return string
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_ADMIN_EDIT] = ['status', 'crop_id', 'grade', 'title', 'subtitle', 'specification'];
+        $scenarios[self::SCENARIO_EDITOR_EDIT] = ['crop_id', 'grade', 'title', 'subtitle', 'specification'];
+        return $scenarios;
+    }
+    
     /**
      * @inheritdoc
      */
@@ -82,39 +94,26 @@ class Product extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            /*[
-                'class' => ManyHasManyBehavior::className(),
-                'relations' => [
-                    'profiles' => 'profilesList',                   
-                ],
-            ],*/
             [
                 'class' => ManyHasManyBehavior::className(),
                 'relations' => [
                     'warehouses' => 'warehousesList',                   
                 ],
             ],
-            /*[
-                'class' => ManyHasManyBehavior::className(),
-                'relations' => [
-                    'group' => 'groupsList',                   
-                ],
-            ],*/
         ];
     }
     
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-            //$this->profilesList = $this->profilesList;
             $this->warehousesList = $this->warehousesList;
-            //$this->groupsList = $this->groupsList;
-            if ($this->call_with_tax == 1) {
+
+            /*if ($this->call_with_tax == 1) {
                 $this->price_with_tax = -1;
             }
             if ($this->call_no_tax == 1) {
                 $this->price_no_tax = -1;
-            }
+            }*/
             return true;
         } else {
             return false;
@@ -135,7 +134,7 @@ class Product extends \yii\db\ActiveRecord
      * @return boolean
      */
     public function block(){
-        $this->status = static::STATUS_DISABLED;
+        $this->status = self::STATUS_DISABLED;
         return $this->save(false);
     }
     
@@ -144,7 +143,7 @@ class Product extends \yii\db\ActiveRecord
      * @return boolean
      */
     public function unblock(){
-        $this->status = static::STATUS_ACTIVE;
+        $this->status = self::STATUS_ACTIVE;
         return $this->save(false);
     }    
    
@@ -190,7 +189,8 @@ class Product extends \yii\db\ActiveRecord
     {
         $data = $this->hasMany(Warehouse::className(), ['id' => 'warehouse_id'])
             ->viaTable(Price::tableName(), ['product_id' => 'id'])
-            ->with('groups')->all();
+            ->with('groups')
+            ->all();
         
         $result = [];
         foreach ($data as $value) {
@@ -202,16 +202,31 @@ class Product extends \yii\db\ActiveRecord
         return $result;
     }
     
-    /**
-     * Get Profiles
-     * 
-     * @return array profiles
-     */
-    /*public function getProfiles()
+    public function getPrices()
     {
-        return $this->hasMany(Profile::className(), ['id' => 'profile_id'])
-            ->viaTable(ProfileProducts::tableName(), ['product_id' => 'id']);
-    }*/
+        return $this->hasMany(Price::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * Get Users
+     * 
+     * @return array User[]
+     */
+    public function getUsers()
+    {
+        $data = $this->hasMany(Price::className(), ['product_id' => 'id'])
+            ->with('users.profile')
+            ->all();
+        
+        $result = [];
+        foreach ($data as $value) {
+            foreach ($value->users as $item) {
+                $result[$item->id] = $item;
+            }
+        }
+        
+        return $result;
+    }
     
     /**
      * Get Warehouses
@@ -223,23 +238,6 @@ class Product extends \yii\db\ActiveRecord
         return $this->hasMany(Warehouse::className(), ['id' => 'warehouse_id'])
             ->viaTable(Price::tableName(), ['product_id' => 'id']);
     }
-    
-    /**
-     * Get only active Profiles
-     * 
-     * @return array profiles
-     */
-    /*public function getActiveProfiles()
-    {
-        $result = [];
-        foreach ($this->profiles as $profile) {
-            if ($profile->user->status == User::STATUS_ACTIVE) {
-                $result[] = $profile;
-            }
-        }
-        
-        return $result;
-    }*/
 
     /**
      * Get active Product Group
@@ -250,11 +248,29 @@ class Product extends \yii\db\ActiveRecord
     {
         $data = $this->hasMany(Warehouse::className(), ['id' => 'warehouse_id'])
             ->viaTable(Price::tableName(), ['product_id' => 'id'])
-            ->with('activeGroups')->all();
+            ->with('activeGroups')
+            ->all();
         
         $result = [];
         foreach ($data as $value) {
             foreach ($value->activeGroups as $item) {
+                $result[$item->id] = $item;
+            }
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Get active Product Users
+     * 
+     * @return app/modules/group/models/Group
+     */
+    public function getActiveUsers()
+    {
+        $result = [];
+        foreach ($this->users as $item) {
+            if ($item->status == User::STATUS_ACTIVE) {
                 $result[$item->id] = $item;
             }
         }
@@ -279,16 +295,71 @@ class Product extends \yii\db\ActiveRecord
      * 
      * @return array profiles
      */
-    /*public function getProfilesAsStringArray()
+    public function getActiveUsersNames()
     {
         $result = [];
-        foreach ($this->activeProfiles as $profile) {
-            $result[$profile->id] = $profile->name . ' (' . $profile->phone . ')';
+        foreach ($this->activeUsers as $item) {
+            $result[$item->id] = $item->profile->name . ' (' . $item->profile->phone . ')';
         }
         
         return $result;
-    }*/
+    }
     
+    /**
+     * Query for linked data: price, warehouse and managers
+     * @return ActiveQuery
+     */
+    public function getLinkedData()
+    {
+        return Price::find()
+            ->where(['product_id' => $this->id])
+            ->with('activeWarehouse')
+            ->with('users.profile')
+            ->all();
+    }
+
+    /**
+     * Current Product Price, Warehouse and Managers as string
+     * @return string[]
+     */
+    public function getLinkedDataList()
+    {
+        $result = [];
+        foreach ($this->linkedData as $price) {
+            $item = $price->activeWarehouse->title . ' -> ';
+            $users = [];
+            foreach ($price->users as $user) {
+                $users[] = $user->profileData;
+            }
+            $item .= (empty($users) ? Module::t('product', 'NO_MANAGERS') : implode(', ', $users)) . ' -> ' . $price->getPrice('price_no_tax') . ' / ' . $price->getPrice('price_with_tax');
+            $result[] = $item;
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Current Product Price, Warehouse and Managers as array
+     * @return string[]
+     */
+    public function getLinkedDataArrayList()
+    {
+        $result = [];
+        foreach ($this->linkedData as $price) {
+            $users = [];
+            foreach ($price->users as $user) {
+                $users[] = $user->profileData;
+            }
+            $result[] = [
+                $price->activeWarehouse->title,
+                (empty($users) ? Module::t('product', 'NO_MANAGERS') : implode('<br>', $users)),
+                $price->getPrice('price_no_tax') . ' / ' . $price->getPrice('price_with_tax'),
+            ];
+        }
+        
+        return $result;
+    }
+
     /**
      * Get only active Warehouses string
      * 
@@ -320,19 +391,53 @@ class Product extends \yii\db\ActiveRecord
     }    
     
     /**
-     * Get Profiles Name and Phone as string
-     * 
-     * @return array profiles data
+     * Data for Prices table: products, warehouses and Price[]
+     * @return array
      */
-    /*public function preparedForSIWActiveProfiles()
+    public function getPricesTable()
     {
-        $result = [];
-        foreach ($this->activeProfiles as $profile) {
-            $result[$profile->id] = ['content' => $profile->name . ' (' . $profile->phone . ')'];
+        $cyr = [
+            'а','б','в','г','д','е','ё','ж','з','и','й','к','л','м','н','о','п',
+            'р','с','т','у','ф','х','ц','ч','ш','щ','ъ','ы','ь','э','ю','я',
+            'А','Б','В','Г','Д','Е','Ё','Ж','З','И','Й','К','Л','М','Н','О','П',
+            'Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ъ','Ы','Ь','Э','Ю','Я'
+        ];
+        $lat = [
+            'a','b','v','g','d','e','io','zh','z','i','y','k','l','m','n','o','p',
+            'r','s','t','u','f','h','ts','ch','sh','sht','a','i','y','e','yu','ya',
+            'A','B','V','G','D','E','Io','Zh','Z','I','Y','K','L','M','N','O','P',
+            'R','S','T','U','F','H','Ts','Ch','Sh','Sht','A','I','Y','e','Yu','Ya'
+        ];
+        
+        //Массив соответствия транслитерированных и обычных названий складов
+        $whColumns = [];
+        $columns = [];
+        foreach ($this->activeWarehouses as $item) {
+            $whColumns = array_merge($whColumns, [preg_replace('~[^-a-z0-9_]+~u', '', strtolower(str_replace($cyr, $lat, $item->title))) => ['title' => $item->title, 'id' => $item->id]]);
+            $columns = array_merge($columns, [preg_replace('~[^-a-z0-9_]+~u', '', strtolower(str_replace($cyr, $lat, $item->title))) => '']);
         }
         
+        //Расширяем массив до количества продукции
+        $base = [];
+        //foreach ($this->activeProducts as $item) {
+            $base[$this->id] = array_merge(['title' => $this->title . ($this->subtitle ? '<br>(' . $this->subtitle . ')' : '')], $columns);
+        //}
+
+        $data = Price::find()
+                ->where(['warehouse_id' => ArrayHelper::getColumn($this->activeWarehouses, 'id')])
+                ->andWhere(['product_id' => $this->id])
+                ->all();
+        
+        //Заполняем массив данными
+        foreach ($data as $item) {
+            $base[$this->id][preg_replace('~[^-a-z0-9_]+~u', '', strtolower(str_replace($cyr, $lat, $item->warehouse->title)))] = $item;
+        }
+        
+        $result['columns'] = $whColumns;
+        $result['data'] = $base;
+        
         return $result;
-    }*/
+    }
     
     /**
      * Get Warehouses titles as string
@@ -364,35 +469,5 @@ class Product extends \yii\db\ActiveRecord
         }
         
         return $result;
-    }
-    
-    /**
-     * Decorate price before output
-     * @param type $priceType
-     * @return type
-     */
-    public function getPrice($priceType = 'price_with_tax')
-    {
-        if ($this->canGetProperty($priceType)) {
-            return $this->$priceType < 0 ? Module::t('product', 'CALL_FOR_PRICE') : ($this->$priceType > 0 ? Yii::$app->formatter->asCurrency($this->$priceType) : Module::t('product', 'NOT_BUY'));
-        }
-        
-        return Module::t('product', 'PRICE_NOT_SET');
-    }
-    
-    /**
-     * Prepare Product to show
-     * @return $this
-     */
-    public function prepared()
-    {
-        if ($this->price_with_tax == -1) {
-            $this->call_with_tax = 1;
-        }
-        if ($this->price_no_tax == -1) {
-            $this->call_no_tax = 1;
-        }
-        
-        return $this;
     }
 }

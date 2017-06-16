@@ -56,21 +56,15 @@ class DefaultController extends Controller
     {
         $product = $this->findModel($id);
         
-        /*$users = new ArrayDataProvider([
-            'allModels' => $product->activeProfiles,
-            'sort' => false,
-            'pagination' => false,
-        ]);*/
-        $warehouses = new ArrayDataProvider([
-            'allModels' => $product->activeWarehouses,
+        $data = new ArrayDataProvider([
+            'allModels' => $product->linkedDataArrayList,
             'sort' => false,
             'pagination' => false,
         ]);
         
         return $this->render('view', [
             'product' => $product,
-            //'users' => $users,
-            'warehouses' => $warehouses,
+            'data' => $data,
         ]);
     }
 
@@ -82,6 +76,7 @@ class DefaultController extends Controller
     public function actionCreate($id = null, $view = 'view')
     {
         $model = new Product();
+        $model->scenario = Product::SCENARIO_ADMIN_EDIT;
         $model->status = Product::STATUS_ACTIVE;
             
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -102,6 +97,7 @@ class DefaultController extends Controller
     public function actionUpdate($id, $view = 'view')
     {
         $model = $this->findModel($id);
+        $model->scenario = Product::SCENARIO_EDITOR_EDIT;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect([$view, 'id' => $model->id]);
@@ -189,6 +185,30 @@ class DefaultController extends Controller
                 'allWarehouses' => array_diff_key($allWarehouses, $productWarehouses),
                 'productWarehouses' => $productWarehouses,
                 'view' => $view,
+            ]);
+    }
+    
+    /**
+     * Manage Products Managers
+     * @param type $id
+     * @param type $view
+     * @return type
+     */
+    public function actionProductsUsers($id, $view = 'view')
+    {
+        $model = $this->findModel($id);
+        
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $model->pricesTable['data'],
+            'pagination' => false,
+            'sort' => false,
+        ]);
+
+        return $this->render('products-users', [
+                'group' => $model,
+                'dataProvider' => $dataProvider,
+                'columns' => $model->pricesTable['columns'],
+                'view' =>$view,
             ]);
     }
     

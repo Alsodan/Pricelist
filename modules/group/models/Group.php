@@ -197,10 +197,12 @@ class Group extends \yii\db\ActiveRecord
         $prices = Price::findAll(['warehouse_id' => $warehousesIDs]);
         
         return Product::findAll(['id' => array_unique(ArrayHelper::getColumn($prices, 'id'))]);
-        /*$this->hasMany(Product::className(), ['id' => 'product_id'])
-            ->viaTable(ProductGroups::tableName(), ['group_id' => 'id']);*/
     }
 
+    /**
+     * Data for Prices table: products, warehouses and Price[]
+     * @return array
+     */
     public function getPricesTable()
     {
         $cyr = [
@@ -245,6 +247,7 @@ class Group extends \yii\db\ActiveRecord
         
         return $result;
     }
+    
     /**
      * Get only active Users
      * 

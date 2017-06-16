@@ -28,6 +28,9 @@ return [
     
     'BUTTON_SAVE' => 'Save',
     
+    'DATA_TITLE' => 'Warehouse -> Managers -> Price no Tax / Price with Tax',
+    'NO_MANAGERS' => 'No Manager',
+    
     'PRODUCT_UPDATE' => 'Upadate Product',
     'PRODUCT_DISABLE' => 'Disable Warehouse',
     'PRODUCT_ENABLE' => 'Enable Warehouse',
@@ -35,6 +38,7 @@ return [
     
     'PRODUCT_PRICES_MANAGE' => 'Manage Prices',
     'PRODUCT_WAREHOUSES_MANAGE' => 'Manage Warehouses',
+    'PRODUCT_USERS_MANAGE' => 'Manage managers',
 
     'BUTTON_BACK' => '&lt;&nbsp;Back',
     'PRODUCT_USERS' => 'Product Users',

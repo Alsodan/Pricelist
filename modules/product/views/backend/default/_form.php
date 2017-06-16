@@ -21,53 +21,57 @@ $this->registerJs('
 ?>
 
 <div class="group-form">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><b><?= Module::t('product', 'PRODUCT') ?>: <?= $this->title ?></b></h3>
+        </div>
+        <br>
+        <?php $form = ActiveForm::begin(); ?>
+            <div class="row">
+                <div class=" col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
+                    <?= $form->field($model, 'crop_id')->widget(Select2::className(), [
+                        'data' => Crop::getCropsDropdown(),
+                        'options' => ['placeholder' => Module::t('product', 'PRODUCT_SELECT_FROM_LIST_HINT')],
+                    ]) ?>
 
-    <?php $form = ActiveForm::begin(); ?>
+                    <?= $form->field($model, 'grade')->input('text') ?>
 
-    <?= $form->field($model, 'groupsList')->widget(Select2::className(), [
-        'data' => Group::getGroupsDropdown(),
-        'options' => ['placeholder' => Module::t('product', 'PRODUCT_SELECT_FROM_LIST_HINT')],
-    ])->label(Module::t('product', 'GROUP')) ?>
-    
-    <?= $form->field($model, 'crop_id')->widget(Select2::className(), [
-        'data' => Crop::getCropsDropdown(),
-        'options' => ['placeholder' => Module::t('product', 'PRODUCT_SELECT_FROM_LIST_HINT')],
-    ]) ?>
-    
-    <?= $form->field($model, 'grade')->input('text') ?>
-    
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'subtitle')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'specification')->textarea() ?>
-    
-    <?php
-        if ($model->call_no_tax) {
-            echo $form->field($model, 'price_no_tax')->input('text', ['readonly' => true]);
-        }
-        else {
-            echo $form->field($model, 'price_no_tax');
-        }
-    ?>
-    
-    <?= $form->field($model, 'call_no_tax')->checkbox(['data' => ['input' => 'product-price_no_tax']]) ?>
-        
-    <?php
-        if ($model->call_with_tax) {
-            echo $form->field($model, 'price_with_tax')->input('text', ['readonly' => true]);
-        }
-        else {
-            echo $form->field($model, 'price_with_tax');
-        }
-    ?>
-    
-    <?= $form->field($model, 'call_with_tax')->checkbox(['data' => ['input' => 'product-price_with_tax']]) ?>
-    
-    <div class="form-group">
-        <?= Html::submitButton(Module::t('product', 'BUTTON_SAVE'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                    <?= $form->field($model, 'subtitle')->textInput(['maxlength' => true]) ?>
+
+                    <?= $form->field($model, 'specification')->textarea() ?>
+                    
+                    <?= $model->scenario == Product::SCENARIO_ADMIN_EDIT ? $form->field($model, 'status')->dropDownList(Product::getStatusArray()) : '' ?>
+
+                    <?php
+                        /*if ($model->call_no_tax) {
+                            echo $form->field($model, 'price_no_tax')->input('text', ['readonly' => true]);
+                        }
+                        else {
+                            echo $form->field($model, 'price_no_tax');
+                        }*/
+                    ?>
+
+                    <?= ''//$form->field($model, 'call_no_tax')->checkbox(['data' => ['input' => 'product-price_no_tax']]) ?>
+
+                    <?php
+                        /*if ($model->call_with_tax) {
+                            echo $form->field($model, 'price_with_tax')->input('text', ['readonly' => true]);
+                        }
+                        else {
+                            echo $form->field($model, 'price_with_tax');
+                        }*/
+                    ?>
+
+                    <?= ''//$form->field($model, 'call_with_tax')->checkbox(['data' => ['input' => 'product-price_with_tax']]) ?>
+
+                </div>
+            </div>
+            <br>
+            <div class="panel-footer">
+                <?= Html::submitButton(Module::t('product', 'BUTTON_SAVE'), ['class' => $model->isNewRecord ? 'btn btn-lg btn-success' : 'btn btn-lg btn-primary']) ?>
+            </div>
+        <?php ActiveForm::end(); ?>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>

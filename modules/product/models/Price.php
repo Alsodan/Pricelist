@@ -28,6 +28,9 @@ use app\modules\product\models\PriceUsers;
  */
 class Price extends \yii\db\ActiveRecord
 {
+    public $call_with_tax;
+    public $call_no_tax;
+    
     /**
      * @inheritdoc
      */
@@ -119,6 +122,17 @@ class Price extends \yii\db\ActiveRecord
     public function getWarehouse()
     {
         return $this->hasOne(Warehouse::className(), ['id' => 'warehouse_id']);
+    }
+    
+    /**
+     * Get Price active Warehouse
+     * 
+     * @return app/modules/warehouse/models/Warehouse
+     */
+    public function getActiveWarehouse()
+    {
+        return $this->hasOne(Warehouse::className(), ['id' => 'warehouse_id'])
+                ->where(['status' => Warehouse::STATUS_ACTIVE]);
     }
 
     /**

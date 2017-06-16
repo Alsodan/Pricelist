@@ -22,7 +22,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="panel-body text-center">
             <div class="btn-group" role="group">
                 <?= Html::a('<span class="glyphicon glyphicon-pencil"></span><br>' . Module::t('product', 'PRODUCT_UPDATE'), ['update', 'id' => $product->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
-                <?= Html::a('<span class="glyphicon glyphicon-home"></span><br>' . Module::t('product', 'PRODUCT_WAREHOUSES_MANAGE'), ['warehouses', 'id' => $product->id], ['class' => 'btn btn-primary btn-medium-width']) ?>                <?= Html::a('<span class="glyphicon glyphicon-user"></span><br>' . Module::t('product', 'PRODUCT_PRICES_MANAGE'), ['prices', 'id' => $product->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-home"></span><br>' . Module::t('product', 'PRODUCT_WAREHOUSES_MANAGE'), ['warehouses', 'id' => $product->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-tag"></span><br>' . Module::t('product', 'PRODUCT_USERS_MANAGE'), ['products-users', 'id' => $product->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-rub"></span><br>' . Module::t('product', 'PRODUCT_PRICES_MANAGE'), ['prices', 'id' => $product->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
                 <?= $product->status == Product::STATUS_ACTIVE ?
                     Html::a('<span class="glyphicon glyphicon-off"></span><br>' . Module::t('product', 'PRODUCT_DISABLE'), ['block', 'id' => $product->id, 'view' => 'view'], [
                     'class' => 'btn btn-danger btn-medium-width',
@@ -44,76 +46,92 @@ $this->params['breadcrumbs'][] = $this->title;
         <hr>
         
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <?= DetailView::widget([
-                    'model' => $product,
-                    'attributes' => [
-                        'title',
-                        [
-                            'attribute' => 'subtitle',
-                            'label' => Module::t('product', 'PRODUCT_SUBTITLE_SHORT'),
+            <div class=" col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <?= DetailView::widget([
+                        'model' => $product,
+                        'attributes' => [
+                            'title',
+                            [
+                                'attribute' => 'subtitle',
+                                'label' => Module::t('product', 'PRODUCT_SUBTITLE_SHORT'),
+                            ],
+                            [
+                                'attribute' => 'grade',
+                                'label' => Module::t('product', 'PRODUCT_GRADE_SHORT'),
+                            ],
+                            'specification'
                         ],
-                        [
-                            'attribute' => 'grade',
-                            'label' => Module::t('product', 'PRODUCT_GRADE_SHORT'),
+                    ]) ?>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <?= DetailView::widget([
+                        'model' => $product,
+                        'attributes' => [
+                            [
+                                'attribute' => 'status',
+                                'value' => function ($model) { return $model->statusName; }
+                            ],
+                            [
+                                'value' => function ($model) { return $model->crop->title; },
+                                'label' => Module::t('product', 'CROP'),
+                            ],
+                            [
+                                'value' => function ($model) { return implode('<br>', $model->activeGroupsTitles); },
+                                'label' => Module::t('product', 'GROUP'),
+                                'format' => 'html',
+                            ],
                         ],
-                        'specification'
-                    ],
-                ]) ?>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <?= DetailView::widget([
-                    'model' => $product,
-                    'attributes' => [
-                        [
-                            'attribute' => 'status',
-                            'value' => function ($model) { return $model->statusName; }
-                        ],
-                        [
-                            'value' => function ($model) { return $model->crop->title; },
-                            'label' => Module::t('product', 'CROP'),
-                        ],
-                        [
-                            'value' => function ($model) { return implode('<br>', $model->activeGroupsTitles); },
-                            'label' => Module::t('product', 'GROUP'),
-                            'format' => 'html',
-                        ],
-                    ],
-                ]) ?>
+                    ]) ?>
+                </div>
             </div>
         </div>
         <hr>
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="text-center">
-                    <h4><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;<b><?= Module::t('product', 'USERS') ?></b></h4>
-                </div>
-                <?= ''/*GridView::widget([
-                    'dataProvider' => $users,
-                    'showHeader' => false,
-                    'layout' => "{items}",
-                    'columns' => [
-                        [
-                            'value' => function ($model) { return $model->name . ' (' . $model->phone . ')'; }
+            <div class=" col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
+                
+                <?= GridView::widget([
+                        'dataProvider' => $data,
+                        //'showHeader' => false,
+                        'layout' => "{items}",
+                        'columns' => [
+                            [
+                                'header' => '<span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;<b>' . Module::t('product', 'WAREHOUSES') . '</b>',
+                                'value' => function ($model) { return $model[0]; },
+                                'format' => 'html',
+                                'headerOptions' => [
+                                    'style' => 'vertical-align: middle; text-align: center;'
+                                ],
+                                'contentOptions' => [
+                                    'style' => 'vertical-align: middle;'
+                                ],
+                            ],
+                            [
+                                'header' => '<span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;<b>' . Module::t('product', 'USERS') . '</b>',
+                                'value' => function ($model) { return $model[1]; },
+                                'format' => 'html',
+                                'headerOptions' => [
+                                    'style' => 'vertical-align: middle; text-align: center;'
+                                ],
+                                'contentOptions' => [
+                                    'style' => 'vertical-align: middle;'
+                                ],
+                            ],
+                            [
+                                'header' => '<span class="glyphicon glyphicon-rub"></span>&nbsp;&nbsp;<b>' . Module::t('product', 'PRICES') . '</b>',
+                                'value' => function ($model) { return $model[2]; },
+                                'format' => 'html',
+                                'headerOptions' => [
+                                    'style' => 'vertical-align: middle; text-align: center;'
+                                ],
+                                'contentOptions' => [
+                                    'style' => 'vertical-align: middle;'
+                                ],
+                            ]
                         ]
-                    ]
-                ])*/
+                    ])
                 ?>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="text-center">
-                    <h4><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;<b><?= Module::t('product', 'WAREHOUSES') ?></b></h4>
-                </div>
-                <?= GridView::widget([
-                    'dataProvider' => $warehouses,
-                    'showHeader' => false,
-                    'layout' => "{items}",
-                    'columns' => [
-                        'title',
-                    ]
-                ])
-                ?>
-            </div>            
         </div>
     
         <div class="panel-footer">
