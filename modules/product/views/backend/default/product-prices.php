@@ -5,10 +5,11 @@ use app\modules\product\Module;
 use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\product\models\search\ProductSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $group app\modules\group\models\Group */
 
-$this->title = Module::t('product', 'PRODUCTS_TITLE');
+$this->title = Module::t('product', 'PRODUCT_PRICES_MANAGE');
+$this->params['breadcrumbs'][] = ['label' => Module::t('product', 'PRODUCTS_TITLE'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $product->fullTitle, 'url' => ['view', 'id' => $product->id]];
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->registerJs('
@@ -27,13 +28,12 @@ $this->registerJs('
         $(targetInput).prop("readonly", $(targetCBNoNeed).is(":checked") || $(targetCBCall).is(":checked"));
     });
 ');
-
 ?>
-<div class="prices-index">
-    
+<div class="group-manage">
+
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title"><b><?= Module::t('product', 'PRODUCTS_TITLE') ?>: <?= Module::t('product', 'PRODUCT_PRICES_MANAGE') ?></b></h3>
+            <h3 class="panel-title"><b><?= Module::t('product', 'PRODUCT') ?>: <?= $product->fullTitle ?></b></h3>
         </div>
         <div class="panel-body text-center">
             <div class="alert alert-info">
@@ -48,14 +48,6 @@ $this->registerJs('
 
         <?php
             $gridColumns = [
-                [
-                    'attribute' => 'title',
-                    'label' => Module::t('product', 'PRODUCTS_TITLE'),
-                    'width' => '100px',
-                    'hAlign' => 'center',
-                    'vAlign' => 'middle',
-                    'format' => 'html',
-                ]
             ];
             foreach ($columns as $arrkey => $value) {
                 //$id = $value['id'];
@@ -63,7 +55,7 @@ $this->registerJs('
                 $gridColumns = array_merge($gridColumns, [
                     [
                         'class' => 'kartik\grid\EditableColumn',
-                        'editableOptions'=> function ($model, $key, $index) use ($arrkey) {
+                        'editableOptions'=> function ($model, $key, $index) use ($arrkey, $product) {
                             return [
                                 'header' => Module::t('product', 'PRODUCTS_PRICES_MANAGE'),
                                 'size' => 'md',
@@ -80,7 +72,7 @@ $this->registerJs('
                                 ],
                                 'formOptions' => [
                                     'action' => [
-                                        Yii::$app->urlManager->createUrl(['/product/pricelist/product-prices-change', 'id' => $model[$arrkey]->id])
+                                        Yii::$app->urlManager->createUrl(['/admin/product/default/product-prices-change', 'id' => $model[$arrkey]->id])
                                     ] 
                                 ],
                                 'inputType' => \kartik\editable\Editable::INPUT_SPIN,
@@ -166,7 +158,7 @@ $this->registerJs('
         </div>
     
         <div class="panel-footer">
+            <?= Html::a(Module::t('product', 'BUTTON_BACK'), [$view, 'id' => $product->id], ['class' => 'btn btn-lg btn-primary']) ?>
         </div>
     </div>
-    
 </div>

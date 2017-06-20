@@ -133,24 +133,6 @@ class Profile extends ActiveRecord
     }
     
     /**
-     * List of User Warehouses
-     */
-    public function getWarehouses()
-    {
-        return $this->hasMany(Warehouse::className(), ['id' => 'warehouse_id'])
-            ->viaTable(WarehouseProfiles::tableName(), ['profile_id' => 'id']);
-    }
-    
-    /**
-     * List of User Products
-     */
-    public function getProducts()
-    {
-        return $this->hasMany(Product::className(), ['id' => 'product_id'])
-            ->viaTable(ProfileProducts::tableName(), ['profile_id' => 'id']);
-    }    
-    
-    /**
      * Get only active Groups
      * 
      * @return array Groups[]
@@ -161,23 +143,6 @@ class Profile extends ActiveRecord
         foreach ($this->groups as $group) {
             if ($group->status == Group::STATUS_ACTIVE) {
                 $result[] = $group;
-            }
-        }
-        
-        return $result;
-    }
-    
-    /**
-     * Get only active Warehouses
-     * 
-     * @return array Warehouses[]
-     */
-    public function getActiveWarehouses()
-    {
-        $result = [];
-        foreach ($this->warehouses as $warehouse) {
-            if ($warehouse->status == Warehouse::STATUS_ACTIVE) {
-                $result[] = $warehouse;
             }
         }
         
@@ -209,18 +174,6 @@ class Profile extends ActiveRecord
         $result = [];
         foreach ($this->activeGroups as $group){
             $result[$group->id] = $group->title;
-        }
-        return $result;
-    }
-    
-    /**
-     * Get Warehouses Titles array
-     */
-    public function getWarehousesTitleArray()
-    {
-        $result = [];
-        foreach ($this->activeWarehouses as $item){
-            $result[$item->id] = $item->title;
         }
         return $result;
     }

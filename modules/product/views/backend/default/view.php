@@ -23,8 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="btn-group" role="group">
                 <?= Html::a('<span class="glyphicon glyphicon-pencil"></span><br>' . Module::t('product', 'PRODUCT_UPDATE'), ['update', 'id' => $product->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
                 <?= Html::a('<span class="glyphicon glyphicon-home"></span><br>' . Module::t('product', 'PRODUCT_WAREHOUSES_MANAGE'), ['warehouses', 'id' => $product->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
-                <?= Html::a('<span class="glyphicon glyphicon-tag"></span><br>' . Module::t('product', 'PRODUCT_USERS_MANAGE'), ['products-users', 'id' => $product->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
-                <?= Html::a('<span class="glyphicon glyphicon-rub"></span><br>' . Module::t('product', 'PRODUCT_PRICES_MANAGE'), ['prices', 'id' => $product->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-tag"></span><br>' . Module::t('product', 'PRODUCT_USERS_MANAGE'), ['product-users', 'id' => $product->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-rub"></span><br>' . Module::t('product', 'PRODUCT_PRICES_MANAGE'), ['product-prices', 'id' => $product->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
                 <?= $product->status == Product::STATUS_ACTIVE ?
                     Html::a('<span class="glyphicon glyphicon-off"></span><br>' . Module::t('product', 'PRODUCT_DISABLE'), ['block', 'id' => $product->id, 'view' => 'view'], [
                     'class' => 'btn btn-danger btn-medium-width',

@@ -200,10 +200,10 @@ class Group extends \yii\db\ActiveRecord
     }
 
     /**
-     * Data for Prices table: products, warehouses and Price[]
+     * Data for Products Users table: products, warehouses and User[]
      * @return array
      */
-    public function getPricesTable()
+    public function getUsersTable()
     {
         $cyr = [
             'а','б','в','г','д','е','ё','ж','з','и','й','к','л','м','н','о','п',

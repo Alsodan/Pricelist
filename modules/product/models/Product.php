@@ -2,19 +2,13 @@
 
 namespace app\modules\product\models;
 
-use Yii;
 use app\modules\product\Module;
 use app\modules\product\models\query\ProductQuery;
 use yii\helpers\ArrayHelper;
-use app\modules\user\models\common\Profile;
 use app\modules\warehouse\models\Warehouse;
-use app\modules\group\models\Group;
 use app\modules\crop\models\Crop;
-use app\modules\product\models\ProfileProducts;
-use app\modules\product\models\WarehouseProducts;
 use app\modules\user\models\common\User;
 use app\components\behaviors\ManyHasManyBehavior;
-use app\modules\product\models\ProductGroups;
 use app\modules\product\models\Price;
 
 /**
@@ -108,12 +102,6 @@ class Product extends \yii\db\ActiveRecord
         if (parent::beforeSave($insert)) {
             $this->warehousesList = $this->warehousesList;
 
-            /*if ($this->call_with_tax == 1) {
-                $this->price_with_tax = -1;
-            }
-            if ($this->call_no_tax == 1) {
-                $this->price_no_tax = -1;
-            }*/
             return true;
         } else {
             return false;
@@ -170,6 +158,15 @@ class Product extends \yii\db\ActiveRecord
         return ArrayHelper::getValue(static::getStatusArray(), $this->status);
     }
     
+    /**
+     * Get Product title with subtitle
+     * @return string
+     */
+    public function getFullTitle()
+    {
+        return $this->title . ($this->subtitle ? ' (' . $this->subtitle . ')' : '');
+    }
+
     /**
      * Get Product Crop
      * 
@@ -391,6 +388,55 @@ class Product extends \yii\db\ActiveRecord
     }    
     
     /**
+     * Data for Products Users table: products, warehouses and User[]
+     * @return array
+     */
+    public function getUsersTable()
+    {
+        $cyr = [
+            'а','б','в','г','д','е','ё','ж','з','и','й','к','л','м','н','о','п',
+            'р','с','т','у','ф','х','ц','ч','ш','щ','ъ','ы','ь','э','ю','я',
+            'А','Б','В','Г','Д','Е','Ё','Ж','З','И','Й','К','Л','М','Н','О','П',
+            'Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ъ','Ы','Ь','Э','Ю','Я'
+        ];
+        $lat = [
+            'a','b','v','g','d','e','io','zh','z','i','y','k','l','m','n','o','p',
+            'r','s','t','u','f','h','ts','ch','sh','sht','a','i','y','e','yu','ya',
+            'A','B','V','G','D','E','Io','Zh','Z','I','Y','K','L','M','N','O','P',
+            'R','S','T','U','F','H','Ts','Ch','Sh','Sht','A','I','Y','e','Yu','Ya'
+        ];
+        
+        //Массив соответствия транслитерированных и обычных названий складов
+        $whColumns = [];
+        $columns = [];
+        foreach ($this->activeWarehouses as $item) {
+            $whColumns = array_merge($whColumns, [preg_replace('~[^-a-z0-9_]+~u', '', strtolower(str_replace($cyr, $lat, $item->title))) => ['title' => $item->title, 'id' => $item->id]]);
+            $columns = array_merge($columns, [preg_replace('~[^-a-z0-9_]+~u', '', strtolower(str_replace($cyr, $lat, $item->title))) => '']);
+        }
+        
+        //Расширяем массив до количества продукции
+        $base = [];
+        //foreach ($this->activeProducts as $item) {
+            $base[$this->id] = array_merge(['title' => $this->fullTitle], $columns);
+        //}
+
+        $data = Price::find()
+                ->where(['warehouse_id' => ArrayHelper::getColumn($this->activeWarehouses, 'id')])
+                ->andWhere(['product_id' => $this->id])
+                ->all();
+        
+        //Заполняем массив данными
+        foreach ($data as $item) {
+            $base[$this->id][preg_replace('~[^-a-z0-9_]+~u', '', strtolower(str_replace($cyr, $lat, $item->warehouse->title)))] = $item;
+        }
+        
+        $result['columns'] = $whColumns;
+        $result['data'] = $base;
+        
+        return $result;
+    }
+        
+    /**
      * Data for Prices table: products, warehouses and Price[]
      * @return array
      */
@@ -420,7 +466,7 @@ class Product extends \yii\db\ActiveRecord
         //Расширяем массив до количества продукции
         $base = [];
         //foreach ($this->activeProducts as $item) {
-            $base[$this->id] = array_merge(['title' => $this->title . ($this->subtitle ? '<br>(' . $this->subtitle . ')' : '')], $columns);
+            $base[$this->id] = array_merge(['title' => $this->fullTitle], $columns);
         //}
 
         $data = Price::find()
@@ -431,6 +477,57 @@ class Product extends \yii\db\ActiveRecord
         //Заполняем массив данными
         foreach ($data as $item) {
             $base[$this->id][preg_replace('~[^-a-z0-9_]+~u', '', strtolower(str_replace($cyr, $lat, $item->warehouse->title)))] = $item;
+        }
+        
+        $result['columns'] = $whColumns;
+        $result['data'] = $base;
+        
+        return $result;
+    }
+    
+    /**
+     * Generate Price table
+     * @param type $products
+     * @param type $warehouses
+     * @return array
+     */
+    public static function generatePricesTable($products, $warehouses)
+    {
+        $cyr = [
+            'а','б','в','г','д','е','ё','ж','з','и','й','к','л','м','н','о','п',
+            'р','с','т','у','ф','х','ц','ч','ш','щ','ъ','ы','ь','э','ю','я',
+            'А','Б','В','Г','Д','Е','Ё','Ж','З','И','Й','К','Л','М','Н','О','П',
+            'Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ъ','Ы','Ь','Э','Ю','Я'
+        ];
+        $lat = [
+            'a','b','v','g','d','e','io','zh','z','i','y','k','l','m','n','o','p',
+            'r','s','t','u','f','h','ts','ch','sh','sht','a','i','y','e','yu','ya',
+            'A','B','V','G','D','E','Io','Zh','Z','I','Y','K','L','M','N','O','P',
+            'R','S','T','U','F','H','Ts','Ch','Sh','Sht','A','I','Y','e','Yu','Ya'
+        ];
+        
+        //Массив соответствия транслитерированных и обычных названий складов
+        $whColumns = [];
+        $columns = [];
+        foreach ($warehouses as $item) {
+            $whColumns = array_merge($whColumns, [preg_replace('~[^-a-z0-9_]+~u', '', strtolower(str_replace($cyr, $lat, $item->title))) => ['title' => $item->title, 'id' => $item->id]]);
+            $columns = array_merge($columns, [preg_replace('~[^-a-z0-9_]+~u', '', strtolower(str_replace($cyr, $lat, $item->title))) => '']);
+        }
+        
+        //Расширяем массив до количества продукции
+        $base = [];
+        foreach ($products as $item) {
+            $base[$item->id] = array_merge(['title' => $item->fullTitle], $columns);
+        }
+
+        $data = Price::find()
+                ->where(['warehouse_id' => ArrayHelper::getColumn($warehouses, 'id')])
+                ->andWhere(['product_id' => ArrayHelper::getColumn($products, 'id')])
+                ->all();
+        
+        //Заполняем массив данными
+        foreach ($data as $item) {
+            $base[$item->product->id][preg_replace('~[^-a-z0-9_]+~u', '', strtolower(str_replace($cyr, $lat, $item->warehouse->title)))] = $item;
         }
         
         $result['columns'] = $whColumns;

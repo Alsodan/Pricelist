@@ -21,6 +21,7 @@ class m170609_081539_create_price_table extends Migration
             'id' => $this->primaryKey(),
             'price_no_tax' => $this->decimal(10, 2),
             'price_with_tax' => $this->decimal(10, 2),
+            'price_status' => $this->integer(2),
             'warehouse_id' => $this->integer()->notNull(),
             'product_id' => $this->integer()->notNull(),
         ], $tableOptions);

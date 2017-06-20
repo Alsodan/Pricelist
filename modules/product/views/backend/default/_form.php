@@ -6,18 +6,11 @@ use app\modules\product\Module;
 use app\modules\crop\models\Crop;
 use app\modules\product\models\Product;
 use kartik\select2\Select2;
-use app\modules\group\models\Group;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\product\models\Product */
 /* @var $form yii\widgets\ActiveForm */
 
-$this->registerJs('
-    $("input:checkbox").change(function () {
-        var target = "input#" + $(this).data("input");
-        $(target).attr("readonly", !$(target).attr("readonly"));
-    });
-');
 ?>
 
 <div class="group-form">
@@ -43,29 +36,7 @@ $this->registerJs('
                     <?= $form->field($model, 'specification')->textarea() ?>
                     
                     <?= $model->scenario == Product::SCENARIO_ADMIN_EDIT ? $form->field($model, 'status')->dropDownList(Product::getStatusArray()) : '' ?>
-
-                    <?php
-                        /*if ($model->call_no_tax) {
-                            echo $form->field($model, 'price_no_tax')->input('text', ['readonly' => true]);
-                        }
-                        else {
-                            echo $form->field($model, 'price_no_tax');
-                        }*/
-                    ?>
-
-                    <?= ''//$form->field($model, 'call_no_tax')->checkbox(['data' => ['input' => 'product-price_no_tax']]) ?>
-
-                    <?php
-                        /*if ($model->call_with_tax) {
-                            echo $form->field($model, 'price_with_tax')->input('text', ['readonly' => true]);
-                        }
-                        else {
-                            echo $form->field($model, 'price_with_tax');
-                        }*/
-                    ?>
-
-                    <?= ''//$form->field($model, 'call_with_tax')->checkbox(['data' => ['input' => 'product-price_with_tax']]) ?>
-
+                    
                 </div>
             </div>
             <br>

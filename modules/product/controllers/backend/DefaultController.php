@@ -7,10 +7,11 @@ use app\modules\product\models\Product;
 use app\modules\product\models\search\ProductSearch;
 use app\modules\user\models\common\Profile;
 use app\modules\warehouse\models\Warehouse;
+use app\modules\product\models\Price;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use \yii\data\ArrayDataProvider;
+use yii\data\ArrayDataProvider;
 
 /**
  * DefaultController implements the CRUD actions for Product model.
@@ -194,7 +195,31 @@ class DefaultController extends Controller
      * @param type $view
      * @return type
      */
-    public function actionProductsUsers($id, $view = 'view')
+    public function actionProductUsers($id, $view = 'view')
+    {
+        $model = $this->findModel($id);
+        
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $model->usersTable['data'],
+            'pagination' => false,
+            'sort' => false,
+        ]);
+
+        return $this->render('product-users', [
+                'product' => $model,
+                'dataProvider' => $dataProvider,
+                'columns' => $model->usersTable['columns'],
+                'view' =>$view,
+            ]);
+    }
+    
+    /**
+     * Manage Products Prices
+     * @param type $id
+     * @param type $view
+     * @return type
+     */
+    public function actionProductPrices($id, $view = 'view')
     {
         $model = $this->findModel($id);
         
@@ -204,8 +229,8 @@ class DefaultController extends Controller
             'sort' => false,
         ]);
 
-        return $this->render('products-users', [
-                'group' => $model,
+        return $this->render('product-prices', [
+                'product' => $model,
                 'dataProvider' => $dataProvider,
                 'columns' => $model->pricesTable['columns'],
                 'view' =>$view,
@@ -246,5 +271,48 @@ class DefaultController extends Controller
         }
         
         return false;
-    }    
+    }
+    
+    /**
+     * Ajax Product Users managment
+     * @param type $id
+     * @return boolean
+     */
+    public function actionProductUsersChange($id)
+    {
+        if (Yii::$app->request->isAjax) {
+            $price = Price::findOne($id);
+            $usersString = Yii::$app->request->post('users');
+            $price->usersList = empty($usersString) ? [] : $usersString;
+            $price->save();
+            $message = $price->errors;
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return ['output' => empty($price->activeUsersNames) ? Module::t('group', 'NO_USERS') : implode('<br>', $price->activeUsersNames), 'message' => $message];
+        }
+        
+        return false;
+    }
+        
+    /**
+     * Ajax Product Prices managment
+     * @param type $id
+     * @return boolean
+     */
+    public function actionProductPricesChange($id)
+    {
+        if (Yii::$app->request->isAjax) {
+            $price = Price::findOne($id);
+            $price->load(Yii::$app->request->post());
+            $price->call_no_tax = (bool)Yii::$app->request->post('call_no_tax');
+            $price->call_with_tax = (bool)Yii::$app->request->post('call_with_tax');
+            $price->noneed_no_tax = (bool)Yii::$app->request->post('noneed_no_tax');
+            $price->noneed_with_tax = (bool)Yii::$app->request->post('noneed_with_tax');
+            $price->save();
+            $message = $price->errors;
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return ['output' => $price->prices, 'message' => $message];
+        }
+        
+        return false;
+    }
 }

@@ -47,4 +47,10 @@ return [
     'PRODUCT_WAREHOUSES' => 'Product Warehouses',
     'ALL_WAREHOUSES' => 'All Warehouses',
     'MANAGE_WAREHOUSES_HINT {from} {to}' => 'Choose Warehouse from list "{from}" and drag-and-drop it to list "{to}". <br> Drag Warehouse back to list "{from}" to remove from Product.',
+    'PRODUCTS_USERS_MANAGE' => 'Product Managers',
+    'MANAGE_PRODUCTS_USERS_HINT' => 'Click to managers list in table cell to edit it.',
+    'SELECT_USERS' => 'Select Users',
+    'SELECT_USERS_FULL' => 'Select Users from list',
+    'PRODUCTS_PRICES_MANAGE' => 'Product Prices',
+    'MANAGE_PRODUCTS_PRICES_HINT' => 'Click to price in table cell to edit it.',
 ];

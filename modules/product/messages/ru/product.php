@@ -47,4 +47,10 @@ return [
     'PRODUCT_WAREHOUSES' => 'Склады продукции',
     'ALL_WAREHOUSES' => 'Все склады',
     'MANAGE_WAREHOUSES_HINT {from} {to}' => 'Выберите склад из списка "{from}" и перетащите его в список "{to}". <br> Чтобы убрать склад - перетащие его обратно в список "{from}".',
+    'PRODUCTS_USERS_MANAGE' => 'Менеджеры продукции',
+    'MANAGE_PRODUCTS_USERS_HINT' => 'Нажмите на список менеджеров в таблице и отредактируйте его.',
+    'SELECT_USERS' => 'Выберите...',
+    'SELECT_USERS_FULL' => 'Начните вводить имя или выберите из списка',
+    'PRODUCTS_PRICES_MANAGE' => 'Цена продукции',
+    'MANAGE_PRODUCTS_PRICES_HINT' => 'Нажмите на цену в таблице и отредактируйте её.',
 ];

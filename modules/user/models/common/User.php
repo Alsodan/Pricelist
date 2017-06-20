@@ -12,6 +12,10 @@ use app\modules\user\Module;
 use app\modules\user\models\common\query\UserQuery;
 use app\modules\group\models\Group;
 use app\modules\group\models\GroupUsers;
+use app\modules\product\models\Price;
+use app\modules\product\models\PriceUsers;
+use app\modules\product\models\Product;
+use app\modules\warehouse\models\Warehouse;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -79,9 +83,6 @@ class User extends ActiveRecord implements IdentityInterface
             
             'profileName' => Module::t('user', 'USER_NAME'),
             'profilePhone' => Module::t('user', 'USER_PHONE'),
-            //'groups' => Module::t('user', 'USER_GROUPS'),
-            //'warehouses' => Module::t('user', 'USER_WAREHOUSES'),
-            //'products' => Module::t('user', 'USER_PRODUCTS'),
         ];
     }
     
@@ -325,6 +326,15 @@ class User extends ActiveRecord implements IdentityInterface
     }
     
     /**
+     * Get Profile Name and Phone
+     * @return string
+     */
+    public function getProfileData()
+    {
+        return $this->profile->name . ' (' . $this->profile->phone . ')';
+    }
+    
+    /**
      * Get Groups
      * 
      * @return array app/modules/group/models/Group[]
@@ -336,38 +346,29 @@ class User extends ActiveRecord implements IdentityInterface
     }
     
     /**
-     * Get Profile Name and Phone
-     * @return string
+     * Get User active Prices
      */
-    public function getProfileData()
+    public function getActivePrices()
     {
-        return $this->profile->name . ' (' . $this->profile->phone . ')';
+        return $this->hasMany(Price::className(), ['id' => 'price_id'])
+            ->viaTable(PriceUsers::tableName(), ['user_id' => 'id'])
+            ->joinWith('product')
+            ->joinWith('warehouse')
+            ->where([Product::tableName() . '.status' => Product::STATUS_ACTIVE, Warehouse::tableName() . '.status' => Warehouse::STATUS_ACTIVE]);
     }
     
     /**
-     * Get User Groups
+     * Get User active Products And Warehouses
      */
-    /*public function getGroups()
+    public function getActiveProductsAndWarehouses()
     {
-        return implode('<br>', $this->profile->groupsTitleArray);
-    }*/
-
-    /**
-     * Get User Warehouses
-     */
-    /*public function getWarehouses()
-    {
-        return implode('<br>', $this->profile->warehousesTitleArray);
-    }*/
-    
-
-    /**
-     * Get User Products
-     */
-    /*public function getProducts()
-    {
-        return implode('<br>', $this->profile->productsTitleArray);
-    }*/
+        $result = [];
+        foreach ($this->activePrices as $price) {
+            $result['product'][$price->product->id] = $price->product;
+            $result['warehouse'][$price->warehouse->id] = $price->warehouse;
+        }
+        return $result;
+    }
     
     /**
      * Block User

@@ -35,6 +35,24 @@ return [
             'showScriptName' => false,
             'rules' => [
                 [
+                    'class' => 'yii\rest\UrlRule',
+                    'pluralize' => false,
+                    'prefix' => 'api',
+                    'controller' => [
+                        'v1/price'
+                    ],
+                    'patterns' => [
+                        //'PUT,PATCH {id}' => 'update',
+                        //'DELETE {id}' => 'delete',
+                        'GET,HEAD {id}' => 'view',
+                        'GET,HEAD all' => 'prices',
+                        //'POST' => 'create',
+                        //'GET,HEAD' => 'index',
+                        //'{id}' => 'options',
+                        //'' => 'index',
+                    ],
+                ],
+                [
                     'class' => 'yii\web\GroupUrlRule',
                     'prefix' => 'admin',
                     'routePrefix' => 'admin',

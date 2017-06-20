@@ -82,11 +82,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'prices' => function ($url, $model, $key) {
                         return 
-                            Html::a('<span class="glyphicon glyphicon-rub"></span>', ['prices', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('product', 'PRICES')]);
+                            Html::a('<span class="glyphicon glyphicon-rub"></span>', ['product-prices', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('product', 'PRICES')]);
                     },
                     'managers' => function ($url, $model, $key) {
                         return 
-                            Html::a('<span class="glyphicon glyphicon-tags"></span>', ['products-users', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('product', 'USERS')]);
+                            Html::a('<span class="glyphicon glyphicon-tags"></span>', ['product-users', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('product', 'USERS')]);
                     },
                 ],
                 'contentOptions' => ['style' => 'width: 150px;']

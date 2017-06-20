@@ -176,7 +176,7 @@ class DefaultController extends Controller
         $model = $this->findModel($id);
         
         $dataProvider = new ArrayDataProvider([
-            'allModels' => $model->pricesTable['data'],
+            'allModels' => $model->usersTable['data'],
             'pagination' => false,
             'sort' => false,
         ]);
@@ -184,7 +184,7 @@ class DefaultController extends Controller
         return $this->render('products-users', [
                 'group' => $model,
                 'dataProvider' => $dataProvider,
-                'columns' => $model->pricesTable['columns'],
+                'columns' => $model->usersTable['columns'],
             ]);
     }
     
@@ -249,7 +249,6 @@ class DefaultController extends Controller
         return false;
     }
     
-        
     /**
      * Ajax Price managment
      * @param type $id

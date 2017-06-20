@@ -4,13 +4,10 @@ namespace app\modules\product\controllers\frontend;
 
 use Yii;
 use app\modules\product\models\Product;
-use app\modules\product\models\search\ProductSearch;
-use app\modules\user\models\common\Profile;
-use app\modules\warehouse\models\Warehouse;
+use app\modules\product\models\Price;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use \yii\data\ArrayDataProvider;
+use yii\data\ArrayDataProvider;
+use yii\web\Response;
 
 class PricelistController extends Controller
 {
@@ -20,15 +17,42 @@ class PricelistController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ProductSearch();
+        $prices = Yii::$app->user->identity->activeProductsAndWarehouses;
+        $tableData = Product::generatePricesTable($prices['product'], $prices['warehouse']);
+        //echo '<pre>';var_dump($tableData); die();
+
         $dataProvider = new ArrayDataProvider([
-            'allModels' => $searchModel->searchWithGroup(),
+            'allModels' => $tableData['data'],
             'pagination' => false,
             'sort' => false,
         ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'columns' => $tableData['columns'],
         ]);
+    }
+            
+    /**
+     * Ajax Product Prices managment
+     * @param type $id
+     * @return boolean
+     */
+    public function actionProductPricesChange($id)
+    {
+        if (Yii::$app->request->isAjax) {
+            $price = Price::findOne($id);
+            $price->load(Yii::$app->request->post());
+            $price->call_no_tax = (bool)Yii::$app->request->post('call_no_tax');
+            $price->call_with_tax = (bool)Yii::$app->request->post('call_with_tax');
+            $price->noneed_no_tax = (bool)Yii::$app->request->post('noneed_no_tax');
+            $price->noneed_with_tax = (bool)Yii::$app->request->post('noneed_with_tax');
+            $price->save();
+            $message = $price->errors;
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['output' => $price->prices, 'message' => $message];
+        }
+        
+        return false;
     }
 }

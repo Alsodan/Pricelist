@@ -6,15 +6,9 @@ use Yii;
 use app\modules\product\Module;
 use app\modules\product\models\query\ProductQuery;
 use yii\helpers\ArrayHelper;
-use app\modules\user\models\common\Profile;
 use app\modules\warehouse\models\Warehouse;
-use app\modules\group\models\Group;
-use app\modules\crop\models\Crop;
-use app\modules\product\models\ProfileProducts;
-use app\modules\product\models\WarehouseProducts;
 use app\modules\user\models\common\User;
 use app\components\behaviors\ManyHasManyBehavior;
-use app\modules\product\models\ProductGroups;
 use app\modules\product\models\PriceUsers;
 
 /**
@@ -25,11 +19,25 @@ use app\modules\product\models\PriceUsers;
  * @property double $price_with_tax
  * @property integer $warehouse_id
  * @property integer $product_id
+ * @property integer $price_status
  */
+
 class Price extends \yii\db\ActiveRecord
 {
+    //Price statuses
+    const CALL_WITH_TAX = 1 << 0;
+    const CALL_NO_TAX = 1 << 1;
+    const NONEED_WITH_TAX = 1 << 2;
+    const NONEED_NO_TAX = 1 << 3;
+    
     public $call_with_tax;
     public $call_no_tax;
+    public $noneed_with_tax;
+    public $noneed_no_tax;
+    
+    //Product prices
+    const PRICE_NO_TAX = 'price_no_tax';
+    const PRICE_WITH_TAX = 'price_with_tax';
     
     /**
      * @inheritdoc
@@ -48,7 +56,8 @@ class Price extends \yii\db\ActiveRecord
             [['warehouse_id', 'product_id'], 'integer'],
             [['price_no_tax', 'price_with_tax'], 'double'],
             [['warehouse_id', 'product_id'], 'required'],
-            [['call_no_tax', 'call_with_tax'], 'safe'],
+            //[['call_with_tax', 'call_no_tax', 'noneed_with_tax', 'noneed_no_tax'], 'safe'],
+            //['price_status', 'safe'],
             ['usersList', 'safe'],
         ];
     }
@@ -62,13 +71,11 @@ class Price extends \yii\db\ActiveRecord
             'id' => Module::t('product', 'PRODUCT_ID'),
             'warehouse_id' => Module::t('product', 'WAREHOUSE_ID'),
             'product_id' => Module::t('product', 'PRODUCT_ID'),
-            'call_no_tax' => Module::t('product', 'CALL_FOR_PRICE'),
-            'call_with_tax' => Module::t('product', 'CALL_FOR_PRICE'),
             'price_no_tax' => Module::t('product', 'PRODUCT_PRICE_NO_TAX'),
             'price_with_tax' => Module::t('product', 'PRODUCT_PRICE_WITH_TAX'),
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -84,16 +91,47 @@ class Price extends \yii\db\ActiveRecord
         ];
     }
     
+    //Before save model
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
             $this->usersList = $this->usersList;
+            
+            //Calculate status
+            $this->price_status = 0;
+            if ($this->call_with_tax) {
+                $this->price_status |= self::CALL_WITH_TAX;
+            }
+            if ($this->call_no_tax) {
+                $this->price_status |= self::CALL_NO_TAX;
+            }
+            if ($this->noneed_with_tax) {
+                $this->price_status |= self::NONEED_WITH_TAX;
+            }
+            if ($this->noneed_no_tax) {
+                $this->price_status |= self::NONEED_NO_TAX;
+            }
             return true;
         } else {
             return false;
         }
     }
     
+    //After finding and populating model
+    public function afterFind() {
+        parent::afterFind();
+        
+        //Set flags from $price_status
+        if (is_null($this->price_status)) {
+                $this->price_status = self::NONEED_WITH_TAX | self::NONEED_NO_TAX;
+        }
+        $this->call_with_tax = $this->price_status & self::CALL_WITH_TAX;
+        $this->call_no_tax = $this->price_status & self::CALL_NO_TAX;
+        $this->noneed_with_tax = $this->price_status & self::NONEED_WITH_TAX;
+        $this->noneed_no_tax = $this->price_status & self::NONEED_NO_TAX;
+    }
+
+
     /**
      * @inheritdoc
      * @return ProductQuery the active query used by this AR class.
@@ -204,31 +242,60 @@ class Price extends \yii\db\ActiveRecord
     
     /**
      * Decorate price before output
-     * @param type $priceType
+     * 
+     * @param type $priceType - can be 'price_with_tax' or simple 'with_tax'
      * @return type
      */
-    public function getPrice($priceType = 'price_with_tax')
+    public function getPrice($priceType = 'with_tax')
     {
-        if ($this->canGetProperty($priceType)) {
-            return $this->$priceType < 0 ? Module::t('product', 'CALL_FOR_PRICE') : ($this->$priceType > 0 ? Yii::$app->formatter->asCurrency($this->$priceType) : Module::t('product', 'NOT_BUY'));
+        if (substr($priceType, 0, 6) == 'price_') {
+            $priceType = substr($priceType, 6);
+        }
+        $price =  'price_' . $priceType;
+        if ($this->canGetProperty($price)) {
+            $call = 'call_' . $priceType;
+            $noneed = 'noneed_' . $priceType;
+            return $this->$call > 0 ? Module::t('product', 'CALL_FOR_PRICE') :
+                    ($this->$noneed > 0 ? Module::t('product', 'NOT_BUY') : Yii::$app->formatter->asCurrency((double)$this->$price));
         }
         
         return Module::t('product', 'PRICE_NOT_SET');
     }
     
     /**
-     * Prepare Product to show
-     * @return $this
+     * Get Product Prices names array
+     * 
+     * @return array
      */
-    public function prepared()
+    public static function getPricesArray()
     {
-        if ($this->price_with_tax == -1) {
-            $this->call_with_tax = 1;
+        return [
+            static::PRICE_WITH_TAX => Module::t('product', 'PRODUCT_PRICE_WITH_TAX'),
+            static::PRICE_NO_TAX => Module::t('product', 'PRODUCT_PRICE_NO_TAX'),
+        ];
+    }
+    
+    /**
+     * Get Price name
+     * 
+     * @return string
+     */
+    public function getPriceName($attribute)
+    {
+        return ArrayHelper::getValue(static::getPricesArray(), $attribute);
+    }
+    
+    /**
+     * Get Prices string
+     * @param type $delimiter
+     * @return string
+     */
+    public function getPrices($showCaption = true, $captionDelimiter = ' - ', $itemDelimiter = '<br>')
+    {
+        $result = [];
+        foreach (static::getPricesArray() as $key => $value) {
+            $result[] = ($showCaption ? $value . ' - ' : '') . $this->getPrice($key);
         }
-        if ($this->price_no_tax == -1) {
-            $this->call_no_tax = 1;
-        }
-        
-        return $this;
+        return implode($itemDelimiter, $result);
     }
 }

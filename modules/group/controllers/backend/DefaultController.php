@@ -238,7 +238,7 @@ class DefaultController extends Controller
         $model = $this->findModel($id);
         
         $dataProvider = new ArrayDataProvider([
-            'allModels' => $model->pricesTable['data'],
+            'allModels' => $model->usersTable['data'],
             'pagination' => false,
             'sort' => false,
         ]);
@@ -246,7 +246,7 @@ class DefaultController extends Controller
         return $this->render('products-users', [
                 'group' => $model,
                 'dataProvider' => $dataProvider,
-                'columns' => $model->pricesTable['columns'],
+                'columns' => $model->usersTable['columns'],
                 'view' =>$view,
             ]);
     }
@@ -301,7 +301,7 @@ class DefaultController extends Controller
             $wh = 0;
         }
         if (Yii::$app->request->isAjax) {
-            $group = $this->findModel((int)$id);
+            //$group = $this->findModel((int)$id);
             $productsString = Yii::$app->request->post('products');
             $warehouse = Warehouse::findOne((int)$wh);
             $warehouse->productsList = empty($productsString) ? [] : explode(',', $productsString);

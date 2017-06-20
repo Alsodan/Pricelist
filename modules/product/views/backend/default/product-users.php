@@ -8,23 +8,17 @@ use kartik\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $group app\modules\group\models\Group */
 
-$this->title = Module::t('product', 'GROUP_MANAGMENT') . ': ' . $group->title;
-$this->params['breadcrumbs'][] = ['label' => Module::t('product', 'GROUPS_TITLE'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $group->title, 'url' => ['view', 'id' => $group->id]];
+$this->title = Module::t('product', 'PRODUCT_USERS_MANAGE');
+$this->params['breadcrumbs'][] = ['label' => Module::t('product', 'PRODUCTS_TITLE'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $product->fullTitle, 'url' => ['view', 'id' => $product->id]];
 $this->params['breadcrumbs'][] = $this->title;
 
-$ajaxUrl = Yii::$app->urlManager->createUrl(['/group/default/user-change', 'id' => $group->id]);
-$this->registerJs('
-    $("input.siw").change(function () {
-        $.post( "' . $ajaxUrl . '", { users: $("input[name=\'group-users\']").val() })
-    });
-');
 ?>
 <div class="group-manage">
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title"><b><?= Module::t('product', 'GROUP') ?>: <?= $group->title ?></b></h3>
+            <h3 class="panel-title"><b><?= Module::t('product', 'PRODUCT') ?>: <?= $product->fullTitle ?></b></h3>
         </div>
         <div class="panel-body text-center">
             <div class="alert alert-info">
@@ -37,25 +31,8 @@ $this->registerJs('
             </div>
         </div>
 
-        <hr>
-
-        <div class="row">
-            <div class=" col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
-
-
-            </div>
-        </div>
-
         <?php
             $gridColumns = [
-                /*[
-                    'attribute' => 'title',
-                    'label' => Module::t('group', 'PRODUCTS'),
-                    'width' => '300px',
-                    'hAlign' => 'center',
-                    'vAlign' => 'middle',
-                    'format' => 'html',
-                ]*/
             ];
 
             foreach ($columns as $arrkey => $value) {
@@ -64,9 +41,9 @@ $this->registerJs('
                 $gridColumns = array_merge($gridColumns, [
                     [
                         'class' => 'kartik\grid\EditableColumn',
-                        'editableOptions'=> function ($model) use ($arrkey, $group) {
+                        'editableOptions'=> function ($model) use ($arrkey, $product) {
                             return [
-                                'header' => Module::t('product', 'GROUP_PRODUCTS_USERS_MANAGE'),
+                                'header' => Module::t('product', 'PRODUCTS_USERS_MANAGE'),
                                 'size'=>'md',
                                 'asPopover' => false,
                                 'buttonsTemplate' => '{submit}',
@@ -81,7 +58,7 @@ $this->registerJs('
                                 ],
                                 'formOptions' => [
                                     'action' => [
-                                        Yii::$app->urlManager->createUrl(['/group/default/product-users-change', 'id' => $model[$arrkey]->id])
+                                        Yii::$app->urlManager->createUrl(['/admin/product/default/product-users-change', 'id' => $model[$arrkey]->id])
                                     ] 
                                 ],
                                 'inputType' => \kartik\editable\Editable::INPUT_SELECT2,
@@ -90,7 +67,7 @@ $this->registerJs('
                                         'multiple' => true,
                                         'placeholder' => Module::t('product', 'SELECT_USERS'),
                                     ],
-                                    'data' => $group->activeUsersNames,
+                                    'data' => $product->activeUsersNames,
                                 ],
                                 'name' => 'users',
                                 'value' => $model[$arrkey]->usersList,
@@ -101,7 +78,7 @@ $this->registerJs('
                         'readonly' => function($model) use ($arrkey) {
                             return (empty($model[$arrkey]));
                         },
-                        'value' => function ($model) use ($arrkey) { return empty($model[$arrkey]) ? '' : (empty($model[$arrkey]->activeUsersNames) ? Module::t('group', 'NO_USERS') : implode('<br>', $model[$arrkey]->activeUsersNames)); },
+                        'value' => function ($model) use ($arrkey) { return empty($model[$arrkey]) ? '' : (empty($model[$arrkey]->activeUsersNames) ? Module::t('product', 'NO_MANAGERS') : implode('<br>', $model[$arrkey]->activeUsersNames)); },
                         'width' => '200px',
                         'hAlign' => 'center',
                         'vAlign' => 'middle',
@@ -130,7 +107,7 @@ $this->registerJs('
         </div>
     
         <div class="panel-footer">
-            <?= Html::a(Module::t('product', 'BUTTON_BACK'), [$view, 'id' => $group->id], ['class' => 'btn btn-lg btn-primary']) ?>
+            <?= Html::a(Module::t('product', 'BUTTON_BACK'), [$view, 'id' => $product->id], ['class' => 'btn btn-lg btn-primary']) ?>
         </div>
     </div>
 </div>
