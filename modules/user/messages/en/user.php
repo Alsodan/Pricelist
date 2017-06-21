@@ -28,11 +28,13 @@ return [
     'USER_NEW_PASSWORD' => 'New password',
     'USER_REPEAT_PASSWORD' => 'Repeat password',
     'USER_CURRENT_PASSWORD' => 'Current password',
+    'USER_ROLE' => 'User Role',
     
     'USER_NAME' => 'Name',
     'USER_PHONE' => 'Phone',
     'USER_GROUPS' => 'Groups',
     'USER_WAREHOUSES' => 'Warehouses',
+    'USER_PRODUCTS' => 'Products',
     
     'USER_BLOCK_CONFIRM' => 'Are you sure you want to block this user?',
     'USER_BLOCK' => 'Block User',

@@ -21,6 +21,8 @@ return [
         'app\modules\user\Bootstrap',
         'app\modules\group\Bootstrap',
         'app\modules\warehouse\Bootstrap',
+        'app\modules\crop\Bootstrap',
+        'app\modules\product\Bootstrap',
     ],
     'components' => [
         'db' => [
@@ -32,6 +34,24 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'pluralize' => false,
+                    'prefix' => 'api',
+                    'controller' => [
+                        'v1/price'
+                    ],
+                    'patterns' => [
+                        //'PUT,PATCH {id}' => 'update',
+                        //'DELETE {id}' => 'delete',
+                        'GET,HEAD {id}' => 'view',
+                        'GET,HEAD all' => 'prices',
+                        //'POST' => 'create',
+                        //'GET,HEAD' => 'index',
+                        //'{id}' => 'options',
+                        //'' => 'index',
+                    ],
+                ],
                 [
                     'class' => 'yii\web\GroupUrlRule',
                     'prefix' => 'admin',
@@ -55,6 +75,8 @@ return [
                 '<_a:(login|logout|signup|email-confirm|password-reset-request|password-reset)>' => 'user/default/<_a>',
 
                 '<_m:[\w\-]+>' => '<_m>/default/index',
+                '<_m:[\w\-]+>/<id:\d+>/<_a:[\w\-]+>/<wh:\d+>' => '<_m>/default/<_a>',
+                '<_m:[\w\-]+>/<id:\d+>/<_a:[\w\-]+>' => '<_m>/default/<_a>',
                 '<_m:[\w\-]+>/<_c:[\w\-]+>' => '<_m>/<_c>/index',
                 '<_m:[\w\-]+>/<_c:[\w\-]+>/<_a:[\w-]+>' => '<_m>/<_c>/<_a>',
                 '<_m:[\w\-]+>/<_c:[\w\-]+>/<id:\d+>' => '<_m>/<_c>/view',
@@ -77,6 +99,9 @@ return [
                     'forceTranslation' => true,
                 ],
             ],
+        ],
+        'authManager' => [
+            'class' => 'app\components\auth\AuthManager'
         ],
     ],
     'params' => $params,

@@ -19,7 +19,8 @@ class UserSearch extends Model
     public $status;
     public $dateFrom;
     public $dateTo;
-    
+    public $role;
+
     public $profileName = '';
     public $profilePhone = '';
 
@@ -30,6 +31,7 @@ class UserSearch extends Model
     {
         return [
             [['id', 'status'], 'integer'],
+            ['role', 'string', 'max' => 64],
             [['username', 'email', 'profileName', 'profilePhone'], 'safe'],
             [['dateFrom', 'dateTo'], 'date', 'format' => 'php:Y-m-d'],
         ];
@@ -46,6 +48,7 @@ class UserSearch extends Model
             'dateTo' => Module::t('user', 'USER_DATE_TO'),
             'profileName' => Module::t('user', 'USER_NAME'),
             'profilePhone' => Module::t('user', 'USER_PHONE'),
+            'role' => Module::t('user', 'USER_ROLE'),
         ];
     }
 
@@ -92,6 +95,7 @@ class UserSearch extends Model
         $query->andFilterWhere([
             'id' => $this->id,
             'status' => $this->status,
+            'role' => $this->role,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])

@@ -10,6 +10,8 @@ use app\modules\user\Module;
 use app\modules\group\models\Group;
 use app\modules\group\models\ProfileGroups;
 use app\modules\warehouse\models\Warehouse;
+use app\modules\product\models\Product;
+use app\modules\product\models\ProfileProducts;
 use app\modules\warehouse\models\WarehouseProfiles;
 use \app\components\behaviors\ManyHasManyBehavior;
 
@@ -43,7 +45,7 @@ class Profile extends ActiveRecord
             ['work_email', 'email'],
             [['name', 'phone'], 'string', 'max' => 255],
             [['name', 'phone', 'work_email'], 'required'],
-            [['groupsList', 'user_id'], 'safe'],
+            [[/*'groupsList', */'user_id'], 'safe'],
         ];
     }
 
@@ -62,7 +64,7 @@ class Profile extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    /*public function behaviors()
     {
         return [
             [
@@ -72,9 +74,9 @@ class Profile extends ActiveRecord
                 ],
             ],
         ];
-    }
+    }*/
     
-    public function beforeSave($insert)
+    /*public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
             if (!empty($this->groupsList)) {
@@ -84,7 +86,7 @@ class Profile extends ActiveRecord
         } else {
             return false;
         }
-    }
+    }*/
     
     /**
      * @return \yii\db\ActiveQuery
@@ -124,42 +126,67 @@ class Profile extends ActiveRecord
     /**
      * List of User Groups
      */
-    public function getGroups()
+    /*public function getGroups()
     {
         return $this->hasMany(Group::className(), ['id' => 'group_id'])
             ->viaTable(ProfileGroups::tableName(), ['profile_id' => 'id']);
-    }
+    }*/
     
     /**
-     * List of User Warehouses
+     * Get only active Groups
+     * 
+     * @return array Groups[]
      */
-    public function getWarehouses()
+    /*public function getActiveGroups()
     {
-        return $this->hasMany(Warehouse::className(), ['id' => 'warehouse_id'])
-            ->viaTable(WarehouseProfiles::tableName(), ['profile_id' => 'id']);
-    }
+        $result = [];
+        foreach ($this->groups as $group) {
+            if ($group->status == Group::STATUS_ACTIVE) {
+                $result[] = $group;
+            }
+        }
+        
+        return $result;
+    }*/
+    
+    /**
+     * Get only active Products
+     * 
+     * @return array Products[]
+     */
+    /*public function getActiveProducts()
+    {
+        $result = [];
+        foreach ($this->products as $product) {
+            if ($product->status == Product::STATUS_ACTIVE) {
+                $result[] = $product;
+            }
+        }
+        
+        return $result;
+    }*/
     
     /**
      * Get Group Titles array
      */
-    public function getGroupsTitleArray()
+    /*public function getGroupsTitleArray()
     {
         $result = [];
-        foreach ($this->groups as $group){
-            $result[] = $group->title;
+        foreach ($this->activeGroups as $group){
+            $result[$group->id] = $group->title;
         }
         return $result;
-    }
+    }*/
     
     /**
-     * Get Warehouses Titles array
+     * Get Products Titles array
      */
-    public function getWarehousesTitleArray()
+    /*public function getProductsTitleArray()
     {
         $result = [];
-        foreach ($this->warehouses as $item){
-            $result[] = $item->title;
+        foreach ($this->activeProducts as $item){
+            $result[$item->id] = $item->title . ($item->subtitle ? ' (' . $item->subtitle . ')' : '');
         }
         return $result;
-    }    
+    }  */
 }

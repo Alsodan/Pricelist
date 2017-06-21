@@ -8,6 +8,30 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '',
+            // Enable JSON Input:
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
+        ],
+        'response' => [
+            'class' => 'yii\web\Response',
+            'on beforeSend' => function ($event) {
+                $response = $event->sender;
+                if ($response->data !== null && !empty(Yii::$app->request->get('suppress_response_code'))) {
+                    $response->data = [
+                        'success' => $response->isSuccessful,
+                        'data' => $response->data,
+                    ];
+                    $response->statusCode = 200;
+                }
+            },
+            'formatters' => [
+                \yii\web\Response::FORMAT_JSON => [
+                    'class' => 'yii\web\JsonResponseFormatter',
+                    'prettyPrint' => YII_DEBUG, // используем "pretty" в режиме отладки
+                    'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+                ],
+            ],
         ],
         'user' => [
             'identityClass' => 'app\modules\user\models\common\User',
@@ -22,6 +46,14 @@ $config = [
         ]
     ],
     'modules' => [
+        'gridview' => [
+            'class' => '\kartik\grid\Module',
+            'i18n' => [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'basePath' => '@kvgrid/messages',
+                'forceTranslation' => false
+            ]
+        ],
         'admin' => [
             'class' => 'app\modules\admin\Module',
             'modules' => [
@@ -48,7 +80,19 @@ $config = [
                     'layout' => '@app/views/layouts/admin',
                     'controllerNamespace' => 'app\modules\warehouse\controllers\backend',
                     'viewPath' => '@app/modules/warehouse/views/backend',
-                ],                
+                ],
+                'crop' => [
+                    'class' => 'app\modules\crop\Module',
+                    'layout' => '@app/views/layouts/admin',
+                    'controllerNamespace' => 'app\modules\crop\controllers\backend',
+                    'viewPath' => '@app/modules/crop/views/backend',
+                ],
+                'product' => [
+                    'class' => 'app\modules\product\Module',
+                    'layout' => '@app/views/layouts/admin',
+                    'controllerNamespace' => 'app\modules\product\controllers\backend',
+                    'viewPath' => '@app/modules/product/views/backend',
+                ],
             ]
         ],
         'main' => [
@@ -66,11 +110,24 @@ $config = [
             'controllerNamespace' => 'app\modules\group\controllers\frontend',
             'viewPath' => '@app/modules/group/views/frontend',
         ],
-        'warehouse' => [
+        /*'warehouse' => [
             'class' => 'app\modules\warehouse\Module',
             'controllerNamespace' => 'app\modules\warehouse\controllers\frontend',
             'viewPath' => '@app/modules/warehouse/views/frontend',
-        ],        
+        ],
+        'crop' => [
+            'class' => 'app\modules\crop\Module',
+            'controllerNamespace' => 'app\modules\crop\controllers\frontend',
+            'viewPath' => '@app/modules/crop/views/frontend',
+        ],*/
+        'product' => [
+            'class' => 'app\modules\product\Module',
+            'controllerNamespace' => 'app\modules\product\controllers\frontend',
+            'viewPath' => '@app/modules/product/views/frontend',
+        ],
+        'v1' => [
+            'class' => 'app\api\modules\v1\Module'
+        ]
     ], 
 ];
 

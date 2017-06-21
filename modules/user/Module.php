@@ -3,12 +3,18 @@
 namespace app\modules\user;
 
 use Yii;
+use app\modules\admin\rbac\Rbac;
 
 /**
  * user module definition class
  */
 class Module extends \yii\base\Module
 {
+    /**
+     * @var string
+     */
+    public $defaultRole = Rbac::ROLE_USER;
+    
     /**
      * @var int
      */

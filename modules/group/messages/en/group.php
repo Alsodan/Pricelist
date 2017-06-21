@@ -8,6 +8,11 @@ return [
     'USERS' => 'Users',
     'CROPS' => 'Crops',
     'WAREHOUSES' => 'Warehouses',
+    'PRODUCTS' => 'Products',
+    
+    'NO_USERS' => 'No users',
+    'SELECT_USERS' => 'Select Users',
+    'SELECT_USERS_FULL' => 'Select Users from list',
     
     'GROUP_ID' => 'ID',
     'GROUP_TITLE' => 'Title',
@@ -17,12 +22,18 @@ return [
     'GROUP_UPDATE' => 'Upadate Group',
     'GROUP_DISABLE' => 'Disable Group',
     'GROUP_ENABLE' => 'Enable Group',
+    'GROUP_INFO' => 'Group Info',
     'GROUP_DISABLE_CONFIRM' => 'Are you sure you want to disable this group?',
     'GROUP_ACTIVITY_DISABLED' => 'Disabled',
     'GROUP_ACTIVITY_ACTIVE' => 'Active',
     
-    'GROUP_USERS_MANAGE' => 'Manage Group Users',
-    'GROUP_WAREHOUSES_MANAGE' => 'Manage Group Warehouses',
+    'GROUP_MANAGMENT' => 'Group managment',
+    'GROUP_EDIT_SUCCESS' => 'Group title successfully changed',
+    
+    'GROUP_USERS_MANAGE' => 'Users',
+    'GROUP_WAREHOUSES_MANAGE' => 'Warehouses',
+    'GROUP_PRODUCTS_MANAGE' => 'Products',
+    'GROUP_PRODUCTS_USERS_MANAGE' => 'Managers',
     
     'GROUP_USERS' => 'Group Users',
     'ALL_USERS' => 'All Users',
@@ -31,4 +42,13 @@ return [
     'GROUP_WAREHOUSES' => 'Group Warehouses',
     'ALL_WAREHOUSES' => 'All Warehouses',
     'MANAGE_WAREHOUSES_HINT {from} {to}' => 'Choose warehouse from list "{from}" and drag-and-drop it to list "{to}". <br> Drag it back to list "{from}" to remove warehouse from group.',
+    
+    'GROUP_PRODUCTS' => 'Group Products',
+    'ALL_PRODUCTS' => 'All Products',
+    'MANAGE_PRODUCTS_HINT {from} {to}' => 'Choose product from list "{from}" and drag-and-drop it to list "{to}". <br> Drag it back to list "{from}" to remove product from group.',
+    
+    'GROUP_WAREHOUSE_PRODUCTS' => 'Warehouse Products',
+    'MANAGE_WAREHOUSE_PRODUCTS_HINT {from} {to}' => 'Select Warehouse first. Choose product from list "{from}" and drag-and-drop it to list "{to}". <br> Drag it back to list "{from}" to remove product from group.',
+    
+    'MANAGE_PRODUCTS_USERS_HINT' => 'Select managers in table and edit the list',
 ];

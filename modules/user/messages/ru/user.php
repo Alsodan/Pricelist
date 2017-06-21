@@ -17,6 +17,7 @@ return [
     'PROFILE' => 'Профиль',
     'USER_GROUPS' => 'Группы',
     'USER_WAREHOUSES' => 'Склады',
+    'USER_PRODUCTS' => 'Продукция',
     
     'USER_ID' => 'ИД',
     'USER_USERNAME' => 'Имя пользователя',
@@ -30,6 +31,7 @@ return [
     'USER_NEW_PASSWORD' => 'Новый пароль',
     'USER_REPEAT_PASSWORD' => 'Повторите новый пароль',
     'USER_CURRENT_PASSWORD' => 'Текущий пароль',
+    'USER_ROLE' => 'Роль',
     
     'USER_NAME' => 'Имя',
     'USER_PHONE' => 'Телефон',

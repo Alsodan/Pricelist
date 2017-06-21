@@ -11,17 +11,24 @@ use app\modules\group\models\Group;
 ?>
 
 <div class="group-form">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><b><?= Module::t('group', 'GROUP') ?>: <?= $this->title ?></b></h3>
+        </div>
+        <br>
+        <?php $form = ActiveForm::begin(); ?>
+            <div class="row">
+                <div class=" col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
 
-    <?php $form = ActiveForm::begin(); ?>
+                    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+                    <?= $model->scenario == Group::SCENARIO_ADMIN_EDIT ? $form->field($model, 'status')->dropDownList(Group::getStatusArray()) : '' ?>
 
-    <?= $form->field($model, 'status')->dropDownList(Group::getStatusArray()) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Module::t('group', 'BUTTON_SAVE'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <?= Html::submitButton(Module::t('group', 'BUTTON_SAVE'), ['class' => $model->isNewRecord ? 'btn btn-lg btn-success' : 'btn btn-lg btn-primary']) ?>
+            </div>
+        <?php ActiveForm::end(); ?>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>

@@ -10,6 +10,12 @@ use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 use app\modules\user\Module;
 use app\modules\user\models\common\query\UserQuery;
+use app\modules\group\models\Group;
+use app\modules\group\models\GroupUsers;
+use app\modules\product\models\Price;
+use app\modules\product\models\PriceUsers;
+use app\modules\product\models\Product;
+use app\modules\warehouse\models\Warehouse;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -22,6 +28,7 @@ use app\modules\user\models\common\query\UserQuery;
  * @property string $email_confirm_token
  * @property string $email
  * @property integer $status
+ * @property string $role
  * @property integer $created_at
  * @property integer $updated_at
  */
@@ -59,6 +66,8 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'integer'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => array_keys(self::getStatusesArray())],
+            
+            ['role', 'string', 'max' => 64],
         ];
     }
     
@@ -74,11 +83,10 @@ class User extends ActiveRecord implements IdentityInterface
             'status' => Module::t('user', 'USER_STATUS'),
             'created_at' => Module::t('user', 'USER_CREATED'),
             'updated_at' => Module::t('user', 'USER_UPDATED'),
+            'role' => Module::t('user', 'USER_ROLE'),
             
             'profileName' => Module::t('user', 'USER_NAME'),
             'profilePhone' => Module::t('user', 'USER_PHONE'),
-            'groups' => Module::t('user', 'USER_GROUPS'),
-            'warehouses' => Module::t('user', 'USER_WAREHOUSES'),
         ];
     }
     
@@ -322,19 +330,48 @@ class User extends ActiveRecord implements IdentityInterface
     }
     
     /**
-     * Get User Groups
+     * Get Profile Name and Phone
+     * @return string
+     */
+    public function getProfileData()
+    {
+        return $this->profile->name . ' (' . $this->profile->phone . ')';
+    }
+    
+    /**
+     * Get Groups
+     * 
+     * @return array app/modules/group/models/Group[]
      */
     public function getGroups()
     {
-        return implode('<br>', $this->profile->groupsTitleArray);
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])
+            ->viaTable(GroupUsers::tableName(), ['user_id' => 'id']);
     }
-
+    
     /**
-     * Get User Warehouses
+     * Get User active Prices
      */
-    public function getWarehouses()
+    public function getActivePrices()
     {
-        return implode('<br>', $this->profile->warehousesTitleArray);
+        return $this->hasMany(Price::className(), ['id' => 'price_id'])
+            ->viaTable(PriceUsers::tableName(), ['user_id' => 'id'])
+            ->joinWith('product')
+            ->joinWith('warehouse')
+            ->where([Product::tableName() . '.status' => Product::STATUS_ACTIVE, Warehouse::tableName() . '.status' => Warehouse::STATUS_ACTIVE]);
+    }
+    
+    /**
+     * Get User active Products And Warehouses
+     */
+    public function getActiveProductsAndWarehouses()
+    {
+        $result = [];
+        foreach ($this->activePrices as $price) {
+            $result['product'][$price->product->id] = $price->product;
+            $result['warehouse'][$price->warehouse->id] = $price->warehouse;
+        }
+        return $result;
     }
     
     /**

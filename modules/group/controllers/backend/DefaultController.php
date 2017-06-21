@@ -7,10 +7,11 @@ use app\modules\group\models\Group;
 use app\modules\group\models\search\GroupSearch;
 use app\modules\user\models\common\Profile;
 use app\modules\warehouse\models\Warehouse;
+use app\modules\product\models\Product;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use \yii\data\ArrayDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -57,7 +58,7 @@ class DefaultController extends Controller
     {
         $group = $this->findModel($id);
         $users = new ArrayDataProvider([
-            'allModels' => $group->activeProfiles,
+            'allModels' => $group->activeUsers,
             'sort' => false,
             'pagination' => false,
         ]);
@@ -65,12 +66,18 @@ class DefaultController extends Controller
             'allModels' => $group->activeWarehouses,
             'sort' => false,
             'pagination' => false,
-        ]);        
+        ]);
+        $products = new ArrayDataProvider([
+            'allModels' => $group->activeProducts,
+            'sort' => false,
+            'pagination' => false,
+        ]);
         
         return $this->render('view', [
             'group' => $group,
             'users' => $users,
             'warehouses' => $warehouses,
+            'products' => $products,
         ]);
     }
 
@@ -82,6 +89,8 @@ class DefaultController extends Controller
     public function actionCreate()
     {
         $model = new Group();
+        $model->status = Group::STATUS_ACTIVE;
+        $model->scenario = Group::SCENARIO_ADMIN_EDIT;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -101,6 +110,7 @@ class DefaultController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->scenario = Group::SCENARIO_EDITOR_EDIT;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -161,10 +171,10 @@ class DefaultController extends Controller
     public function actionUsers($id, $view = 'view')
     {
         $group = $this->findModel($id);
-        $groupUsers = $group->preparedForSIWActiveProfiles();
+        $groupUsers = $group->preparedForSIWActiveUsers();
         $allUsers = Profile::preparedForSIWActiveProfiles();
         
-        return $this->render('user', [
+        return $this->render('users', [
                 'group' => $group,
                 'allUsers' => array_diff_key($allUsers, $groupUsers),
                 'groupUsers' => $groupUsers,
@@ -190,29 +200,68 @@ class DefaultController extends Controller
                 'view' => $view,
             ]);
     }
+    
     /**
-     * Manage Groups Users
+     * Manage Group Products
+     * @param integer $id
      * @return string
      */
-    /*public function actionUsers($id = -1)
+    public function actionProducts($id, $wh = null, $view = 'view')
     {
-        $groups = ArrayHelper::map(Group::find()->select(['id', 'title'])->asArray()->all(), 'id', 'title');
-        if ($id == -1) {
-            $id = key($groups);
+        $group = $this->findModel($id);
+        $warehouses = ArrayHelper::map($group->warehouses, 'id', 'title');
+        /* If empty Warehouse ID, take first in Group */
+        if (is_null($wh)) {
+            $wh = key($warehouses);
         }
+        $groupProducts = $group->preparedForSIWActiveProducts($wh);
+        $allProducts = Product::preparedForSIWActiveProducts();
         
-        return $this->render('user', [
-                'groups' => $groups,
-                'selectedGroup' => $id,
+        return $this->render('products', [
+                'group' => $group,
+                'allProducts' => array_diff_key($allProducts, $groupProducts),
+                'groupProducts' => $groupProducts,
+                'warehouses' => $warehouses,
+                'selectedWarehouse' => $wh,
+                'view' =>$view,
             ]);
-    }*/
+    }
+
+    /**
+     * Manage Products Managers
+     * @param type $id
+     * @param type $view
+     * @return type
+     */
+    public function actionProductsUsers($id, $view = 'view')
+    {
+        $model = $this->findModel($id);
+        
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $model->usersTable['data'],
+            'pagination' => false,
+            'sort' => false,
+        ]);
+
+        return $this->render('products-users', [
+                'group' => $model,
+                'dataProvider' => $dataProvider,
+                'columns' => $model->usersTable['columns'],
+                'view' =>$view,
+            ]);
+    }
     
+    /**
+     * Ajax Users management
+     * @param type $id
+     * @return boolean
+     */
     public function actionUserChange($id)
     {
         if (Yii::$app->request->isAjax) {
             $group = $this->findModel($id);
             $usersString = Yii::$app->request->post('users');
-            $group->profilesList = empty($usersString) ? [] : explode(',', $usersString);
+            $group->usersList = empty($usersString) ? [] : explode(',', $usersString);
             
             return $group->save(false);
         }
@@ -220,6 +269,11 @@ class DefaultController extends Controller
         return false;
     }
     
+    /**
+     * Ajax Warehouses managment
+     * @param type $id
+     * @return boolean
+     */
     public function actionWarehouseChange($id)
     {
         if (Yii::$app->request->isAjax) {
@@ -231,5 +285,30 @@ class DefaultController extends Controller
         }
         
         return false;
-    }    
+    }
+    
+    /**
+     * Ajax Products managment
+     * @param type $id
+     * @return boolean
+     */
+    public function actionProductChange($id, $wh)
+    {
+        if (!is_numeric($id)) {
+            $id = 0;
+        }
+        if (!is_numeric($wh)) {
+            $wh = 0;
+        }
+        if (Yii::$app->request->isAjax) {
+            //$group = $this->findModel((int)$id);
+            $productsString = Yii::$app->request->post('products');
+            $warehouse = Warehouse::findOne((int)$wh);
+            $warehouse->productsList = empty($productsString) ? [] : explode(',', $productsString);
+            
+            return $warehouse->save(false);
+        }
+        
+        return false;
+    }     
 }

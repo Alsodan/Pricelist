@@ -7,7 +7,7 @@ use yii\db\Migration;
  */
 class m170518_061856_create_user_table extends Migration
 {
-    public function up()
+    public function safeUp()
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
@@ -32,7 +32,7 @@ class m170518_061856_create_user_table extends Migration
         $this->createIndex('idx-user-email', '{{%user}}', 'email');
         $this->createIndex('idx-user-status', '{{%user}}', 'status');
     }
-    public function down()
+    public function safeDown()
     {
         $this->dropTable('{{%user}}');
     }
