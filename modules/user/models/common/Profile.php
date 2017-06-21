@@ -45,7 +45,7 @@ class Profile extends ActiveRecord
             ['work_email', 'email'],
             [['name', 'phone'], 'string', 'max' => 255],
             [['name', 'phone', 'work_email'], 'required'],
-            [['groupsList', 'user_id'], 'safe'],
+            [[/*'groupsList', */'user_id'], 'safe'],
         ];
     }
 
@@ -64,7 +64,7 @@ class Profile extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    /*public function behaviors()
     {
         return [
             [
@@ -74,9 +74,9 @@ class Profile extends ActiveRecord
                 ],
             ],
         ];
-    }
+    }*/
     
-    public function beforeSave($insert)
+    /*public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
             if (!empty($this->groupsList)) {
@@ -86,7 +86,7 @@ class Profile extends ActiveRecord
         } else {
             return false;
         }
-    }
+    }*/
     
     /**
      * @return \yii\db\ActiveQuery
@@ -126,18 +126,18 @@ class Profile extends ActiveRecord
     /**
      * List of User Groups
      */
-    public function getGroups()
+    /*public function getGroups()
     {
         return $this->hasMany(Group::className(), ['id' => 'group_id'])
             ->viaTable(ProfileGroups::tableName(), ['profile_id' => 'id']);
-    }
+    }*/
     
     /**
      * Get only active Groups
      * 
      * @return array Groups[]
      */
-    public function getActiveGroups()
+    /*public function getActiveGroups()
     {
         $result = [];
         foreach ($this->groups as $group) {
@@ -147,14 +147,14 @@ class Profile extends ActiveRecord
         }
         
         return $result;
-    }
+    }*/
     
     /**
      * Get only active Products
      * 
      * @return array Products[]
      */
-    public function getActiveProducts()
+    /*public function getActiveProducts()
     {
         $result = [];
         foreach ($this->products as $product) {
@@ -164,29 +164,29 @@ class Profile extends ActiveRecord
         }
         
         return $result;
-    }
+    }*/
     
     /**
      * Get Group Titles array
      */
-    public function getGroupsTitleArray()
+    /*public function getGroupsTitleArray()
     {
         $result = [];
         foreach ($this->activeGroups as $group){
             $result[$group->id] = $group->title;
         }
         return $result;
-    }
+    }*/
     
     /**
      * Get Products Titles array
      */
-    public function getProductsTitleArray()
+    /*public function getProductsTitleArray()
     {
         $result = [];
         foreach ($this->activeProducts as $item){
             $result[$item->id] = $item->title . ($item->subtitle ? ' (' . $item->subtitle . ')' : '');
         }
         return $result;
-    }  
+    }  */
 }

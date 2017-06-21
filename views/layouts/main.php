@@ -7,6 +7,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use yii\helpers\Html;
+use app\modules\admin\rbac\Rbac;
 
 ?>
 
@@ -27,10 +28,10 @@ use yii\helpers\Html;
         'items' => array_filter([
             ['label' => Yii::t('app', 'NAV_HOME'), 'url' => ['/main/default/index']],
             //['label' => Yii::t('app', 'NAV_CONTACT'), 'url' => ['/main/contact/index']],
-            !Yii::$app->user->isGuest ?
+            Yii::$app->user->can(Rbac::PERMISSION_PRICE_EDIT) ?
                 ['label' => Yii::t('app', 'NAV_PRICELIST'), 'url' => ['/product/pricelist/index']] :
                 false,
-            !Yii::$app->user->isGuest && !empty(Yii::$app->user->identity->groups) ?
+            Yii::$app->user->can(Rbac::PERMISSION_GROUP_EDIT) && !empty(Yii::$app->user->identity->groups) ?
                 ['label' => Yii::t('app', 'NAV_MANAGE'), 'url' => ['/group/default/manage', 'id' => Yii::$app->user->identity->groups[0]->id], 'active' => $this->context->module->id == 'group'] :
                 false,
             Yii::$app->user->isGuest ?
@@ -39,7 +40,7 @@ use yii\helpers\Html;
             Yii::$app->user->isGuest ? (
                 ['label' => Yii::t('app', 'NAV_LOGIN'), 'url' => ['/user/default/login']]
             ) : false,
-            !Yii::$app->user->isGuest ?
+            Yii::$app->user->can(Rbac::PERMISSION_ADMINISTRATION) ?
             ['label' => Yii::t('app', 'NAV_ADMIN'), 'items' => [
                 ['label' => Yii::t('app', 'NAV_ADMIN_PANEL'), 'url' => ['/admin/default/index']],
                 ['label' => Yii::t('app', 'NAV_ADMIN_USERS'), 'url' => ['/admin/user/default/index']],

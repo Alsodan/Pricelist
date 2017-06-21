@@ -28,6 +28,7 @@ use app\modules\warehouse\models\Warehouse;
  * @property string $email_confirm_token
  * @property string $email
  * @property integer $status
+ * @property string $role
  * @property integer $created_at
  * @property integer $updated_at
  */
@@ -65,6 +66,8 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'integer'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => array_keys(self::getStatusesArray())],
+            
+            ['role', 'string', 'max' => 64],
         ];
     }
     
@@ -80,6 +83,7 @@ class User extends ActiveRecord implements IdentityInterface
             'status' => Module::t('user', 'USER_STATUS'),
             'created_at' => Module::t('user', 'USER_CREATED'),
             'updated_at' => Module::t('user', 'USER_UPDATED'),
+            'role' => Module::t('user', 'USER_ROLE'),
             
             'profileName' => Module::t('user', 'USER_NAME'),
             'profilePhone' => Module::t('user', 'USER_PHONE'),

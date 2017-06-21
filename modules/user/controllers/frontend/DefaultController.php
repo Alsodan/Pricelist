@@ -102,7 +102,7 @@ class DefaultController extends Controller
      */
     public function actionSignup()
     {
-        $model = new SignupForm();
+        $model = new SignupForm($this->module->defaultRole);
         if ($model->load(Yii::$app->request->post())) {
             if ($model->signup()) {
                 Yii::$app->getSession()->setFlash('success', Module::t('user', 'USER_EMAIL_WAS_SENT_TO_CONFIRM {email}', ['email' => $model->email]));

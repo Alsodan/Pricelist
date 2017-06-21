@@ -28,6 +28,7 @@ return [
     'USER_NEW_PASSWORD' => 'New password',
     'USER_REPEAT_PASSWORD' => 'Repeat password',
     'USER_CURRENT_PASSWORD' => 'Current password',
+    'USER_ROLE' => 'User Role',
     
     'USER_NAME' => 'Name',
     'USER_PHONE' => 'Phone',

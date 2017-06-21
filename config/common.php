@@ -100,6 +100,9 @@ return [
                 ],
             ],
         ],
+        'authManager' => [
+            'class' => 'app\components\auth\AuthManager'
+        ],
     ],
     'params' => $params,
 ];

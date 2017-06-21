@@ -4,8 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\modules\user\models\backend\User;
 use app\modules\user\Module;
-use app\modules\group\models\Group;
-use kartik\select2\Select2;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $user app\modules\user\models\backend\User */
@@ -39,6 +38,8 @@ $this->registerJs('
  
     <?= $form->field($user, 'status')->dropDownList(User::getStatusesArray()) ?>
     
+    <?= $form->field($user, 'role')->dropDownList(ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description')) ?>
+    
     <hr>
     
     <?= $form->field($profile, 'name')->textInput(['maxlength' => true]) ?>
@@ -50,11 +51,6 @@ $this->registerJs('
     <?= Html::checkbox('same_email', false, ['label' => Module::t('user', 'USER_PROFILE_WORK_EMAIL_IS_SAME_AS_USER_EMAIL'), 'id' => 'same_email', 'labelOptions' => ['id' => 'same_email_label']]) ?>
     
     <hr>
-    
-    <?= ''/*$form->field($profile, 'groupsList')->widget(Select2::className(), [
-        'data' => Group::getGroupsDropdown(),
-        'options' => ['multiple' => true],
-    ])->label(Module::t('user', 'USER_PROFILE_GROUP'))*/ ?>
 
     <div class="form-group">
         <?= Html::submitButton(Module::t('user', 'BUTTON_SAVE'), ['class' => $user->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
