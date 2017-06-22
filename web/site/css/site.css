@@ -1,0 +1,268 @@
+html,
+body {
+    height: 100%;
+    background-color: #fff;
+    margin: 0px;
+    font: 14px Arial, sans-serif;
+    color: #2e2e2e;
+}
+p {
+    margin: 0 0 10px;
+    color: #6d6e71;
+}
+
+.wrap {
+    height: auto;
+    min-height: 100%;
+    margin: 0 auto -60px;
+    padding: 0 0 60px;
+}
+
+.footer {
+    height: 60px;
+    background-color: #f5f5f5;
+    padding-top: 20px;
+    display: block;
+}
+
+nav {
+    /*float: left;*/
+    display: block;
+}
+
+nav.list ul {
+    list-style: none;
+    border: none;
+    /*text-align: left;*/
+    display: block;
+    padding-left: 0px;
+}
+
+nav.list ul li {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 14px;
+    margin-bottom: 14px;
+}
+
+nav.list ul li a {
+    font: 14px Arial, sans-serif;
+    text-transform: uppercase;
+    color: #2e2e2e;
+    text-decoration: none;
+}
+
+nav.list ul li a:hover,
+nav.list ul li a:active,
+nav.list ul li.active a {
+    border-bottom: 2px solid #fdb813;
+    padding: 0px 0px 5px 0px;
+    color: #6d6e71;
+}
+
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+@media (min-width: 800px) {
+    .container {
+        width: 750px;
+    }
+}
+@media (min-width: 992px) {
+    .container {
+        width: 970px;
+    }
+}
+@media (min-width: 1200px) {
+    .container {
+        width: 1170px;
+    }
+}
+
+.wrap > .container {
+    padding: 90px 15px 20px;
+}
+
+.navbar {
+    background-color: #f5f5f5;
+    top: 0;
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    min-height: 45px;
+    margin-bottom: 20px;
+    display: block;
+    padding: 20px 0px;
+}
+
+.position-left {
+    float: left;
+}
+
+.position-right {
+    float: right;
+}
+
+.position-center {
+    text-align: center;
+}
+
+.navbar-header {
+    color: #6d6e71;
+    height: 45px;
+    width: 300px;
+    font-size: 18px;
+    line-height: 20px;
+    background-image: url("../images/logo_0.png");
+    background-repeat: no-repeat;
+}
+
+.navbar-item {
+    position: relative;
+    display: block;
+    padding: 10px 20px;
+}
+
+.navbar-item.last {
+    padding-right: 0px;
+}
+
+.navbar-item a {
+    font: 16px Arial, sans-serif;
+    color: #2e2e2e;
+    text-decoration: none;
+}
+@media (max-width: 700px) {
+    .navbar-header {
+        background-image: url("../images/logo.png");
+        width: 150px;
+    }
+}
+@media (max-width: 550px) {
+    .navbar-item a {
+        font: 14px Arial, sans-serif;
+    }
+    .navbar-header {
+        background-image: url("../images/logo.png");
+        width: 100px;
+    }
+}
+@media (max-width: 500px) {
+    .navbar {
+        min-height: 45px;
+        margin-bottom: 20px;
+        display: block;
+        padding: 10px 0px;
+    }
+    .navbar-header {
+        background-image: url("../images/logo.png");
+        width: 200px;
+    }
+    .wrap > .container {
+        padding: 65px 15px 20px;
+    }
+    .prices-index {
+        display: none;
+    }
+    .navbar-item {
+        padding: 5px 0px;
+    }
+}
+@media (max-width: 400px) {
+    .navbar-header {
+        width: 100px;
+    }
+}
+
+.navbar-item a:hover {
+    border-bottom: 2px solid #fdb813;
+    padding: 0px 0px 11px 0px;
+    color: #6d6e71;
+}
+
+h1 {
+    color: #6d6e71;
+    font-size: 40px;
+    line-height: 48px;
+    padding-bottom: 9px;
+    font-weight: normal;
+}
+
+h2 {
+    color: #6d6e71;
+    font-size: 18px;
+    line-height: 24px;
+    padding-bottom: 9px;
+    font-weight: normal;
+}
+
+h3 {
+    color: #6d6e71;
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: normal;
+    margin: 0;
+}
+
+.clearfix:before, 
+.clearfix:after, 
+.container:before, 
+.container:after, 
+.nav:before, 
+.nav:after, 
+.navbar:before, 
+.navbar:after, 
+.navbar-header:before, 
+.navbar-header:after {
+    display: table;
+    content: " ";
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    border-spacing: 2px;
+    border-color: grey;
+}
+thead tr {
+    background: #f5f5f5;
+    font-size: 14px;
+    color: #6d6e71;
+    vertical-align: middle;
+}
+tr {
+    background: none;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0.1em 0.6em;
+    vertical-align: middle;
+}
+th {
+    font-weight: normal;
+    padding: 5px 10px;
+    border-bottom: 0;
+    text-align: center;
+    word-break: normal;
+}
+tbody {
+    border-top: 1px solid #ccc;
+    vertical-align: middle;
+}
+td {
+    padding: 25px 7px;
+    font-size: 14px;
+    color: #6d6e71;
+    vertical-align: middle;
+    word-break: normal;
+}
+.responsive-table {
+    overflow-x: auto;
+}
+.table-hover > tbody > tr:hover {
+    background-color: #f5f5f5;
+}

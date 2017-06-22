@@ -80,7 +80,7 @@ $this->registerJs('
                                 ],
                                 'formOptions' => [
                                     'action' => [
-                                        Yii::$app->urlManager->createUrl(['/product/pricelist/product-prices-change', 'id' => $model[$arrkey]->id])
+                                    \yii\helpers\Url::to(['/product/pricelist/product-prices-change', 'id' => $model[$arrkey]->id])//  Yii::$app->urlManager->createUrl(['/product/pricelist/product-prices-change', 'id' => $model[$arrkey]->id])
                                     ] 
                                 ],
                                 'inputType' => \kartik\editable\Editable::INPUT_SPIN,
