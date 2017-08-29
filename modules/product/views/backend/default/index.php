@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\widgets\Pjax;
 use app\modules\product\Module;
 use app\components\grid\SetColumn;
 use app\components\grid\LinkColumn;
@@ -23,10 +22,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Module::t('product', 'PRODUCT_CREATE'), ['create', 'view' => 'index'], ['class' => 'btn btn-success']) ?>
     </p>
     
-<?php Pjax::begin(); ?>    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -34,12 +32,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'title',
                 'class' => LinkColumn::className(),
                 'value' => function ($model) { return $model->title . ($model->subtitle ? ' (' . $model->subtitle . ')' : ''); },
+                'defaultAction' => 'update',
+                'icon' => 'glyphicon-pencil',
+                'params' => ['view' => 'index'],
             ],
             [
                 'value' => function ($model) { return implode('<hr>', $model->linkedDataList);},
                 'format' => 'html',
                 'label' => Module::t('product', 'DATA_TITLE')
             ],
+            'sort',
             [
                 'class' => SetColumn::className(),
                 'filter' => Product::getStatusArray(),
@@ -52,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{warehouses}&nbsp;&nbsp;{managers}&nbsp;&nbsp;{prices}&nbsp;&nbsp;{change}',
+                'template' => '{view}&nbsp;&nbsp;{update}<hr>{warehouses}&nbsp;&nbsp;{managers}&nbsp;&nbsp;{prices}<hr>{change}',
                 'buttons' => [
                     'update' => function ($url, $model, $key) {
                         return 
@@ -61,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'change' => function ($url, $model, $key) {
                         return $model->status == Product::STATUS_ACTIVE ?
                             Html::a('<span class="glyphicon glyphicon-off"></span>', ['block', 'id' => $model->id, 'view' => 'index'], [
-                                'class' => 'btn btn-xs btn-danger',
+                                'class' => 'btn btn-md btn-danger btn-block',
                                 'data' => [
                                     'confirm' => Module::t('product', 'PRODUCT_DISABLE_CONFIRM'),
                                     'method' => 'post',
@@ -69,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'title' => Module::t('product', 'PRODUCT_DISABLE'),
                             ]) :
                             Html::a('<span class="glyphicon glyphicon-off"></span>', ['unblock', 'id' => $model->id, 'view' => 'index'], [
-                                'class' => 'btn btn-xs btn-success',
+                                'class' => 'btn btn-md btn-success btn-block',
                                 'data' => [
                                     'method' => 'post',
                                 ],
@@ -89,8 +91,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             Html::a('<span class="glyphicon glyphicon-tags"></span>', ['product-users', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('product', 'USERS')]);
                     },
                 ],
-                'contentOptions' => ['style' => 'width: 150px;']
+                'contentOptions' => ['style' => 'width: 100px; font-size: 20px; text-align: center;'],
+                'header' => 'Действия',
             ],
         ],
     ]); ?>
-<?php Pjax::end(); ?></div>
+</div>

@@ -12,6 +12,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ArrayDataProvider;
+use app\modules\product\Module;
 
 /**
  * DefaultController implements the CRUD actions for Product model.
@@ -41,9 +42,11 @@ class DefaultController extends Controller
     {
         $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        
+        $dataProvider->pagination = false;
+        
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            //'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -287,7 +290,7 @@ class DefaultController extends Controller
             $price->save();
             $message = $price->errors;
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            return ['output' => empty($price->activeUsersNames) ? Module::t('group', 'NO_USERS') : implode('<br>', $price->activeUsersNames), 'message' => $message];
+            return ['output' => empty($price->activeUsersNames) ? Module::t('product', 'NO_MANAGERS') : implode('<br>', $price->activeUsersNames), 'message' => $message];
         }
         
         return false;

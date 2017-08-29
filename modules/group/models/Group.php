@@ -11,6 +11,7 @@ use app\modules\warehouse\models\Warehouse;
 use app\modules\product\models\Product;
 use app\modules\group\models\GroupUsers;
 use app\modules\group\models\GroupWarehouses;
+use app\modules\group\models\GroupProducts;
 use app\modules\product\models\Price;
 
 /**
@@ -93,12 +94,12 @@ class Group extends \yii\db\ActiveRecord
                     'warehouses' => 'warehousesList',
                 ],
             ],
-            /*[
+            [
                 'class' => ManyHasManyBehavior::className(),
                 'relations' => [
-                    'products' => 'productsList',
+                    'groupProducts' => 'productsList',
                 ],
-            ],*/
+            ],
         ];
     }
     
@@ -107,7 +108,7 @@ class Group extends \yii\db\ActiveRecord
         if (parent::beforeSave($insert)) {
             $this->usersList = $this->usersList;
             $this->warehousesList = $this->warehousesList;
-            //$this->productsList = $this->productsList;
+            $this->productsList = $this->productsList;
             return true;
         } else {
             return false;
@@ -198,6 +199,21 @@ class Group extends \yii\db\ActiveRecord
         
         return Product::findAll(['id' => array_unique(ArrayHelper::getColumn($prices, 'id'))]);
     }
+        
+    /**
+     * Get Products
+     * 
+     * @return array Products[]
+     */
+    public function getGroupProducts()
+    {
+        return $this->hasMany(Product::className(), ['id' => 'product_id'])
+            ->viaTable(GroupProducts::tableName(), ['group_id' => 'id']);
+        /*$warehousesIDs = ArrayHelper::getColumn($this->warehouses, 'id');
+        $prices = Price::findAll(['warehouse_id' => $warehousesIDs]);
+        
+        return Product::findAll(['id' => array_unique(ArrayHelper::getColumn($prices, 'id'))]);*/
+    }
 
     /**
      * Data for Products Users table: products, warehouses and User[]
@@ -259,6 +275,21 @@ class Group extends \yii\db\ActiveRecord
                     ->viaTable(GroupUsers::tableName(), ['group_id' => 'id'])
                     ->andWhere(['status' => User::STATUS_ACTIVE]);
     }
+    
+    /**
+     * Get only active Users
+     * 
+     * @return array User[]
+     */
+    public function getActiveDirectors()
+    {
+        return $this->hasMany(User::className(), ['id' => 'user_id'])
+                    ->viaTable(GroupUsers::tableName(), 
+                        ['group_id' => 'id'],
+                        function ($query) {$query->andWhere(['rule' => 1]);})
+                    ->andWhere(['status' => User::STATUS_ACTIVE])
+                    ->andWhere('role != :role', ['role' => 'roleUser']);
+    }
 
     /**
      * Get only active Warehouses
@@ -269,7 +300,11 @@ class Group extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Warehouse::className(), ['id' => 'warehouse_id'])
                     ->viaTable(GroupWarehouses::tableName(), ['group_id' => 'id'])
-                    ->andWhere(['status' => User::STATUS_ACTIVE]);
+                    ->andWhere(['status' => Warehouse::STATUS_ACTIVE])
+                    ->orderBy([
+                        Warehouse::tableName() . '.sort' => SORT_ASC,
+                        Warehouse::tableName() . '.title' => SORT_ASC,
+                    ]);
     }
 
     /**
@@ -279,17 +314,45 @@ class Group extends \yii\db\ActiveRecord
      */
     public function getActiveProducts($warehousesIDs = [])
     {
+        /*return $this->hasMany(Product::className(), ['id' => 'product_id'])
+                    ->viaTable(GroupProducts::tableName(), ['group_id' => 'id'])
+                    ->andWhere(['status' => Product::STATUS_ACTIVE]);*/
         if (empty($warehousesIDs)) {
             $warehousesIDs = ArrayHelper::getColumn($this->activeWarehouses, 'id');
         }
-        $prices = Price::findAll(['warehouse_id' => $warehousesIDs]);
+        //$prices = Price::findAll(['warehouse_id' => $warehousesIDs]);
 
-        return Product::find()
+        /*$data = Product::find()
                 ->where(['id' => array_unique(ArrayHelper::getColumn($prices, 'product_id'))])
                 ->active()
-                ->all();
+                ->all();*/
+        
+        /*$xxx = $this->hasMany(Product::className(), ['id' => 'product_id'])
+                    ->viaTable(GroupProducts::tableName(), ['group_id' => 'id'])
+                    ->joinWith('prices')
+                    ->where([Price::tableName() . '.warehouse_id' => $warehousesIDs])
+                    ->andWhere(['status' => Product::STATUS_ACTIVE]);
+        echo $xxx->createCommand()->rawSql;die();*/
+        
+        return $this->hasMany(Product::className(), ['id' => 'product_id'])
+                    ->viaTable(GroupProducts::tableName(), ['group_id' => 'id'])
+                    ->joinWith('prices')
+                    ->where([Price::tableName() . '.warehouse_id' => $warehousesIDs])
+                    ->andWhere(['status' => Product::STATUS_ACTIVE])
+                    ->orderBy([
+                        Product::tableName() . '.sort' => SORT_ASC,
+                        Product::tableName() . '.title' => SORT_ASC,
+                    ])
+                    ->all();
     }
     
+    public function getActiveGroupProducts()
+    {
+        return $this->hasMany(Product::className(), ['id' => 'product_id'])
+                    ->viaTable(GroupProducts::tableName(), ['group_id' => 'id'])
+                    ->andWhere(['status' => Product::STATUS_ACTIVE]);
+    }
+
     /**
      * Get only active Users names
      * 
@@ -299,11 +362,26 @@ class Group extends \yii\db\ActiveRecord
     {
         $result = [];
         foreach ($this->activeUsers as $item) {
-            $result[$item->id] = $item->profile->name . ' (' . $item->profile->phone . ')';
+            $result[$item->id] = $item->profile->name/* . ' (' . $item->profile->phone . ')'*/;
         }
         
         return $result;
-    }    
+    }
+    
+    /**
+     * Get only active directors names
+     * 
+     * @return array names[]
+     */
+    public function getActiveDirectorsNames()
+    {
+        $result = [];
+        foreach ($this->activeDirectors as $item) {
+            $result[$item->id] = $item->profile->name/* . ' (' . $item->profile->phone . ')'*/;
+        }
+        
+        return $result;
+    }
     
     /**
      * Get active Warehouses titles
@@ -336,6 +414,21 @@ class Group extends \yii\db\ActiveRecord
     }  
     
     /**
+     * Get active Products titles
+     * 
+     * @return array Products titles
+     */
+    public function getActiveGroupProductsTitles()
+    {
+        $result = [];
+        foreach ($this->activeGroupProducts as $product) {
+            $result[$product->id] = $product->title . ($product->subtitle ? ' (' . $product->subtitle . ')' : '');
+        }
+        
+        return $result;
+    }  
+    
+    /**
      * Get User Name and Phone
      * 
      * @return array
@@ -344,6 +437,21 @@ class Group extends \yii\db\ActiveRecord
     {
         $result = [];
         foreach ($this->activeUsers as $item) {
+            $result[$item->profile->id] = ['content' => $item->profile->name . ' (' . $item->profile->phone . ')'];
+        }
+        
+        return $result;
+    }
+
+    /**
+     * Get active Director Name and Phone
+     * 
+     * @return array
+     */
+    public function preparedForSIWActiveDirectors()
+    {
+        $result = [];
+        foreach ($this->activeDirectors as $item) {
             $result[$item->profile->id] = ['content' => $item->profile->name . ' (' . $item->profile->phone . ')'];
         }
         
@@ -381,6 +489,21 @@ class Group extends \yii\db\ActiveRecord
     }
     
     /**
+     * Get Products title as string
+     * 
+     * @return array Products data
+     */
+    public function preparedForSIWActiveGroupProducts()
+    {
+        $result = [];
+        foreach ($this->activeGroupProducts as $item) {
+            $result[$item->id] = ['content' => $item->title . ($item->subtitle ? ' (' . $item->subtitle . ')' : '')];
+        }
+        
+        return $result;
+    }
+    
+    /**
      * Get Active Groups list for Sorted Input widget
      */
     public static function preparedForSIWActiveGroups()
@@ -408,5 +531,26 @@ class Group extends \yii\db\ActiveRecord
             $result[$group->id] = $group->title;
         }
         return $result;
-    }    
+    }
+    
+    /**
+     * Проставляем в табличку GroupUsers в поле rule 1, если пользователь управляет группой
+     * 0 - если не управляет
+     * @param array $directorsIdsNew - массив новых ИД пользователей, которые управляют группой
+     */
+    public function resetDirectors($directorsIdsNew)
+    {
+        //Массив ИД текущих руководителей группы
+        $directorsIdsOld = array_column(GroupUsers::find()->select('user_id')->where(['group_id' => $this->id])->andWhere(['rule' => 1])->asArray()->all(), 'user_id');
+        
+        if (count($directorsIdsOld) > count($directorsIdsNew)) {
+            //Находим запись о том, кого нужно убрать из руководителей
+            $directorToRemove = GroupUsers::findOne(['group_id' => $this->id, 'user_id' => current(array_diff($directorsIdsOld, $directorsIdsNew))]);
+            $directorToRemove->updateAttributes(['rule' => 0]);
+        } else {
+            //Находим того, кого надо добавить
+            $newDirector = GroupUsers::findOne(['group_id' => $this->id, 'user_id' => current(array_diff($directorsIdsNew, $directorsIdsOld))]);
+            $newDirector->updateAttributes(['rule' => 1]);
+        }
+    }
 }

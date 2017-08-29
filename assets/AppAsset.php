@@ -18,10 +18,11 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
+        'css/admin.css',
     ];
     public $js = [
-        'js/site.js'
+        //'js/jquery.stickytableheaders.min.js'
+        'js/jquery.stickytableheaders.js'
     ];
     public $depends = [
         'app\assets\Html5ShivAsset',

@@ -36,7 +36,7 @@ class PasswordResetRequestForm extends Model
                 'filter' => ['status' => User::STATUS_ACTIVE],
                 'message' => Module::t('user', 'USER_PASSWORD_RESET_NO_USER')
             ],
-            ['email', 'validateIsSent']
+            //['email', 'validateIsSent']
         ];
     }
 

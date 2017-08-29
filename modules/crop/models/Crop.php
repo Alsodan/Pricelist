@@ -5,21 +5,21 @@ namespace app\modules\crop\models;
 use app\modules\crop\Module;
 use app\modules\crop\models\query\CropQuery;
 use yii\helpers\ArrayHelper;
-use app\modules\group\models\Group;
+use app\modules\product\models\Product;
 
 /**
  * This is the model class for table "{{%crop}}".
  *
  * @property integer $id
  * @property string $title
+ * @property integer $sort
  */
 class Crop extends \yii\db\ActiveRecord
 {
     //Warehouse status
     const STATUS_DISABLED = 0;
     const STATUS_ACTIVE = 1;
-    
-    public $xx;
+
     /**
      * @inheritdoc
      */
@@ -35,6 +35,8 @@ class Crop extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'string', 'max' => 255],
+            ['sort', 'integer'],
+            ['sort', 'default', 'value' => 0],
         ];
     }
 
@@ -46,6 +48,7 @@ class Crop extends \yii\db\ActiveRecord
         return [
             'id' => Module::t('crop', 'CROP_ID'),
             'title' => Module::t('crop', 'CROP_TITLE'),
+            'sort' => Module::t('crop', 'CROP_SORT'),
         ];
     }
     
@@ -77,13 +80,13 @@ class Crop extends \yii\db\ActiveRecord
     }
     
     /**
-     * Get Group
+     * Get Products
      * 
-     * @return Group
+     * @return Product[]
      */
-    public function getGroup()
+    public function getProducts()
     {
-        return $this->hasOne(Group::className(), ['id' => 'group_id']);
+        return $this->hasMany(Product::className(), ['crop_id' => 'id']);
     }
     
     /**

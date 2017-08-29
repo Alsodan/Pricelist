@@ -4,6 +4,7 @@ return [
     'CROPS_TITLE' => 'Crops',
     'CROP_CREATE' => 'Create Crop',
     'CROP_TITLE' => 'Title',
+    'CROP_SORT' => 'Sort',
     'CROP_GROUP' => 'Group',
     
     'BUTTON_SAVE' => 'Save',

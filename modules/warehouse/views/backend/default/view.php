@@ -64,6 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' => 'status',
                                 'value' => function ($model) { return $model->statusName; }
                             ],
+                            'sort'
                         ],
                     ]) ?>
                 </div>

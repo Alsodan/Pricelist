@@ -4,6 +4,7 @@ namespace app\modules\user;
 
 use Yii;
 use app\modules\admin\rbac\Rbac;
+use yii\filters\AccessControl;
 
 /**
  * user module definition class
@@ -24,6 +25,21 @@ class Module extends \yii\base\Module
      * @var int
      */
     public $emailConfirmTokenExpire = 259200; // 3 days
+    
+    /*public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [Rbac::ROLE_USER, Rbac::PERMISSION_PAGE_EDIT],
+                    ],
+                ],
+            ],
+        ];
+    }*/
     
     public static function t($category, $message, $params = [], $language = null)
     {

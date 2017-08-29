@@ -87,13 +87,37 @@ $config = [
                     'controllerNamespace' => 'app\modules\crop\controllers\backend',
                     'viewPath' => '@app/modules/crop/views/backend',
                 ],
+                'organization' => [
+                    'class' => 'app\modules\organization\Module',
+                    'layout' => '@app/views/layouts/admin',
+                    'controllerNamespace' => 'app\modules\organization\controllers\backend',
+                    'viewPath' => '@app/modules/organization/views/backend',
+                ],
                 'product' => [
                     'class' => 'app\modules\product\Module',
                     'layout' => '@app/views/layouts/admin',
                     'controllerNamespace' => 'app\modules\product\controllers\backend',
                     'viewPath' => '@app/modules/product/views/backend',
                 ],
+                'region' => [
+                    'class' => 'app\modules\region\Module',
+                    'layout' => '@app/views/layouts/admin',
+                    'controllerNamespace' => 'app\modules\region\controllers\backend',
+                    'viewPath' => '@app/modules/region/views/backend',
+                ],
+                'site' => [
+                    'class' => 'app\modules\site\Module',
+                    'layout' => '@app/views/layouts/product',
+                    'controllerNamespace' => 'app\modules\site\controllers\backend',
+                    'viewPath' => '@app/modules/site/views/backend',
+                ],
             ]
+        ],
+        'site' => [
+            'class' => 'app\modules\site\Module',
+            'layout' => '@app/views/layouts/site',
+            'controllerNamespace' => 'app\modules\site\controllers\frontend',
+            'viewPath' => '@app/modules/site/views/frontend',
         ],
         'main' => [
             'class' => 'app\modules\main\Module',
@@ -110,18 +134,9 @@ $config = [
             'controllerNamespace' => 'app\modules\group\controllers\frontend',
             'viewPath' => '@app/modules/group/views/frontend',
         ],
-        /*'warehouse' => [
-            'class' => 'app\modules\warehouse\Module',
-            'controllerNamespace' => 'app\modules\warehouse\controllers\frontend',
-            'viewPath' => '@app/modules/warehouse/views/frontend',
-        ],
-        'crop' => [
-            'class' => 'app\modules\crop\Module',
-            'controllerNamespace' => 'app\modules\crop\controllers\frontend',
-            'viewPath' => '@app/modules/crop/views/frontend',
-        ],*/
         'product' => [
             'class' => 'app\modules\product\Module',
+            'layout' => '@app/views/layouts/product',
             'controllerNamespace' => 'app\modules\product\controllers\frontend',
             'viewPath' => '@app/modules/product/views/frontend',
         ],

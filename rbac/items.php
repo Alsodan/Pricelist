@@ -1,5 +1,12 @@
 <?php
 return [
+    'roleSiteEditor' => [
+        'type' => 1,
+        'description' => 'Редактор сайта',
+        'children' => [
+            'permPageEdit',
+        ],
+    ],
     'roleUser' => [
         'type' => 1,
         'description' => 'Менеджер',
@@ -21,7 +28,12 @@ return [
         'children' => [
             'permAdmininstration',
             'roleEditor',
+            'roleSiteEditor',
         ],
+    ],
+    'permPageEdit' => [
+        'type' => 2,
+        'description' => 'Редактировать страницы',
     ],
     'permPriceEdit' => [
         'type' => 2,

@@ -124,6 +124,27 @@ class Profile extends ActiveRecord
     }
     
     /**
+     * Prepare for SortableInput widget
+     */
+    public static function preparedForSIWActiveDirectorsByGroup($groupId)
+    {
+        $all = Profile::find()
+                ->joinWith('user')
+                ->joinWith('user.groups group')
+                ->where([User::tableName() . '.status' => User::STATUS_ACTIVE])
+                ->andWhere(User::tableName() . '.role != :role', ['role' => 'roleUser'])
+                ->andWhere(['group.id' => $groupId])
+                ->all();
+
+        $result = [];
+        foreach ($all as $profile){
+            $result[$profile->id] = ['content' => $profile->name . ' (' . $profile->phone . ')'];
+        }
+        
+        return $result;
+    }
+    
+    /**
      * List of User Groups
      */
     /*public function getGroups()

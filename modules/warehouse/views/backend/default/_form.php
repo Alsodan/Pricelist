@@ -24,6 +24,8 @@ use app\modules\group\models\Group;
                     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
                     <?= $model->scenario == Group::SCENARIO_ADMIN_EDIT ? $form->field($model, 'status')->dropDownList(Warehouse::getStatusArray()) : '' ?>
+                    
+                    <?= $form->field($model, 'sort') ?>
 
                 </div>
             </div>

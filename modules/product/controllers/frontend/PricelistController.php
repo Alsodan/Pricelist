@@ -17,9 +17,17 @@ class PricelistController extends Controller
      */
     public function actionIndex()
     {
-        $prices = Yii::$app->user->identity->activeProductsAndWarehouses;
+        $product = null;
+        $warehouse = null;
+        if (Yii::$app->request->isPost) {
+            $product = Yii::$app->request->post('product');
+            $warehouse = Yii::$app->request->post('warehouse');
+        }
+        $prices = Yii::$app->user->identity->getActiveProductsAndWarehouses($product, $warehouse);
+        /*echo '<pre>';
+        var_dump($warehouse);
+        die();*/
         $tableData = Product::generatePricesTable($prices['product'], $prices['warehouse']);
-        //echo '<pre>';var_dump($tableData); die();
 
         $dataProvider = new ArrayDataProvider([
             'allModels' => $tableData['data'],
@@ -30,6 +38,10 @@ class PricelistController extends Controller
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'columns' => $tableData['columns'],
+            'products' => $prices['productAll'],
+            'warehouses' => $prices['warehouseAll'],
+            'selectedProduct' => is_array($product) ? $product[0] : $product,
+            'selectedWarehouse' => is_array($warehouse) ? $warehouse[0] : $warehouse,
         ]);
     }
             
@@ -50,7 +62,7 @@ class PricelistController extends Controller
             $price->save();
             $message = $price->errors;
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['output' => $price->prices, 'message' => $message];
+            return ['output' => $price->getPricesNoTax(false, ''), 'message' => $message];
         }
         
         return false;

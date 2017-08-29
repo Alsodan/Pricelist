@@ -15,6 +15,7 @@ class m170602_092000_create_crop_table extends Migration
         $this->createTable('{{%crop}}', [
             'id' => $this->primaryKey(),
             'title' => $this->string(255)->notNull(),
+            'sort' => $this->integer()
         ]);
     }
 

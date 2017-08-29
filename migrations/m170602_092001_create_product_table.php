@@ -20,6 +20,7 @@ class m170602_092001_create_product_table extends Migration
             'subtitle' => $this->string(100),
             'specification' => $this->text(),
             'status' => $this->integer(),
+            'sort' => $this->integer(),
         ]);
         
         $this->createIndex('idx-crop-id', '{{%product}}', 'crop_id', false);

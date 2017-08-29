@@ -23,9 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Html::a('<span class="glyphicon glyphicon-info-sign"></span><br>' . Module::t('group', 'GROUP_INFO'), ['manage', 'id' => $model->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
                 <?= Html::a('<span class="glyphicon glyphicon-pencil"></span><br>' . Module::t('group', 'GROUP_UPDATE'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-medium-width active']) ?>
                 <?= Html::a('<span class="glyphicon glyphicon-home"></span><br>' . Module::t('group', 'GROUP_WAREHOUSES_MANAGE'), ['warehouses', 'id' => $model->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
-                <?= Html::a('<span class="glyphicon glyphicon-gift"></span><br>' . Module::t('group', 'GROUP_PRODUCTS_MANAGE'), ['products', 'id' => $model->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-leaf"></span><br>' . Module::t('group', 'GROUP_PRODUCTS_MANAGE'), ['group-products', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-gift"></span><br>' . Module::t('group', 'PRODUCTS_MANAGE'), ['products', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                 <?= Html::a('<span class="glyphicon glyphicon-user"></span><br>' . Module::t('group', 'GROUP_USERS_MANAGE'), ['users', 'id' => $model->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
                 <?= Html::a('<span class="glyphicon glyphicon-tag"></span><br>' . Module::t('group', 'GROUP_PRODUCTS_USERS_MANAGE'), ['products-users', 'id' => $model->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-sunglasses"></span><br>' . Module::t('group', 'GROUP_LOG'), ['log', 'id' => $model->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
             </div>
         </div>
 

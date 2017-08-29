@@ -16,30 +16,32 @@ $this->registerJs('
     $("input.siw").change(function () {
         $.post( "' . $ajaxUrl . '", { users: $("input[name=\'group-users\']").val() })
     });
+    
+    $("table.kv-grid-table").stickyTableHeaders({fixedOffset: $("nav.navbar")});
+    $("table.kv-grid-table tr").on("click", function() {
+        $("table.kv-grid-table tr.hovered").removeClass("hovered")
+        $(this).addClass("hovered");
+    });
 ');
 ?>
 <div class="group-manage">
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title"><b><?= Module::t('group', 'GROUP') ?>: <?= $group->title ?></b></h3>
-        </div>
-        <div class="panel-body text-center">
-            <div class="btn-group" role="group">
-                <?= Html::a('<span class="glyphicon glyphicon-info-sign"></span><br>' . Module::t('group', 'GROUP_INFO'), ['manage', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
-                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span><br>' . Module::t('group', 'GROUP_UPDATE'), ['update', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
-                <?= Html::a('<span class="glyphicon glyphicon-home"></span><br>' . Module::t('group', 'GROUP_WAREHOUSES_MANAGE'), ['warehouses', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
-                <?= Html::a('<span class="glyphicon glyphicon-gift"></span><br>' . Module::t('group', 'GROUP_PRODUCTS_MANAGE'), ['products', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
-                <?= Html::a('<span class="glyphicon glyphicon-user"></span><br>' . Module::t('group', 'GROUP_USERS_MANAGE'), ['users', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
-                <?= Html::a('<span class="glyphicon glyphicon-tag"></span><br>' . Module::t('group', 'GROUP_PRODUCTS_USERS_MANAGE'), ['products-users', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width active']) ?>
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b><?= Module::t('group', 'GROUP') ?>: <?= $group->title ?></b></h3>
             </div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class=" col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
-
+            <div class="panel-body text-center">
+                <div class="btn-group" role="group">
+                    <?= Html::a('<span class="glyphicon glyphicon-info-sign"></span><br>' . Module::t('group', 'GROUP_INFO'), ['manage', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span><br>' . Module::t('group', 'GROUP_UPDATE'), ['update', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-home"></span><br>' . Module::t('group', 'GROUP_WAREHOUSES_MANAGE'), ['warehouses', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-leaf"></span><br>' . Module::t('group', 'GROUP_PRODUCTS_MANAGE'), ['group-products', 'id' => $group->id], ['class' => 'btn btn-primary']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-gift"></span><br>' . Module::t('group', 'PRODUCTS_MANAGE'), ['products', 'id' => $group->id], ['class' => 'btn btn-primary']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-user"></span><br>' . Module::t('group', 'GROUP_USERS_MANAGE'), ['users', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-tag"></span><br>' . Module::t('group', 'GROUP_PRODUCTS_USERS_MANAGE'), ['products-users', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width active']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-sunglasses"></span><br>' . Module::t('group', 'GROUP_LOG'), ['log', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                </div>
+                <hr>
                 <div class="alert alert-info">
                     <p class="col-lg-1 col-md-1 col-sm-2">
                         <span class="glyphicon glyphicon-info-sign" style="font-size: 48px;"></span>
@@ -50,16 +52,26 @@ $this->registerJs('
                 </div>
             </div>
         </div>
+    </div>
 
         <?php
             $gridColumns = [
                 [
                     'attribute' => 'title',
                     'label' => Module::t('group', 'PRODUCTS'),
-                    'width' => '300px',
                     'hAlign' => 'center',
                     'vAlign' => 'middle',
                     'format' => 'html',
+                    'contentOptions' => [
+                        'class' => 'first-column',
+                        'height' => '75px;',
+                        'style' => 'min-width: 160px; max-width: 160px;',
+                        'width' => '160px',
+                    ],
+                    'headerOptions' => [
+                        'style' => 'min-width: 160px; max-width: 160px;',
+                        'width' => '160px',
+                    ],
                 ]
             ];
 
@@ -106,12 +118,15 @@ $this->registerJs('
                         'readonly' => function($model) use ($arrkey) {
                             return (empty($model[$arrkey]));
                         },
-                        'value' => function ($model) use ($arrkey) { return empty($model[$arrkey]) ? '' : (empty($model[$arrkey]->activeUsersNames) ? Module::t('group', 'NO_USERS') : implode('<br>', $model[$arrkey]->activeUsersNames)); },
-                        'width' => '200px',
+                        'value' => function ($model) use ($arrkey) { return empty($model[$arrkey]) ? '' : (empty($model[$arrkey]->activeUsersNames) ? Module::t('group', 'NO_USERS') : implode(', ', $model[$arrkey]->activeUsersNames)); },
                         'hAlign' => 'center',
                         'vAlign' => 'middle',
                         'header' => str_replace(' ', '<br>', $title),
-                        'format' => 'html'
+                        'format' => 'html',
+                        'contentOptions' => [
+                            'style' => 'min-width: 160px; max-width: 160px;',
+                            'height' => '74px;'
+                        ],
                     ]
                 ]);
             }
@@ -121,24 +136,18 @@ $this->registerJs('
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'hover' => true,
-                    'striped' => false,
+                    'striped' => true,
                     'toolbar' => false,
                     'panel' => false,
                     'resizableColumns' => false,
+                    'responsive' => false,
                     'layout' => '{items}',
                     'headerRowOptions' => [
-                        'style' => 'overflow: auto; word-break: break-all;'
+                        'style' => 'overflow: auto; word-break: break-all; background-color: #fdb813;',
                     ],
                     'columns' => $gridColumns,
                 ]); ?>
             </div>
         </div>
-    
-        <div class="panel-footer">
-            <div class="row">
-                <p class="pull-right">
-                </p>
-            </div>
-        </div>
-    </div>
+
 </div>

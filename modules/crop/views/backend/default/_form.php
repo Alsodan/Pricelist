@@ -15,6 +15,8 @@ use app\modules\crop\Module;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
     
+    <?= $form->field($model, 'sort') ?>
+    
     <div class="form-group">
         <?= Html::submitButton(Module::t('crop', 'BUTTON_SAVE'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

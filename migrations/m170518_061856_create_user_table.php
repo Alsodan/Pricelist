@@ -26,6 +26,7 @@ class m170518_061856_create_user_table extends Migration
             'status' => $this->smallInteger()->notNull()->defaultValue(0),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
+            'sort' => $this->integer(),
         ], $tableOptions);
         
         $this->createIndex('idx-user-username', '{{%user}}', 'username');

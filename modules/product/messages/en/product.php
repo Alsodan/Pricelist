@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'ALL' => 'All',
     'WAREHOUSES' => 'Warehouses',
     'USERS' => 'Users',
     'GROUP' => 'Group',
@@ -17,6 +18,8 @@ return [
     'PRODUCT_PRICE_NO_TAX' => 'Price without Tax',
     'PRODUCT_PRICE_WITH_TAX' => 'Price with Tax',
     'PRODUCT_STATUS' => 'Status',
+    'PRODUCT_SORT' => 'Sort',
+    
     'PRODUCT_CREATE' => 'Create Product',
     'PRODUCT_STATUS_DISABLED' => 'Disabled',
     'PRODUCT_STATUS_ACTIVE' => 'Active',
@@ -27,6 +30,7 @@ return [
     'NOT_BUY' => 'Not buy',
     
     'BUTTON_SAVE' => 'Save',
+    'BUTTON_FILTER' => 'Filter',
     
     'DATA_TITLE' => 'Warehouse -> Managers -> Price no Tax / Price with Tax',
     'NO_MANAGERS' => 'No Manager',

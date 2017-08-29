@@ -16,13 +16,16 @@ return [
     ],
     'bootstrap' => [
         'log',
+        'app\modules\site\Bootstrap',
         'app\modules\admin\Bootstrap',
         'app\modules\main\Bootstrap',
         'app\modules\user\Bootstrap',
         'app\modules\group\Bootstrap',
         'app\modules\warehouse\Bootstrap',
         'app\modules\crop\Bootstrap',
+        'app\modules\organization\Bootstrap',
         'app\modules\product\Bootstrap',
+        'app\modules\region\Bootstrap',
     ],
     'components' => [
         'db' => [
@@ -39,13 +42,19 @@ return [
                     'pluralize' => false,
                     'prefix' => 'api',
                     'controller' => [
-                        'v1/price'
+                        'v1/pricelist'
                     ],
                     'patterns' => [
+                        'GET,HEAD warehouses' => 'warehouses',
+                        'GET,HEAD regions' => 'regions',
+                        'GET,HEAD crops' => 'crops',
+                        'GET,HEAD prices' => 'prices',
+                        'GET,HEAD products' => 'products',
+                        //'GET,HEAD warehouses/<id:\d+>' => 'warehouses',
                         //'PUT,PATCH {id}' => 'update',
                         //'DELETE {id}' => 'delete',
-                        'GET,HEAD {id}' => 'view',
-                        'GET,HEAD all' => 'prices',
+                        //'GET,HEAD {id}' => 'view',
+                        //'GET,HEAD all' => 'prices',
                         //'POST' => 'create',
                         //'GET,HEAD' => 'index',
                         //'{id}' => 'options',
@@ -68,8 +77,16 @@ return [
                     ],
                 ],
 
-                '' => 'main/default/index',
-                'contact' => 'main/contact/index',
+                '' => 'site/default/pricelist',
+                'warehouses' => 'site/default/warehouses',
+                'warehouse/<id:\d+>' => 'site/default/warehouse/',
+                'supplier' => 'site/default/supplier',
+                'products' => 'site/default/products',
+                'product/<id:\d+>' => 'site/default/product/',
+                'contacts' => 'site/default/contacts',
+                
+                'administrator' => 'main/default/index',
+                //'contact' => 'main/contact/index',
                 '<_a:error>' => 'main/default/<_a>',
 
                 '<_a:(login|logout|signup|email-confirm|password-reset-request|password-reset)>' => 'user/default/<_a>',

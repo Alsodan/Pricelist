@@ -46,6 +46,12 @@ class WarehouseSearch extends Warehouse
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'sort' => SORT_ASC,
+                    'title' => SORT_ASC
+                ],
+            ],
         ]);
 
         $this->load($params);

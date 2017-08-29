@@ -34,8 +34,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ]) ?>
             </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <?= DetailView::widget([
+                    'model' => $crop,
+                    'attributes' => [
+                        'sort',
+                    ],
+                ]) ?>
+            </div>
         </div>
-    
+
         <div class="panel-footer">
             <div class="row">
                 <p class="pull-right">

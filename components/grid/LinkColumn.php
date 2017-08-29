@@ -28,11 +28,19 @@ class LinkColumn extends DataColumn
      * @inheritdoc
      */
     public $format = 'raw';
- 
+    
+    public $defaultAction = 'view';
+    
+    public $icon = '';
+    
+    public $params = [];
+
     protected function renderDataCellContent($model, $key, $index)
     {
         $value = $this->getDataCellValue($model, $key, $index);
         $text = $this->grid->formatter->format($value, $this->format);
+        //Add icon
+        $text .= $this->icon ? '&nbsp;' . $this->generateIcon() : '';
         $url = $this->createUrl($model, $key, $index);
         $options = $this->targetBlank ? ['target' => '_blank'] : [];
         return $value === null ? $this->grid->emptyCell : Html::a($text, $url, $options);
@@ -44,8 +52,16 @@ class LinkColumn extends DataColumn
             return call_user_func($this->url, $model, $key, $index);
         } else {
             $params = is_array($key) ? $key : ['id' => (string) $key];
-            $params[0] = $this->controller ? $this->controller . '/view' : 'view';
+            if (!empty($this->params)) {
+                $params = array_merge($params, $this->params);
+            }
+            $params[0] = $this->controller ? $this->controller . '/' . $this->defaultAction : $this->defaultAction;
             return Url::toRoute($params);
         }
+    }
+    
+    private function generateIcon()
+    {
+        return Html::tag('span', '', ['class' => 'glyphicon ' . $this->icon]);
     }
 }

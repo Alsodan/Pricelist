@@ -37,6 +37,8 @@ use kartik\select2\Select2;
                     
                     <?= $model->scenario == Product::SCENARIO_ADMIN_EDIT ? $form->field($model, 'status')->dropDownList(Product::getStatusArray()) : '' ?>
                     
+                    <?= $form->field($model, 'sort') ?>
+                    
                 </div>
             </div>
             <br>

@@ -23,9 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="btn-group" role="group">
                 <?= Html::a('<span class="glyphicon glyphicon-pencil"></span><br>' . Module::t('group', 'GROUP_UPDATE'), ['update', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
                 <?= Html::a('<span class="glyphicon glyphicon-user"></span><br>' . Module::t('group', 'GROUP_USERS_MANAGE'), ['users', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
-                <?= Html::a('<span class="glyphicon glyphicon-home"></span><br>' . Module::t('group', 'GROUP_WAREHOUSES_MANAGE'), ['warehouses', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
-                <?= Html::a('<span class="glyphicon glyphicon-gift"></span><br>' . Module::t('group', 'GROUP_PRODUCTS_MANAGE'), ['products', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
                 <?= Html::a('<span class="glyphicon glyphicon-tag"></span><br>' . Module::t('group', 'GROUP_PRODUCTS_USERS_MANAGE'), ['products-users', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-bullhorn"></span><br>' . Module::t('group', 'GROUP_PRODUCTS_DIRECTORS_MANAGE'), ['directors', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-home"></span><br>' . Module::t('group', 'GROUP_WAREHOUSES_MANAGE'), ['warehouses', 'id' => $group->id], ['class' => 'btn btn-primary btn-medium-width']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-leaf"></span><br>' . Module::t('group', 'GROUP_PRODUCTS_MANAGE'), ['group-products', 'id' => $group->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-gift"></span><br>' . Module::t('group', 'PRODUCTS_MANAGE'), ['products', 'id' => $group->id], ['class' => 'btn btn-primary']) ?>
                 <?= $group->status == Group::STATUS_ACTIVE ?
                     Html::a('<span class="glyphicon glyphicon-off"></span><br>' . Module::t('group', 'GROUP_DISABLE'), ['block', 'id' => $group->id, 'view' => 'view'], [
                     'class' => 'btn btn-danger btn-medium-width',
@@ -53,6 +55,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         'model' => $group,
                         'attributes' => [
                             'title',
+                            [
+                                'label' => Module::t('group', 'GROUP_PRODUCTS_DIRECTORS_MANAGE'),
+                                'value' => function ($model) { 
+                                    $result = implode('<br>', $model->activeDirectorsNames);
+                                    return $result == '' ? 'Не назначены' : $result; },
+                                'format' => 'html',
+                            ]
                         ],
                     ]) ?>
                 </div>

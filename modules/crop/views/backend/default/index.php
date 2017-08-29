@@ -22,18 +22,23 @@ $this->params['breadcrumbs'][] = $this->title;
     
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             [
                 'attribute' => 'title',
                 'class' => LinkColumn::className(),
+                'defaultAction' => 'update',
+                'icon' => 'glyphicon-pencil',
+                'params' => ['view' => 'index'],
             ],
+            'sort',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view}&nbsp;&nbsp;{update}',
-                'contentOptions' => ['style' => 'width: 70px;']
+                'contentOptions' => ['style' => 'width: 80px; font-size: 20px; text-align: center;'],
+                'header' => 'Действия',
             ],
         ],
     ]); ?>

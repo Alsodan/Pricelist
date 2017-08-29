@@ -2,15 +2,10 @@
 
 namespace app\api\modules\v1\models;
 
-use Yii;
 use app\modules\product\models\Price as BasePrice;
-/*use app\modules\product\Module;
-use app\modules\product\models\query\ProductQuery;
 use yii\helpers\ArrayHelper;
-use app\modules\warehouse\models\Warehouse;
-use app\modules\user\models\common\User;
-use app\components\behaviors\ManyHasManyBehavior;
-use app\modules\product\models\PriceUsers;*/
+
+use app\api\modules\v1\models\queries\PriceQuery;
 
 /**
  * This is the model class for table "{{%price}}".
@@ -23,280 +18,137 @@ use app\modules\product\models\PriceUsers;*/
  * @property integer $price_status
  */
 
-class Price extends BasePrice
+class Price extends BasePrice implements \app\interfaces\SiteDataInterface
 {
-    //Price statuses
-    const CALL_WITH_TAX = 1 << 0;
-    const CALL_NO_TAX = 1 << 1;
-    const NONEED_WITH_TAX = 1 << 2;
-    const NONEED_NO_TAX = 1 << 3;
-    
-    public $call_with_tax;
-    public $call_no_tax;
-    public $noneed_with_tax;
-    public $noneed_no_tax;
-    
-    //Product prices
-    const PRICE_NO_TAX = 'price_no_tax';
-    const PRICE_WITH_TAX = 'price_with_tax';
+    /*
+     * Массив для хранения информации о менеджерах этой цены
+     */
+    public $manager;
     
     /**
-     * @inheritdoc
+     * Реализация интерфейса данных для сайта
+     * @return array|[]
      */
-    public static function tableName()
+    public static function getBaseData($data = [])
     {
-        return '{{%price}}';
+        $prices = static::find()
+                ->jsonData()
+                ->hasManager()
+                ->activeWarehouses()
+                ->activeProducts()
+                ->andWhere('price_status < ' . static::NONEED_NO_TAX)
+                ->distinct();
+        return $prices->all();
     }
-
+    
     /**
-     * @inheritdoc
+     * @return PriceQuery
      */
-    public function rules()
+    public static function find()
     {
+        return new PriceQuery(get_called_class());
+    }
+    
+    /*
+     * Возвращаемые поля в REST API
+     */
+    public function fields()
+    {
+        $this->afterFind();
         return [
-            [['warehouse_id', 'product_id'], 'integer'],
-            [['price_no_tax', 'price_with_tax'], 'double'],
-            [['warehouse_id', 'product_id'], 'required'],
-            //[['call_with_tax', 'call_no_tax', 'noneed_with_tax', 'noneed_no_tax'], 'safe'],
-            //['price_status', 'safe'],
-            ['usersList', 'safe'],
+            'id',
+            'price_no_tax' => function () {return $this->getPrice('no_tax');},
+            'warehouse_id', 
+            'product_id',
+            'manager' => function () { return $this->fillManagers();},
         ];
     }
-
-    /**
-     * @inheritdoc
+    
+    /*
+     * Возвращает массив объектов цен для прайслиста
+     * Столбцы - склады, ряды - товары
      */
-    public function attributeLabels()
+    public static function generateTable($prices, $warehouses, $products, $managers)
     {
-        return [
-            'id' => Module::t('product', 'PRODUCT_ID'),
-            'warehouse_id' => Module::t('product', 'WAREHOUSE_ID'),
-            'product_id' => Module::t('product', 'PRODUCT_ID'),
-            'price_no_tax' => Module::t('product', 'PRODUCT_PRICE_NO_TAX'),
-            'price_with_tax' => Module::t('product', 'PRODUCT_PRICE_WITH_TAX'),
-        ];
+        $warehousesId = ArrayHelper::getColumn($warehouses, 'id');
+        $productsId = ArrayHelper::getColumn($products, 'id');
+        //Пустой массив нужной размерности
+        $tableRow = array_fill(0, count($productsId), '');
+        $table = array_fill(0, count($warehousesId), $tableRow);
+        //Заполняем данные по складам и товарам у менеджеров
+        foreach ($managers as $value) {
+            $value->checkWarehousesAndProducts(ArrayHelper::getColumn($warehouses, 'id'), ArrayHelper::getColumn($products, 'id'));
+        }
+        //Если цена есть и не равна значению "Не закупаем", то выводим ее в нужную позицию в массиве
+        foreach ($prices as $price) {
+            if ($price->price_status < Price::NONEED_NO_TAX) {
+                $table[array_search($price->warehouse_id, $warehousesId)][array_search($price->product_id, $productsId)] = $price;
+                //Для каждой цены добавляем массив данных по менеджеру
+                $price->manager = $price->fillManagers();
+            }
+        }
+        
+        return $table;
     }
 
+    /*
+     * Формирование массива данных о менеджере
+     */
+    public function fillManagers()
+    {
+        $managerData = [];
+        foreach ($this->users as $manager) {
+            $managerData[] = [
+                'name' => $manager->profile->name,
+                'phone' => $manager->profile->phone,
+                'email' => $manager->profile->work_email,
+            ];
+        }
+        
+        return $managerData;
+    }
+    
+    /*
+     * Поиск с параметрами для REST API
+     */
+    public static function findPricesWithParams($warehouses, $products)
+    {
+        $warehouseId = ArrayHelper::getColumn($warehouses, 'id');
+        $productId = ArrayHelper::getColumn($products, 'id');
+        
+        $prices = Price::find()
+                ->jsonData()
+                ->with('users');
+        
+        //Фильтр по складам
+        if ($warehouseId > 0) {
+            $prices->andWhere([Price::tableName() . '.warehouse_id' => $warehouseId]);
+        }
+        //Фильтр по товарам
+        if ($productId > 0) {
+            $prices->andWhere([Price::tableName() . '.product_id' => $productId]);
+        }
+        
+        return $prices->all();
+    }
+    
     /**
-     * @inheritdoc
+     * Возвращает все цены для группы
+     * @param type $groupId
+     * @return type
+     */
+    public static function findByGroup($groupId)
+    {
+        return Price::find()
+                ->joinWith('product.groups group')
+                ->where(['group.id' => $groupId]);
+    }
+
+    /*
+     * Сбрасываем все поведения, отнаследованные от родителя
      */
     public function behaviors()
     {
-        return [
-            [
-                'class' => ManyHasManyBehavior::className(),
-                'relations' => [
-                    'users' => 'usersList',
-                ],
-            ],
-        ];
-    }
-    
-    //Before save model
-    public function beforeSave($insert)
-    {
-        if (parent::beforeSave($insert)) {
-            $this->usersList = $this->usersList;
-            
-            //Calculate status
-            $this->price_status = 0;
-            if ($this->call_with_tax) {
-                $this->price_status |= self::CALL_WITH_TAX;
-            }
-            if ($this->call_no_tax) {
-                $this->price_status |= self::CALL_NO_TAX;
-            }
-            if ($this->noneed_with_tax) {
-                $this->price_status |= self::NONEED_WITH_TAX;
-            }
-            if ($this->noneed_no_tax) {
-                $this->price_status |= self::NONEED_NO_TAX;
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-    //After finding and populating model
-    public function afterFind() {
-        parent::afterFind();
-        
-        //Set flags from $price_status
-        if (is_null($this->price_status)) {
-                $this->price_status = self::NONEED_WITH_TAX | self::NONEED_NO_TAX;
-        }
-        $this->call_with_tax = $this->price_status & self::CALL_WITH_TAX;
-        $this->call_no_tax = $this->price_status & self::CALL_NO_TAX;
-        $this->noneed_with_tax = $this->price_status & self::NONEED_WITH_TAX;
-        $this->noneed_no_tax = $this->price_status & self::NONEED_NO_TAX;
-    }
-
-
-    /**
-     * @inheritdoc
-     * @return ProductQuery the active query used by this AR class.
-     */
-    /*public static function find()
-    {
-        return new PriceQuery(get_called_class());
-    }*/
-    
-    /**
-     * Get Users
-     * 
-     * @return array User[]
-     */
-    public function getUsers()
-    {
-        return $this->hasMany(User::className(), ['id' => 'user_id'])
-            ->viaTable(PriceUsers::tableName(), ['price_id' => 'id']);
-    }
-    
-    /**
-     * Get Price Warehouse
-     * 
-     * @return app/modules/warehouse/models/Warehouse
-     */
-    public function getWarehouse()
-    {
-        return $this->hasOne(Warehouse::className(), ['id' => 'warehouse_id']);
-    }
-    
-    /**
-     * Get Price active Warehouse
-     * 
-     * @return app/modules/warehouse/models/Warehouse
-     */
-    public function getActiveWarehouse()
-    {
-        return $this->hasOne(Warehouse::className(), ['id' => 'warehouse_id'])
-                ->where(['status' => Warehouse::STATUS_ACTIVE]);
-    }
-
-    /**
-     * Get Price Product
-     * 
-     * @return app/modules/product/models/Product
-     */
-    public function getProduct()
-    {
-        return $this->hasOne(Product::className(), ['id' => 'product_id']);
-    }
-    
-    /**
-     * Get only active Users
-     * 
-     * @return array app/modules/user/models/common/User[]
-     */
-    public function getActiveUsers()
-    {
-        return $this->hasMany(User::className(), ['id' => 'user_id'])
-                ->viaTable(PriceUsers::tableName(), ['price_id' => 'id'])
-                ->andWhere(['status' => User::STATUS_ACTIVE]);
-    }
-    
-    /**
-     * Get active Users names
-     * 
-     * @return array
-     */
-    public function getActiveUsersNames()
-    {
-        $result = [];
-        foreach ($this->activeUsers as $item) {
-            $result[$item->profile->id] = $item->profile->name . ' (' . $item->profile->phone . ')';
-        }
-        
-        return $result;
-    }    
-    
-    /**
-     * Get only active Warehouses string
-     * 
-     * @return array Warehouses[]
-     */
-    public function getWarehousesAsStringArray()
-    {
-        $result = [];
-        foreach ($this->activeWarehouses as $item) {
-            $result[$item->id] = $item->title;
-        }
-        
-        return $result;
-    }    
-    
-    /**
-     * Get Profiles Name and Phone as string
-     * 
-     * @return array profiles data
-     */
-    public function preparedForSIWActiveProfiles()
-    {
-        $result = [];
-        foreach ($this->activeUsers as $item) {
-            $result[$item->profile->id] = ['content' => $item->profile->name . ' (' . $item->profile->phone . ')'];
-        }
-        
-        return $result;
-    }
-    
-    /**
-     * Decorate price before output
-     * 
-     * @param type $priceType - can be 'price_with_tax' or simple 'with_tax'
-     * @return type
-     */
-    public function getPrice($priceType = 'with_tax')
-    {
-        if (substr($priceType, 0, 6) == 'price_') {
-            $priceType = substr($priceType, 6);
-        }
-        $price =  'price_' . $priceType;
-        if ($this->canGetProperty($price)) {
-            $call = 'call_' . $priceType;
-            $noneed = 'noneed_' . $priceType;
-            return $this->$call > 0 ? Module::t('product', 'CALL_FOR_PRICE') :
-                    ($this->$noneed > 0 ? Module::t('product', 'NOT_BUY') : Yii::$app->formatter->asCurrency((double)$this->$price));
-        }
-        
-        return Module::t('product', 'PRICE_NOT_SET');
-    }
-    
-    /**
-     * Get Product Prices names array
-     * 
-     * @return array
-     */
-    public static function getPricesArray()
-    {
-        return [
-            static::PRICE_WITH_TAX => Module::t('product', 'PRODUCT_PRICE_WITH_TAX'),
-            static::PRICE_NO_TAX => Module::t('product', 'PRODUCT_PRICE_NO_TAX'),
-        ];
-    }
-    
-    /**
-     * Get Price name
-     * 
-     * @return string
-     */
-    public function getPriceName($attribute)
-    {
-        return ArrayHelper::getValue(static::getPricesArray(), $attribute);
-    }
-    
-    /**
-     * Get Prices string
-     * @param type $delimiter
-     * @return string
-     */
-    public function getPrices($showCaption = true, $captionDelimiter = ' - ', $itemDelimiter = '<br>')
-    {
-        $result = [];
-        foreach (static::getPricesArray() as $key => $value) {
-            $result[] = ($showCaption ? $value . ' - ' : '') . $this->getPrice($key);
-        }
-        return implode($itemDelimiter, $result);
+        return [];
     }
 }

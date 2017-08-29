@@ -26,12 +26,18 @@ use yii\helpers\Url;
  */
 class LinkedItemsWidget extends Widget
 {
+    //Массив строк для текстов ссылок
     public $links;
+    //Дополнительные аттрибуты для div-обертки
     public $options = [];
+    //Индекс активного элемента, начиная с 0
     public $selectedKey = 0;
+    //Ссылки
+    //если значение элемента массива ссылки равно 'key', вместо 'key' будет подставлен ключ соответствующего элемента из $links
+    //'linkRoute' => ['products', 'id' => $group->id, 'wh' => 'key'],
     public $linkRoute = [];
     
-    private $_html;
+    private $html;
 
     public function init() 
     {
@@ -44,15 +50,15 @@ class LinkedItemsWidget extends Widget
                 if ($keyField) {
                     $this->linkRoute[$keyField] = $key;
                 }
-                $this->_html .= Html::a($value, empty($this->linkRoute) ? '#' : Url::to($this->linkRoute), ['class' => $key == $this->selectedKey ? 'list-group-item active' : 'list-group-item']);
+                $this->html .= Html::a($value, empty($this->linkRoute) ? '#' : Url::to($this->linkRoute), ['class' => $key === $this->selectedKey ? 'list-group-item active' : 'list-group-item']);
             }
         }
 
-        $this->_html = Html::tag('div', $this->_html, array_merge(['class' => 'list-group'], $this->options));
+        $this->html = Html::tag('div', $this->html, array_merge(['class' => 'list-group'], $this->options));
     }
     
     public function run()
     {
-        return $this->_html;
+        return $this->html;
     }
 }

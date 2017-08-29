@@ -46,6 +46,11 @@ class GroupSearch extends Group
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'title' => SORT_ASC,
+                ],
+            ]
         ]);
 
         $this->load($params);

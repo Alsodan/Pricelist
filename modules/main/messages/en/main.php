@@ -14,4 +14,14 @@ return [
     'CONTACT_SUBJECT' => 'Subject',
     'CONTACT_MESSAGE' => 'Message',
     'CONTACT_VERIFICATION_CODE' => 'Verification Code',
+    
+    'GROUP' => 'Group',
+    'USERS' => 'Users',
+    'CROPS' => 'Crops',
+    'WAREHOUSES' => 'Warehouses',
+    'DATETIME' => 'Datetime',
+    'TITLE' => 'Action',
+    'FIELD' => 'Field',
+    'NEW_VALUE' => 'New value',
+    'OLD_VALUE' => 'Old value',
 ];

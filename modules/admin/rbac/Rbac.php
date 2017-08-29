@@ -8,6 +8,8 @@ namespace app\modules\admin\rbac;
 
 class Rbac 
 {
+    const ROLE_SITE_EDITOR = 'roleSiteEditor';
+    const ROLE_SITE_EDITOR_DESCRIPTION = 'Редактор сайта';
     const ROLE_USER = 'roleUser';
     const ROLE_USER_DESCRIPTION = 'Менеджер';
     const ROLE_EDITOR = 'roleEditor';
@@ -15,6 +17,8 @@ class Rbac
     const ROLE_ADMIN = 'roleAdmin';
     const ROLE_ADMIN_DESCRIPTION = 'Администратор';
     
+    const PERMISSION_PAGE_EDIT = 'permPageEdit';
+    const PERMISSION_PAGE_EDIT_DESCRIPTION = 'Редактировать сайт';
     const PERMISSION_PRICE_EDIT = 'permPriceEdit';
     const PERMISSION_PRICE_EDIT_DESCRIPTION = 'Редактировать цены';
     const PERMISSION_GROUP_EDIT = 'permGroupEdit';

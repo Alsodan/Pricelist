@@ -16,6 +16,7 @@ class m170602_092823_create_warehouse_table extends Migration
             'id' => $this->primaryKey(),
             'title' => $this->string(255)->notNull(),
             'status' => $this->integer(),
+            'sort' => $this->integer(),
         ]);
     }
 

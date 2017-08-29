@@ -28,13 +28,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             [
                 'attribute' => 'username',
                 'class' => LinkColumn::className(),
+                'defaultAction' => 'update',
+                'icon' => 'glyphicon-pencil',
+                'params' => ['view' => 'index'],
             ],
             'email:email',
             /*[
@@ -63,6 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'products',
                 'format' => 'html',
             ],*/
+            'sort',
             [
                 'class' => RoleColumn::className(),
                 'filter' => ArrayHelper::map(Yii::$app->authManager->roles, 'name', 'description'),
@@ -82,12 +86,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => ActionColumn::className(),
-                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{change}',
+                'template' => '{view}&nbsp;&nbsp;{update}<hr>{change}',
                 'buttons' => [
+                    'update' => function ($url, $model, $key) {
+                        return 
+                            Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('user', 'LINK_UPDATE')]);
+                    },
                     'change' => function ($url, $model, $key) {
                         return $model->status ?
                             Html::a('<span class="glyphicon glyphicon-off"></span>', ['block', 'id' => $model->id, 'view' => 'index'], [
-                                'class' => 'btn btn-xs btn-danger',
+                                'class' => 'btn btn-md btn-danger btn-block',
                                 'data' => [
                                     'confirm' => Module::t('user', 'USER_BLOCK_CONFIRM'),
                                     'method' => 'post',
@@ -95,7 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'title' => Module::t('user', 'USER_BLOCK'),
                             ]) :
                             Html::a('<span class="glyphicon glyphicon-off"></span>', ['unblock', 'id' => $model->id, 'view' => 'index'], [
-                                'class' => 'btn btn-xs btn-success',
+                                'class' => 'btn btn-md btn-success btn-block',
                                 'data' => [
                                     'method' => 'post',
                                 ],
@@ -103,7 +111,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]);
                     },
                 ],
-                'contentOptions' => ['style' => 'width: 90px;']
+                'contentOptions' => ['style' => 'width: 80px; font-size: 20px; text-align: center;'],
+                'header' => 'Действия',
             ],
         ],
     ]); ?>

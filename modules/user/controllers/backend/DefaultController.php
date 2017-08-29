@@ -9,6 +9,8 @@ use app\modules\user\models\backend\search\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use app\modules\admin\rbac\Rbac;
 use app\modules\user\forms\backend\UserCreateForm;
 
 /**
@@ -28,6 +30,15 @@ class DefaultController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [Rbac::PERMISSION_ADMINISTRATION],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -39,9 +50,11 @@ class DefaultController extends Controller
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        $dataProvider->pagination = false;
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            //'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -96,7 +109,7 @@ class DefaultController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $view = 'view')
     {
         $user = $this->findModel($id);
         $user->scenario = User::SCENARIO_ADMIN_UPDATE;
@@ -106,7 +119,7 @@ class DefaultController extends Controller
             if ($user->validate() && $profile->validate()) {
                 $user->save(false);
                 $profile->save(false);
-                return $this->redirect(['view', 'id' => $user->id]);
+                return $this->redirect([$view, 'id' => $user->id]);
             }
         } else {
             return $this->render('update', [

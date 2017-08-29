@@ -19,7 +19,7 @@ class Module extends \yii\base\Module
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => [Rbac::PERMISSION_ADMINISTRATION],
+                        'roles' => [Rbac::PERMISSION_ADMINISTRATION, Rbac::PERMISSION_PAGE_EDIT],
                     ],
                 ],
             ],

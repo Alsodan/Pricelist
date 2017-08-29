@@ -51,6 +51,10 @@ $this->registerJs('
     <?= Html::checkbox('same_email', false, ['label' => Module::t('user', 'USER_PROFILE_WORK_EMAIL_IS_SAME_AS_USER_EMAIL'), 'id' => 'same_email', 'labelOptions' => ['id' => 'same_email_label']]) ?>
     
     <hr>
+     
+    <?= $form->field($user, 'sort') ?>
+    
+    <hr>
 
     <div class="form-group">
         <?= Html::submitButton(Module::t('user', 'BUTTON_SAVE'), ['class' => $user->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
