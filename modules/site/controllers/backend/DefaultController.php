@@ -4,15 +4,32 @@ namespace app\modules\site\controllers\backend;
 
 use Yii;
 use yii\web\Controller;
-use app\modules\site\models\Page;
 use vova07\imperavi\actions\GetAction;
 use vova07\imperavi\actions\UploadAction;
+use yii\filters\AccessControl;
+use app\modules\admin\rbac\Rbac;
 
 /**
  * Default controller for the `main` module
  */
 class DefaultController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [Rbac::PERMISSION_PAGE_EDIT],
+                    ],
+                ],
+            ],
+        ];
+    }
+    
+    //Actions for Imperavi Redactor
     public function actions()
     {
         return [
