@@ -11,11 +11,14 @@ return [
     'NAV_ADMIN_PANEL' => 'AdminPanel',
     'NAV_ADMIN_USERS' => 'Users',
     'NAV_ADMIN_GROUPS' => 'Groups',
+    'NAV_ADMIN_ORGANIZATIONS' => 'Organizations',
+    'NAV_ADMIN_REGIONS' => 'Regions',
     'NAV_ADMIN_WAREHOUSES' => 'Warehouses',
     'NAV_ADMIN_CROPS' => 'Crops',
     'NAV_ADMIN_PRICES' => 'Products',
     'NAV_PRICELIST' => 'Pricelist',
     'NAV_MANAGE' => 'Manage',
+    'NAV_PAGE_EDIT' => 'Site Manage',
     
     'ERROR_MESSAGE_GLOBAL' => 'The above error occurred while the Web server was processing your request.<br>Please contact us if you think this is a server error. Thank you.',
 ];

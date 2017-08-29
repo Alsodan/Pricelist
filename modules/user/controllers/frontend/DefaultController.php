@@ -25,7 +25,7 @@ class DefaultController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'login'],
                 'rules' => [
                     [
                         'actions' => ['logout'],
@@ -33,7 +33,7 @@ class DefaultController extends Controller
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['login'],
                         'allow' => true,
                         'roles' => ['?'],
                     ]
@@ -71,12 +71,13 @@ class DefaultController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            //return $this->goHome();
+            return $this->redirect('/administrator');
         }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->redirect('/administrator')/*$this->goBack()*/;
         }
         return $this->render('login', [
             'model' => $model,
@@ -92,7 +93,8 @@ class DefaultController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        //return $this->goHome();
+        return $this->redirect('/administrator');
     }
     
     /**
@@ -100,7 +102,7 @@ class DefaultController extends Controller
      *
      * @return string
      */
-    public function actionSignup()
+    /*public function actionSignup()
     {
         $model = new SignupForm($this->module->defaultRole);
         if ($model->load(Yii::$app->request->post())) {
@@ -113,7 +115,7 @@ class DefaultController extends Controller
         return $this->render('signup', [
             'model' => $model,
         ]);
-    }
+    }*/
     
     /**
      * Email confirmation action.

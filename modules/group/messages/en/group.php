@@ -8,7 +8,9 @@ return [
     'USERS' => 'Users',
     'CROPS' => 'Crops',
     'WAREHOUSES' => 'Warehouses',
-    'PRODUCTS' => 'Products',
+    'PRODUCTS' => 'Group Warehouses Products',
+    'GROUP_PRODUCTS' => 'Group Products',
+    'GROUP_LOG' => 'Log',
     
     'NO_USERS' => 'No users',
     'SELECT_USERS' => 'Select Users',
@@ -33,7 +35,13 @@ return [
     'GROUP_USERS_MANAGE' => 'Users',
     'GROUP_WAREHOUSES_MANAGE' => 'Warehouses',
     'GROUP_PRODUCTS_MANAGE' => 'Products',
+    'PRODUCTS_MANAGE' => 'Warehouse Products',
     'GROUP_PRODUCTS_USERS_MANAGE' => 'Managers',
+    'GROUP_PRODUCTS_DIRECTORS_MANAGE' => 'Directors',
+    
+    'GROUP_DIRECTORS' => 'Group Directors',
+    'ALL_DIRECTORS' => 'All Directors',
+    'MANAGE_DIRECTORS_HINT {from} {to}' => 'Choose Director from list "{from}" and drag-and-drop it to list "{to}". <br> Drag Director back to list "{from}" to remove Director from group.',
     
     'GROUP_USERS' => 'Group Users',
     'ALL_USERS' => 'All Users',

@@ -73,6 +73,7 @@ class Price extends \yii\db\ActiveRecord
             'product_id' => Module::t('product', 'PRODUCT_ID'),
             'price_no_tax' => Module::t('product', 'PRODUCT_PRICE_NO_TAX'),
             'price_with_tax' => Module::t('product', 'PRODUCT_PRICE_WITH_TAX'),
+            'price_status' => Module::t('product', 'PRODUCT_PRICE_STATUS'),
         ];
     }
 
@@ -88,6 +89,18 @@ class Price extends \yii\db\ActiveRecord
                     'users' => 'usersList',
                 ],
             ],
+            [
+                'class' => \app\components\behaviors\LogChangesBehavior::className(),
+                //'fields' => ['price_no_tax'],
+                'eventsOnly' => [
+                    \yii\db\ActiveRecord::EVENT_AFTER_INSERT,
+                    \yii\db\ActiveRecord::EVENT_AFTER_UPDATE
+                ],
+                'objectTitle' => 'Цена',
+                //'objectType' => 'price',
+                'fieldName' => 'Цена',
+                'registerUserId' => 0
+            ]
         ];
     }
     
@@ -204,7 +217,7 @@ class Price extends \yii\db\ActiveRecord
     {
         $result = [];
         foreach ($this->activeUsers as $item) {
-            $result[$item->profile->id] = $item->profile->name . ' (' . $item->profile->phone . ')';
+            $result[$item->profile->id] = $item->profile->name/* . '<br>(' . $item->profile->phone . ')'*/;
         }
         
         return $result;
@@ -262,6 +275,22 @@ class Price extends \yii\db\ActiveRecord
         return Module::t('product', 'PRICE_NOT_SET');
     }
     
+    public static function getPriceText($data, $isKey)
+    {
+        if ($isKey) {
+            $priceCall = $data & self::CALL_NO_TAX;
+            $priceNoNeed = $data & self::NONEED_NO_TAX;
+            
+            return $priceCall > 0 ? Module::t('product', 'CALL_FOR_PRICE') :
+                    ($priceNoNeed > 0 ? Module::t('product', 'NOT_BUY') : Module::t('product', 'PRICE_NOT_SET'));
+        } else {
+            return Yii::$app->formatter->asCurrency($data);
+        }
+        if (is_null($this->price_status)) {
+                $this->price_status = self::NONEED_WITH_TAX | self::NONEED_NO_TAX;
+        }
+    }
+
     /**
      * Get Product Prices names array
      * 
@@ -294,8 +323,18 @@ class Price extends \yii\db\ActiveRecord
     {
         $result = [];
         foreach (static::getPricesArray() as $key => $value) {
-            $result[] = ($showCaption ? $value . ' - ' : '') . $this->getPrice($key);
+            $result[] = ($showCaption ? $value . $captionDelimiter : '') . $this->getPrice($key);
         }
         return implode($itemDelimiter, $result);
+    }
+    
+    /**
+     * Get Price No tax string
+     * @param type $delimiter
+     * @return string
+     */
+    public function getPricesNoTax($showCaption = true, $captionDelimiter = ' - ')
+    {
+        return ($showCaption ? Module::t('product', 'PRODUCT_PRICE_NO_TAX') . $captionDelimiter : '') . $this->getPrice('price_no_tax');
     }
 }

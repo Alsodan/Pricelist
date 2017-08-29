@@ -26,16 +26,26 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php Pjax::begin(); ?>    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             [
                 'attribute' => 'title',
                 'class' => LinkColumn::className(),
+                'defaultAction' => 'update',
+                'icon' => 'glyphicon-pencil',
+                'params' => ['view' => 'index'],
             ],
             [
-                'value' => function ($model) { return implode('<br>', $model->activeUsersNames); },
+                'label' => Module::t('group', 'GROUP_PRODUCTS_DIRECTORS_MANAGE'),
+                'value' => function ($model) { 
+                    $result = implode('<br>', $model->activeDirectorsNames);
+                    return $result == '' ? 'Не назначены' : $result; },
+                'format' => 'html',
+            ],
+            [
+                'value' => function ($model) { return implode('<hr>', $model->activeUsersNames); },
                 'format' => 'html',
                 'label' => Module::t('group', 'USERS')
             ],
@@ -45,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => Module::t('group', 'WAREHOUSES')
             ],
             [
-                'value' => function ($model) { return implode('<br>', $model->activeProductsTitles); },
+                'value' => function ($model) { return implode('<br>', $model->activeGroupProductsTitles); },
                 'format' => 'html',
                 'label' => Module::t('group', 'PRODUCTS')
             ],
@@ -61,12 +71,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ],            
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{warehouses}&nbsp;&nbsp;{products}&nbsp;&nbsp;{users}&nbsp;&nbsp;{managers}&nbsp;&nbsp;{change}',
+                'template' => '{view}&nbsp;&nbsp;{update}<hr>{change}<hr>{warehouses}&nbsp;&nbsp;{group-products}&nbsp;&nbsp;{products}<hr>{users}&nbsp;&nbsp;{managers}&nbsp;&nbsp;{directors}',
                 'buttons' => [
                     'change' => function ($url, $model, $key) {
                         return $model->status == Group::STATUS_ACTIVE ?
                             Html::a('<span class="glyphicon glyphicon-off"></span>', ['block', 'id' => $model->id, 'view' => 'index'], [
-                                'class' => 'btn btn-xs btn-danger',
+                                'class' => 'btn btn-md btn-danger btn-block',
                                 'data' => [
                                     'confirm' => Module::t('group', 'GROUP_DISABLE_CONFIRM'),
                                     'method' => 'post',
@@ -74,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'title' => Module::t('group', 'GROUP_DISABLE'),
                             ]) :
                             Html::a('<span class="glyphicon glyphicon-off"></span>', ['unblock', 'id' => $model->id, 'view' => 'index'], [
-                                'class' => 'btn btn-xs btn-success',
+                                'class' => 'btn btn-md btn-success btn-block',
                                 'data' => [
                                     'method' => 'post',
                                 ],
@@ -89,6 +99,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         return 
                             Html::a('<span class="glyphicon glyphicon-user"></span>', ['users', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('group', 'USERS')]);
                     },
+                    'group-products' => function ($url, $model, $key) {
+                        return 
+                            Html::a('<span class="glyphicon glyphicon-leaf"></span>', ['group-products', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('group', 'GROUP_PRODUCTS')]);
+                    },
                     'products' => function ($url, $model, $key) {
                         return 
                             Html::a('<span class="glyphicon glyphicon-gift"></span>', ['products', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('group', 'PRODUCTS')]);
@@ -101,8 +115,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         return 
                             Html::a('<span class="glyphicon glyphicon-tags"></span>', ['products-users', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('group', 'GROUP_PRODUCTS_USERS_MANAGE')]);
                     },
+                    'directors' => function ($url, $model, $key) {
+                        return 
+                            Html::a('<span class="glyphicon glyphicon-bullhorn"></span>', ['directors', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('group', 'GROUP_PRODUCTS_DIRECTORS_MANAGE')]);
+                    },
                 ],
-                'contentOptions' => ['style' => 'width: 180px;']
+                'contentOptions' => ['style' => 'width: 100px; max-width: 100px; font-size: 20px; text-align: center;'],
+                'header' => 'Действия',
             ],
         ],
     ]); ?>

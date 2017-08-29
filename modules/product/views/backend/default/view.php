@@ -81,6 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'label' => Module::t('product', 'GROUP'),
                                 'format' => 'html',
                             ],
+                            'sort'
                         ],
                     ]) ?>
                 </div>

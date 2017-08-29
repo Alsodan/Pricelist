@@ -19,14 +19,15 @@ class User extends \app\modules\user\models\common\User
             [['newPassword', 'newPasswordRepeat'], 'required', 'on' => self::SCENARIO_ADMIN_CREATE],
             ['newPassword', 'string', 'min' => 6],
             ['newPasswordRepeat', 'compare', 'compareAttribute' => 'newPassword'],
+            ['sort', 'default', 'value' => 0],
         ]);
     }
  
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_ADMIN_CREATE] = ['username', 'email', 'status', 'role', 'newPassword', 'newPasswordRepeat'];
-        $scenarios[self::SCENARIO_ADMIN_UPDATE] = ['username', 'email', 'status', 'role', 'newPassword', 'newPasswordRepeat'];
+        $scenarios[self::SCENARIO_ADMIN_CREATE] = ['username', 'email', 'status', 'role', 'newPassword', 'newPasswordRepeat', 'sort'];
+        $scenarios[self::SCENARIO_ADMIN_UPDATE] = ['username', 'email', 'status', 'role', 'newPassword', 'newPasswordRepeat', 'sort'];
         return $scenarios;
     }
  

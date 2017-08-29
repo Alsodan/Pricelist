@@ -13,6 +13,8 @@ return [
     'WAREHOUSE_ID' => 'ИД',
     'WAREHOUSE_TITLE' => 'Название',
     'WAREHOUSE_STATUS' => 'Статус',
+    'WAREHOUSE_SORT' => 'Сортировка',
+    
     'WAREHOUSE_CREATE' => 'Создать склад',
     'WAREHOUSES_TITLE' => 'Склады',
     'WAREHOUSE_UPDATE' => 'Редактировать',

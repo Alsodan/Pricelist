@@ -4,6 +4,7 @@ namespace app\modules\crop;
 
 use Yii;
 use yii\filters\AccessControl;
+use app\modules\admin\rbac\Rbac;
 
 /**
  * admin module definition class
@@ -18,7 +19,7 @@ class Module extends \yii\base\Module
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => [Rbac::PERMISSION_ADMINISTRATION],
                     ],
                 ],
             ],

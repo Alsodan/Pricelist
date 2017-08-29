@@ -68,7 +68,10 @@ class UserSearch extends Model
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
-                'defaultOrder' => ['id' => SORT_DESC],
+                'defaultOrder' => [
+                    'sort' => SORT_ASC,
+                    'username' => SORT_ASC,
+                ],
             ]
         ]);
 

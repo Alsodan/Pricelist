@@ -25,24 +25,28 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php Pjax::begin(); ?>    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             [
                 'attribute' => 'title',
                 'class' => LinkColumn::className(),
+                'defaultAction' => 'update',
+                'icon' => 'glyphicon-pencil',
+                'params' => ['view' => 'index'],
             ],
             [
                 'value' => function ($model) { return implode('<br>', $model->activeGroupsTitles);},
                 'format' => 'html',
                 'label' => Module::t('warehouse', 'GROUPS')
-            ],            
+            ],
             [
                 'value' => function ($model) { return implode('<br>', $model->activeProductsTitles);},
                 'format' => 'html',
                 'label' => Module::t('warehouse', 'PRODUCTS')
             ],
+            'sort',
             [
                 'class' => SetColumn::className(),
                 'filter' => Warehouse::getStatusArray(),
@@ -55,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{groups}&nbsp;&nbsp;{products}&nbsp;&nbsp;{change}',
+                'template' => '{view}&nbsp;&nbsp;{update}<hr>{groups}&nbsp;&nbsp;{products}<hr>{change}',
                 'buttons' => [
                     'update' => function ($url, $model, $key) {
                         return 
@@ -64,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'change' => function ($url, $model, $key) {
                         return $model->status == Warehouse::STATUS_ACTIVE ?
                             Html::a('<span class="glyphicon glyphicon-off"></span>', ['block', 'id' => $model->id, 'view' => 'index'], [
-                                'class' => 'btn btn-xs btn-danger',
+                                'class' => 'btn btn-md btn-danger btn-block',
                                 'data' => [
                                     'confirm' => Module::t('warehouse', 'WAREHOUSE_DISABLE_CONFIRM'),
                                     'method' => 'post',
@@ -72,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'title' => Module::t('warehouse', 'WAREHOUSE_DISABLE'),
                             ]) :
                             Html::a('<span class="glyphicon glyphicon-off"></span>', ['unblock', 'id' => $model->id, 'view' => 'index'], [
-                                'class' => 'btn btn-xs btn-success',
+                                'class' => 'btn btn-md btn-success btn-block',
                                 'data' => [
                                     'method' => 'post',
                                 ],
@@ -88,7 +92,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             Html::a('<span class="glyphicon glyphicon-gift"></span>', ['products', 'id' => $model->id, 'view' => 'index'], ['title' => Module::t('warehouse', 'PRODUCTS')]);
                     },
                 ],
-                'contentOptions' => ['style' => 'width: 130px;']
+                'contentOptions' => ['style' => 'width: 80px; font-size: 20px; text-align: center;'],
+                'header' => 'Действия',
             ],
         ],
     ]); ?>

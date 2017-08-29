@@ -32,6 +32,7 @@ return [
     'USER_REPEAT_PASSWORD' => 'Повторите новый пароль',
     'USER_CURRENT_PASSWORD' => 'Текущий пароль',
     'USER_ROLE' => 'Роль',
+    'USER_SORT' => 'Сортировка',
     
     'USER_NAME' => 'Имя',
     'USER_PHONE' => 'Телефон',

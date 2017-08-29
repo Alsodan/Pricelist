@@ -8,7 +8,9 @@ return [
     'USERS' => 'Пользователи',
     'CROPS' => 'Культуры',
     'WAREHOUSES' => 'Склады',
-    'PRODUCTS' => 'Продукция',
+    'PRODUCTS' => 'Продукция складов',
+    'GROUP_PRODUCTS' => 'Продукция группы',
+    'GROUP_LOG' => 'Журнал',
     
     'NO_USERS' => 'Нет менеджеров',
     'SELECT_USERS' => 'Выберите...',
@@ -33,8 +35,14 @@ return [
     'GROUP_USERS' => 'Пользователи группы',
     'GROUP_USERS_MANAGE' => 'Пользователи',
     'GROUP_WAREHOUSES_MANAGE' => 'Склады',
-    'GROUP_PRODUCTS_MANAGE' => 'Продукция',
+    'GROUP_PRODUCTS_MANAGE' => 'Продукция группы',
+    'PRODUCTS_MANAGE' => 'Продукция складов',
     'GROUP_PRODUCTS_USERS_MANAGE' => 'Менеджеры',
+    'GROUP_PRODUCTS_DIRECTORS_MANAGE' => 'Руководители',
+    
+    'GROUP_DIRECTORS' => 'Руководители группы',
+    'ALL_DIRECTORS' => 'Все руководители',
+    'MANAGE_DIRECTORS_HINT {from} {to}' => 'Выберите руководителя из списка "{from}" и перетащите его в список "{to}". <br> Чтобы убрать руководителя - перетащие его обратно в список "{from}".',
     
     'ALL_USERS' => 'Все пользователи',
     'MANAGE_USERS_HINT {from} {to}' => 'Выберите пользователя из списка "{from}" и перетащите его в список "{to}". <br> Чтобы убрать пользователя - перетащие его обратно в список "{from}".',

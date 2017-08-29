@@ -40,9 +40,11 @@ class DefaultController extends Controller
     {
         $searchModel = new WarehouseSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        $dataProvider->pagination = false;
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            //'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }

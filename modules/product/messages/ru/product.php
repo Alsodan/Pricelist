@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'ALL' => 'Все',
     'GROUP' => 'Группа',
     'USERS' => 'Менеджеры',
     'WAREHOUSES' => 'Склады',
@@ -17,6 +18,8 @@ return [
     'PRODUCT_PRICE_NO_TAX' => 'Цена без НДС',
     'PRODUCT_PRICE_WITH_TAX' => 'Цена с НДС',
     'PRODUCT_STATUS' => 'Статус',
+    'PRODUCT_SORT' => 'Сортировка',
+    
     'PRODUCT_CREATE' => 'Создать продукцию',
     'PRODUCT_STATUS_DISABLED' => 'Отключен',
     'PRODUCT_STATUS_ACTIVE' => 'Активен',
@@ -27,6 +30,7 @@ return [
     'PRICE_NOT_SET' => 'Цена не установлена',
     
     'BUTTON_SAVE' => 'Сохранить',
+    'BUTTON_FILTER' => 'Искать!',
     
     'DATA_TITLE' => 'Склад -> Менеджер -> Цена без НДС / Цена с НДС',
     'NO_MANAGERS' => 'Менеджер не назначен',
@@ -52,5 +56,5 @@ return [
     'SELECT_USERS' => 'Выберите...',
     'SELECT_USERS_FULL' => 'Начните вводить имя или выберите из списка',
     'PRODUCTS_PRICES_MANAGE' => 'Цена продукции',
-    'MANAGE_PRODUCTS_PRICES_HINT' => 'Нажмите на цену в таблице и отредактируйте её.',
+    'MANAGE_PRODUCTS_PRICES_HINT' => 'Нажмите на цену в таблице и отредактируйте её.<br>Оставьте только необходимую продукцию с помощью фильтра ниже.',
 ];

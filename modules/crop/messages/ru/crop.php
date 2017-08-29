@@ -4,6 +4,7 @@ return [
     'CROPS_TITLE' => 'Культуры',
     'CROP_CREATE' => 'Создать культуру',
     'CROP_TITLE' => 'Наименование',
+    'CROP_SORT' => 'Сортировка',
     'CROP_GROUP' => 'Группа',
     
     'BUTTON_SAVE' => 'Сохранить',

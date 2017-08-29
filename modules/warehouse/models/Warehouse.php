@@ -10,6 +10,7 @@ use app\components\behaviors\ManyHasManyBehavior;
 use app\modules\product\models\Product;
 use app\modules\product\models\Price;
 use app\modules\group\models\GroupWarehouses;
+use app\modules\organization\models\Organization;
 
 /**
  * This is the model class for table "{{%warehouse}}".
@@ -17,6 +18,7 @@ use app\modules\group\models\GroupWarehouses;
  * @property integer $id
  * @property string $title
  * @property integer $status
+ * @property integer $sort
  */
 class Warehouse extends \yii\db\ActiveRecord
 {
@@ -42,9 +44,10 @@ class Warehouse extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status'], 'integer'],
+            [['status', 'sort'], 'integer'],
             [['title'], 'string', 'max' => 255],
             [['groupsList', 'productsList'], 'safe'],
+            ['sort', 'default', 'value' => 0],
         ];
     }
     
@@ -55,8 +58,8 @@ class Warehouse extends \yii\db\ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_ADMIN_EDIT] = ['status', 'title'];
-        $scenarios[self::SCENARIO_EDITOR_EDIT] = ['title'];
+        $scenarios[self::SCENARIO_ADMIN_EDIT] = ['status', 'title', 'sort'];
+        $scenarios[self::SCENARIO_EDITOR_EDIT] = ['title', 'sort'];
         return $scenarios;
     }
 
@@ -69,6 +72,7 @@ class Warehouse extends \yii\db\ActiveRecord
             'id' => Module::t('warehouse', 'WAREHOUSE_ID'),
             'title' => Module::t('warehouse', 'WAREHOUSE_TITLE'),
             'status' => Module::t('warehouse', 'WAREHOUSE_STATUS'),
+            'sort' => Module::t('warehouse', 'WAREHOUSE_SORT'),
         ];
     }
 
@@ -175,6 +179,21 @@ class Warehouse extends \yii\db\ActiveRecord
         return $this->hasMany(Product::className(), ['id' => 'product_id'])
             ->viaTable(Price::tableName(), ['warehouse_id' => 'id']);
     }
+    
+    public function getPrices()
+    {
+        return $this->hasMany(Price::className(), ['warehouse_id' => 'id']);
+    }
+    
+    /**
+     * Get Organizations
+     * 
+     * @return array Organization[]
+     */
+    public function getOrganizations()
+    {
+        return $this->hasMany(Organization::className(), ['warehouse_id' => 'id']);
+    }
 
     /**
      * Get only active Groups
@@ -185,7 +204,7 @@ class Warehouse extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Group::className(), ['id' => 'group_id'])
             ->viaTable(GroupWarehouses::tableName(), ['warehouse_id' => 'id'])
-            ->where(['status' => Group::STATUS_ACTIVE]);
+            ->where([Group::tableName() . '.status' => Group::STATUS_ACTIVE]);
     }
     
     /**
@@ -198,6 +217,21 @@ class Warehouse extends \yii\db\ActiveRecord
         return $this->hasMany(Product::className(), ['id' => 'product_id'])
                 ->viaTable(Price::tableName(), ['warehouse_id' => 'id'])
                 ->where(['status' => Product::STATUS_ACTIVE]);
+    }
+    
+    /**
+     * Get active Organizations
+     * 
+     * @return array Organization[]
+     */
+    public function getActiveOrganizations()
+    {
+        return $this->hasMany(Organization::className(), ['warehouse_id' => 'id'])
+                ->where(['status' => Organization::STATUS_ACTIVE])
+                ->orderBy([
+                    'sort' => SORT_ASC,
+                    'title' => SORT_ASC,
+                ]);
     }
     
     /**
@@ -278,6 +312,25 @@ class Warehouse extends \yii\db\ActiveRecord
         return $result;
     }
     
+        /**
+     * Get Active Warehouses list for Sorted Input widget
+     */
+    public static function preparedForSIWActiveWarehousesNoRegion()
+    {
+        $all = static::find()
+                ->select(['id', 'title'])
+                ->where(['status' => self::STATUS_ACTIVE])
+                ->andWhere('region_id is NULL')
+                ->all();
+
+        $result = [];
+        foreach ($all as $item){
+            $result[$item->id] = ['content' => $item->title];
+        }
+        
+        return $result;
+    }
+    
     /**
      * Get Warehouses Dropdown
      */
@@ -288,5 +341,24 @@ class Warehouse extends \yii\db\ActiveRecord
             $result[$warehouse->id] = $warehouse->title;
         }
         return $result;
-    }    
+    }
+    
+    public static function getWarehousesByUser($userIds, $columns, $asArray = false)
+    {
+        $query = static::find()
+                ->active()
+                ->visible()
+                ->sorted();
+        if (!empty($columns)) {
+            $query->select($columns);
+            foreach ($query->select as &$select) {
+                $select = Warehouse::tableName() . '.' . $select;
+            }
+        }
+        if ($asArray) {
+            $query->asArray();
+        }
+
+        return $query->all();
+    }
 }

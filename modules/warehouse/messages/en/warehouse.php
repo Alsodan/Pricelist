@@ -13,6 +13,8 @@ return [
     'WAREHOUSE_ID' => 'ID',
     'WAREHOUSE_TITLE' => 'Title',
     'WAREHOUSE_STATUS' => 'Status',
+    'WAREHOUSE_SORT' => 'Sort',
+    
     'WAREHOUSE_CREATE' => 'Create Warehouse',
     'WAREHOUSES_TITLE' => 'Warehouses',
     'WAREHOUSE_UPDATE' => 'Upadate Warehouse',

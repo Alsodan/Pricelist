@@ -11,9 +11,10 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\data\ArrayDataProvider;
+use yii\data\ActiveDataProvider;
 use app\modules\group\Module;
 use yii\helpers\ArrayHelper;
-
+use app\components\behaviors\models\Changes;
 
 /**
  * DefaultController implements the CRUD actions for Group model.
@@ -112,6 +113,24 @@ class DefaultController extends Controller
      * @param integer $id
      * @return string
      */
+    public function actionGroupProducts($id)
+    {
+        $model = $this->findModel($id);
+        $groupProducts = $model->preparedForSIWActiveGroupProducts();
+        $allProducts = Product::preparedForSIWActiveProducts();
+        
+        return $this->render('group-products', [
+                'model' => $model,
+                'allProducts' => array_diff_key($allProducts, $groupProducts),
+                'groupProducts' => $groupProducts,
+            ]);
+    }
+    
+    /**
+     * Manage Group Warehouses Products
+     * @param integer $id
+     * @return string
+     */
     public function actionProducts($id, $wh = null)
     {
         $model = $this->findModel($id);
@@ -123,7 +142,7 @@ class DefaultController extends Controller
         }
         
         $groupProducts = $model->preparedForSIWActiveProducts($wh);
-        $allProducts = Product::preparedForSIWActiveProducts();
+        $allProducts = Product::preparedForSIWActiveProducts($id);
         
         return $this->render('products', [
                 'model' => $model,
@@ -181,10 +200,36 @@ class DefaultController extends Controller
             'sort' => false,
         ]);
 
+        $this->layout = '@app/views/layouts/product';
         return $this->render('products-users', [
                 'group' => $model,
                 'dataProvider' => $dataProvider,
                 'columns' => $model->usersTable['columns'],
+            ]);
+    }
+    
+    /**
+     * Manage Products Users
+     * @param type $id
+     * @return type
+     */
+    public function actionLog($id)
+    {
+        $model = $this->findModel($id);
+        $query = Changes::findByGroup($id, \app\modules\product\models\Price::className(), \app\api\modules\v1\models\Price::className());
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'date' => SORT_DESC,
+                ],
+            ]
+        ]);
+
+        return $this->render('log', [
+                'group' => $model,
+                'dataProvider' => $dataProvider,
             ]);
     }
     
@@ -231,6 +276,7 @@ class DefaultController extends Controller
      */
     public function actionProductChange($id, $wh)
     {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if (!is_numeric($id)) {
             $id = 0;
         }
@@ -238,11 +284,15 @@ class DefaultController extends Controller
             $wh = 0;
         }
         if (Yii::$app->request->isAjax) {
-            $group = $this->findModel((int)$id);
+            $group = $this->findModel($id);
             $productsString = Yii::$app->request->post('products');
             $warehouse = Warehouse::findOne((int)$wh);
-            $warehouse->productsList = empty($productsString) ? [] : explode(',', $productsString);
-            
+            $oldProductList = $warehouse->productsList;
+            $productsList = empty($productsString) ? [] : explode(',', $productsString);
+            $otherProductsList = array_diff($oldProductList, ArrayHelper::getColumn($group->getActiveProducts($wh), 'id'));
+
+            $warehouse->productsList = array_merge($otherProductsList, $productsList);
+
             return $warehouse->save(false);
         }
         
@@ -263,7 +313,29 @@ class DefaultController extends Controller
             $price->save();
             $message = $price->errors;
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            return ['output' => empty($price->activeUsersNames) ? Module::t('group', 'NO_USERS') : implode('<br>', $price->activeUsersNames), 'message' => $message];
+            return ['output' => empty($price->activeUsersNames) ? Module::t('group', 'NO_USERS') : implode(', ', $price->activeUsersNames), 'message' => $message];
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Ajax Group Products managment
+     * @param type $id
+     * @return boolean
+     */
+    public function actionGroupProductChange($id)
+    {
+        if (!is_numeric($id)) {
+            $id = 0;
+        }
+
+        if (Yii::$app->request->isAjax) {
+            $group = $this->findModel((int)$id);
+            $productsString = Yii::$app->request->post('products');
+            $group->productsList = empty($productsString) ? [] : explode(',', $productsString);
+            
+            return $group->save(false);
         }
         
         return false;

@@ -11,11 +11,14 @@ return [
     'NAV_ADMIN_PANEL' => 'Панель управления',
     'NAV_ADMIN_USERS' => 'Пользователи',
     'NAV_ADMIN_GROUPS' => 'Группы',
+    'NAV_ADMIN_ORGANIZATIONS' => 'Организации',
+    'NAV_ADMIN_REGIONS' => 'Регионы',
     'NAV_ADMIN_WAREHOUSES' => 'Склады',
     'NAV_ADMIN_CROPS' => 'Культуры',
     'NAV_ADMIN_PRODUCTS' => 'Продукция',
     'NAV_PRICELIST' => 'Прайслист',
-    'NAV_MANAGE' => 'Управление',
+    'NAV_MANAGE' => 'Управление группой',
+    'NAV_PAGE_EDIT' => 'Управление сайтом',
     
     'ERROR_MESSAGE_GLOBAL' => 'При обработке вашего запроса произошла ошибка.<br>Если вы считаете, что это ошибка сервера, пожалуйста напишите нам. Спасибо!',
 ];

@@ -10,6 +10,8 @@ use app\modules\crop\models\Crop;
 use app\modules\user\models\common\User;
 use app\components\behaviors\ManyHasManyBehavior;
 use app\modules\product\models\Price;
+use app\modules\group\models\Group;
+use app\modules\group\models\GroupProducts;
 
 /**
  * This is the model class for table "{{%product}}".
@@ -21,6 +23,7 @@ use app\modules\product\models\Price;
  * @property string $subtitle
  * @property string $specification
  * @property integer $status
+ * @property integer $sort
  */
 class Product extends \yii\db\ActiveRecord
 {
@@ -46,11 +49,12 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'crop_id', 'grade'], 'integer'],
+            [['status', 'crop_id', 'grade', 'sort'], 'integer'],
             [['title', 'subtitle'], 'string', 'max' => 100],
             [['title', 'crop_id'], 'required'],
             ['specification', 'safe'],
             ['warehousesList', 'safe'],
+            ['sort', 'default', 'value' => 0],
         ];
     }
 
@@ -61,8 +65,8 @@ class Product extends \yii\db\ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_ADMIN_EDIT] = ['status', 'crop_id', 'grade', 'title', 'subtitle', 'specification'];
-        $scenarios[self::SCENARIO_EDITOR_EDIT] = ['crop_id', 'grade', 'title', 'subtitle', 'specification'];
+        $scenarios[self::SCENARIO_ADMIN_EDIT] = ['status', 'crop_id', 'grade', 'title', 'subtitle', 'specification', 'sort'];
+        $scenarios[self::SCENARIO_EDITOR_EDIT] = ['crop_id', 'grade', 'title', 'subtitle', 'specification', 'sort'];
         return $scenarios;
     }
     
@@ -79,6 +83,7 @@ class Product extends \yii\db\ActiveRecord
             'subtitle' => Module::t('product', 'PRODUCT_SUBTITLE'),
             'specification' => Module::t('product', 'PRODUCT_SPECIFICATION'),
             'status' => Module::t('product', 'PRODUCT_STATUS'),
+            'sort' => Module::t('product', 'PRODUCT_SORT'),
         ];
     }
 
@@ -184,7 +189,7 @@ class Product extends \yii\db\ActiveRecord
      */
     public function getGroups()
     {
-        $data = $this->hasMany(Warehouse::className(), ['id' => 'warehouse_id'])
+        /*$data = $this->hasMany(Warehouse::className(), ['id' => 'warehouse_id'])
             ->viaTable(Price::tableName(), ['product_id' => 'id'])
             ->with('groups')
             ->all();
@@ -196,7 +201,9 @@ class Product extends \yii\db\ActiveRecord
             }
         }
         
-        return $result;
+        return $result;*/
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])
+            ->viaTable(GroupProducts::tableName(), ['product_id' => 'id']);
     }
     
     public function getPrices()
@@ -243,7 +250,7 @@ class Product extends \yii\db\ActiveRecord
      */
     public function getActiveGroups()
     {
-        $data = $this->hasMany(Warehouse::className(), ['id' => 'warehouse_id'])
+        /*$data = $this->hasMany(Warehouse::className(), ['id' => 'warehouse_id'])
             ->viaTable(Price::tableName(), ['product_id' => 'id'])
             ->with('activeGroups')
             ->all();
@@ -255,7 +262,11 @@ class Product extends \yii\db\ActiveRecord
             }
         }
         
-        return $result;
+        return $result;*/
+        
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])
+            ->viaTable(GroupProducts::tableName(), ['product_id' => 'id'])
+            ->where([Group::tableName() . '.status' => Group::STATUS_ACTIVE]);
     }
     
     /**
@@ -509,6 +520,7 @@ class Product extends \yii\db\ActiveRecord
         //Массив соответствия транслитерированных и обычных названий складов
         $whColumns = [];
         $columns = [];
+
         foreach ($warehouses as $item) {
             $whColumns = array_merge($whColumns, [preg_replace('~[^-a-z0-9_]+~u', '', strtolower(str_replace($cyr, $lat, $item->title))) => ['title' => $item->title, 'id' => $item->id]]);
             $columns = array_merge($columns, [preg_replace('~[^-a-z0-9_]+~u', '', strtolower(str_replace($cyr, $lat, $item->title))) => '']);
@@ -523,6 +535,8 @@ class Product extends \yii\db\ActiveRecord
         $data = Price::find()
                 ->where(['warehouse_id' => ArrayHelper::getColumn($warehouses, 'id')])
                 ->andWhere(['product_id' => ArrayHelper::getColumn($products, 'id')])
+                ->with('product')
+                ->with('warehouse')
                 ->all();
         
         //Заполняем массив данными
@@ -554,11 +568,17 @@ class Product extends \yii\db\ActiveRecord
     /**
      * Get Active Products list for Sorted Input widget
      */
-    public static function preparedForSIWActiveProducts()
+    public static function preparedForSIWActiveProducts($group = [])
     {
-        $all = static::find()
-                ->where(['status' => self::STATUS_ACTIVE])
-                ->all();
+        $query = static::find()
+                ->where([Product::tableName() . '.status' => self::STATUS_ACTIVE])
+                ->joinWith('groups');
+        
+        if (!empty($group)) {
+            $query->andWhere([Group::tableName() . '.id' => $group]);
+        }
+        
+        $all = $query->all();
 
         $result = [];
         foreach ($all as $item){

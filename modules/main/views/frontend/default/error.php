@@ -9,18 +9,16 @@ use app\modules\main\Module;
 
 use yii\helpers\Html;
 
-$this->title = $name;
+$this->title = 'Ошибка!';
 ?>
-<div class="main-error">
+<!-- Menu -->
+<?php echo \Yii::$app->user->isGuest ? $page->generateMenu() : ''; ?>
+<div class="container">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <div class="alert alert-danger">
-        <?= nl2br(Html::encode($message)) ?>
-    </div>
+    <h3><?= nl2br(Html::encode($message)) ?></h3>
 
-    <p>
-        <?= Module::t('main', 'ERROR_MESSAGE_GLOBAL') ?>
-    </p>
+    <p><?= Module::t('main', 'ERROR_MESSAGE_GLOBAL') ?></p>
 
 </div>

@@ -42,9 +42,11 @@ class DefaultController extends Controller
     {
         $searchModel = new GroupSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        $dataProvider->pagination = false;
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            //'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -68,7 +70,7 @@ class DefaultController extends Controller
             'pagination' => false,
         ]);
         $products = new ArrayDataProvider([
-            'allModels' => $group->activeProducts,
+            'allModels' => $group->activeGroupProducts,
             'sort' => false,
             'pagination' => false,
         ]);
@@ -183,6 +185,25 @@ class DefaultController extends Controller
     }
 
     /**
+     * Manage Group Directors
+     * @param integer $id
+     * @return string
+     */
+    public function actionDirectors($id, $view = 'view')
+    {
+        $group = $this->findModel($id);
+        $groupDirectors = $group->preparedForSIWActiveDirectors();
+        $allDirectors = Profile::preparedForSIWActiveDirectorsByGroup($id);
+        
+        return $this->render('directors', [
+                'group' => $group,
+                'allDirectors' => array_diff_key($allDirectors, $groupDirectors),
+                'groupDirectors' => $groupDirectors,
+                'view' => $view,
+            ]);
+    }
+    
+    /**
      * Manage Group Warehouses
      * @param integer $id
      * @return string
@@ -202,7 +223,7 @@ class DefaultController extends Controller
     }
     
     /**
-     * Manage Group Products
+     * Manage Group Warehouses Products
      * @param integer $id
      * @return string
      */
@@ -214,8 +235,9 @@ class DefaultController extends Controller
         if (is_null($wh)) {
             $wh = key($warehouses);
         }
+        
         $groupProducts = $group->preparedForSIWActiveProducts($wh);
-        $allProducts = Product::preparedForSIWActiveProducts();
+        $allProducts = Product::preparedForSIWActiveProducts($id);
         
         return $this->render('products', [
                 'group' => $group,
@@ -224,6 +246,25 @@ class DefaultController extends Controller
                 'warehouses' => $warehouses,
                 'selectedWarehouse' => $wh,
                 'view' =>$view,
+            ]);
+    }
+    
+    /**
+     * Manage Group Products
+     * @param integer $id
+     * @return string
+     */
+    public function actionGroupProducts($id, $view = 'view')
+    {
+        $group = $this->findModel($id);
+        $groupProducts = $group->preparedForSIWActiveGroupProducts();
+        $allProducts = Product::preparedForSIWActiveProducts();
+        
+        return $this->render('group-products', [
+                'group' => $group,
+                'allProducts' => array_diff_key($allProducts, $groupProducts),
+                'groupProducts' => $groupProducts,
+                'view' => $view,
             ]);
     }
 
@@ -242,7 +283,7 @@ class DefaultController extends Controller
             'pagination' => false,
             'sort' => false,
         ]);
-
+        
         return $this->render('products-users', [
                 'group' => $model,
                 'dataProvider' => $dataProvider,
@@ -270,6 +311,30 @@ class DefaultController extends Controller
     }
     
     /**
+     * Ajax Directors management
+     * @param type $id
+     * @return boolean
+     */
+    public function actionDirectorChange($id)
+    {
+        if (Yii::$app->request->isAjax) {
+            $group = $this->findModel($id);
+            $directorsString = Yii::$app->request->post('users');
+
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            
+            
+        var_dump($group->resetDirectors(empty($directorsString) ? [] : explode(',', $directorsString)));die();
+            $group->resetDirectors(empty($directorsString) ? [] : explode(',', $directorsString));
+            
+            //return $group->save(false);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
      * Ajax Warehouses managment
      * @param type $id
      * @return boolean
@@ -288,7 +353,7 @@ class DefaultController extends Controller
     }
     
     /**
-     * Ajax Products managment
+     * Ajax Warehouse Products managment
      * @param type $id
      * @return boolean
      */
@@ -301,14 +366,40 @@ class DefaultController extends Controller
             $wh = 0;
         }
         if (Yii::$app->request->isAjax) {
-            //$group = $this->findModel((int)$id);
+            $group = $this->findModel($id);
             $productsString = Yii::$app->request->post('products');
             $warehouse = Warehouse::findOne((int)$wh);
-            $warehouse->productsList = empty($productsString) ? [] : explode(',', $productsString);
-            
+            $oldProductList = $warehouse->productsList;
+            $productsList = empty($productsString) ? [] : explode(',', $productsString);
+            $otherProductsList = array_diff($oldProductList, ArrayHelper::getColumn($group->getActiveProducts($wh), 'id'));
+
+            $warehouse->productsList = array_merge($otherProductsList, $productsList);
+
             return $warehouse->save(false);
         }
         
         return false;
-    }     
+    }
+    
+    /**
+     * Ajax Group Products managment
+     * @param type $id
+     * @return boolean
+     */
+    public function actionGroupProductChange($id)
+    {
+        if (!is_numeric($id)) {
+            $id = 0;
+        }
+
+        if (Yii::$app->request->isAjax) {
+            $group = $this->findModel((int)$id);
+            $productsString = Yii::$app->request->post('products');
+            $group->productsList = empty($productsString) ? [] : explode(',', $productsString);
+            
+            return $group->save(false);
+        }
+        
+        return false;
+    }
 }

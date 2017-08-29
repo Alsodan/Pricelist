@@ -31,6 +31,7 @@ use app\modules\warehouse\models\Warehouse;
  * @property string $role
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $sort
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -60,7 +61,7 @@ class User extends ActiveRecord implements IdentityInterface
  
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => self::className(), 'message' => Module::t('user', 'USER_SIGN_UP_NOT_UNIQUE_EMAIL')],
+            //['email', 'unique', 'targetClass' => self::className(), 'message' => Module::t('user', 'USER_SIGN_UP_NOT_UNIQUE_EMAIL')],
             ['email', 'string', 'max' => 255],
  
             ['status', 'integer'],
@@ -68,6 +69,8 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => array_keys(self::getStatusesArray())],
             
             ['role', 'string', 'max' => 64],
+            
+            ['sort', 'integer'],
         ];
     }
     
@@ -84,7 +87,7 @@ class User extends ActiveRecord implements IdentityInterface
             'created_at' => Module::t('user', 'USER_CREATED'),
             'updated_at' => Module::t('user', 'USER_UPDATED'),
             'role' => Module::t('user', 'USER_ROLE'),
-            
+            'sort' => Module::t('user', 'USER_SORT'),
             'profileName' => Module::t('user', 'USER_NAME'),
             'profilePhone' => Module::t('user', 'USER_PHONE'),
         ];
@@ -345,8 +348,48 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getGroups()
     {
+        /*if (Yii::$app->user->can(\app\modules\admin\rbac\Rbac::PERMISSION_ADMINISTRATION)) {
+            return Group::find()
+                    ->all();
+        }*/
         return $this->hasMany(Group::className(), ['id' => 'group_id'])
             ->viaTable(GroupUsers::tableName(), ['user_id' => 'id']);
+    }
+    
+    /**
+     * Get active Groups
+     * 
+     * @return array app/modules/group/models/Group[]
+     */
+    public function getActiveGroups()
+    {
+        if (Yii::$app->user->can(\app\modules\admin\rbac\Rbac::PERMISSION_ADMINISTRATION)) {
+            return Group::find()
+                    ->where([Group::tableName() . '.status' => Group::STATUS_ACTIVE])
+                    ->all();
+        }
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])
+            ->viaTable(GroupUsers::tableName(), ['user_id' => 'id'])
+            ->where([Group::tableName() . '.status' => Group::STATUS_ACTIVE]);
+    }
+    
+    public function getActiveGroupsIRule()
+    {
+        if (Yii::$app->user->can(\app\modules\admin\rbac\Rbac::PERMISSION_ADMINISTRATION)) {
+            return Group::find()
+                    ->where([Group::tableName() . '.status' => Group::STATUS_ACTIVE])
+                    ->all();
+        }
+        if (Yii::$app->user->can(\app\modules\admin\rbac\Rbac::PERMISSION_GROUP_EDIT)) {
+            return $this->hasMany(Group::className(), ['id' => 'group_id'])
+                ->viaTable(GroupUsers::tableName(), 
+                        ['user_id' => 'id'],
+                        function ($query) {$query->andWhere(['rule' => 1]);})
+                ->where([Group::tableName() . '.status' => Group::STATUS_ACTIVE]);
+        }
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])
+            ->viaTable(GroupUsers::tableName(), ['user_id' => 'id'])
+            ->where([Group::tableName() . '.status' => Group::STATUS_ACTIVE]);
     }
     
     /**
@@ -354,23 +397,103 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getActivePrices()
     {
-        return $this->hasMany(Price::className(), ['id' => 'price_id'])
-            ->viaTable(PriceUsers::tableName(), ['user_id' => 'id'])
-            ->joinWith('product')
-            ->joinWith('warehouse')
-            ->where([Product::tableName() . '.status' => Product::STATUS_ACTIVE, Warehouse::tableName() . '.status' => Warehouse::STATUS_ACTIVE]);
+        if (\Yii::$app->user->can('permGroupEdit')) {
+            
+            $groups = \Yii::$app->user->identity->activeGroupsIRule/*groups*/;
+            
+            $users = [];
+            foreach ($groups as $group) {
+                $users = array_merge($users, $group->users);
+            }
+
+            $products = Product::find()
+                    ->joinWith('groups group')
+                    ->andWhere(['group.id' => ArrayHelper::getColumn($groups, 'id')])
+                    ->andWhere([Product::tableName() . '.status' => Product::STATUS_ACTIVE])
+                    ->all();
+            $productsIds = array_unique(ArrayHelper::getColumn($products, 'id'));
+            //echo "<pre>";var_dump($productsIds);die();
+            $warehouses = Warehouse::find()
+                    ->joinWith('groups group')
+                    ->andWhere(['group.id' => ArrayHelper::getColumn($groups, 'id')])
+                    ->andWhere([Warehouse::tableName() . '.status' => Warehouse::STATUS_ACTIVE])
+                    ->all();
+            $warehousesIds = array_unique(ArrayHelper::getColumn($warehouses, 'id'));
+            //$usersIds = array_unique(ArrayHelper::getColumn($users, 'id'));
+            
+            /*$queryMain = Price::find()
+                    //->joinWith('users user')
+                    ->joinWith('users.groups group')
+                    //->where([User::tableName() . '.id' => $usersIds])
+                    ->andWhere(['group.id' => ArrayHelper::getColumn($groups, 'id')])
+                    ->column();*/
+            
+            /*$queryProduct = Price::find()
+                    ->joinWith('product product')
+                    ->joinWith('product.activeGroups')
+                    ->andWhere(['product.status' => Product::STATUS_ACTIVE])
+                    ->andWhere([Group::tableName() . '.id' => ArrayHelper::getColumn($groups, 'id')])
+                    ->column();*/
+            
+            /*$queryWarehouse = Price::find()
+                    ->joinWith('warehouse warehouse')
+                    ->joinWith('warehouse.activeGroups')
+                    ->andWhere(['warehouse.status' => Warehouse::STATUS_ACTIVE])
+                    ->andWhere([Group::tableName() . '.id' => ArrayHelper::getColumn($groups, 'id')])
+                    ->column();*/
+
+            /*$query = Price::find()
+                    ->where(['id' => array_intersect($queryMain, $queryProduct, $queryWarehouse)])
+                    ->with('warehouse')
+                    ->with('product')
+                    ->all();*/
+            $query = Price::find()
+                    ->where(['warehouse_id' => $warehousesIds])
+                    ->andWhere(['product_id' => $productsIds])
+                    ->with('warehouse')
+                    ->with('product')
+                    ->all();
+        }
+        else
+        {
+            $query = $this->hasMany(Price::className(), ['id' => 'price_id'])
+                    ->viaTable(PriceUsers::tableName(), ['user_id' => 'id'])
+                    ->joinWith('product')
+                    ->with('product')
+                    ->joinWith('warehouse')
+                    ->with('warehouse')
+                    ->where([Product::tableName() . '.status' => Product::STATUS_ACTIVE, Warehouse::tableName() . '.status' => Warehouse::STATUS_ACTIVE]);
+        }
+        return $query;
     }
     
     /**
      * Get User active Products And Warehouses
      */
-    public function getActiveProductsAndWarehouses()
+    public function getActiveProductsAndWarehouses($productId = null, $warehouseId = null)
     {
-        $result = [];
+        $result['product'] = [];
+        $result['productAll'] = [];
+        $result['warehouse'] = [];
+        $result['warehouseAll'] = [];
+        //var_dump($productId);        var_dump($warehouseId); die();
         foreach ($this->activePrices as $price) {
-            $result['product'][$price->product->id] = $price->product;
-            $result['warehouse'][$price->warehouse->id] = $price->warehouse;
+                if ((empty($productId) && empty($warehouseId)) ||
+                    (!empty($productId) && !empty($warehouseId) && $price->product_id == $productId && $price->warehouse_id == $warehouseId) ||
+                    ((empty($productId) || empty($warehouseId)) && ($price->product_id == $productId || $price->warehouse_id == $warehouseId)))
+                {
+                    $result['product'][$price->product_id] = $price->product;
+                    $result['warehouse'][$price->warehouse_id] = $price->warehouse;
+                }
+                $result['productAll'][$price->product_id] = ['id' => $price->product_id, 'title' => $price->product->fullTitle, 'sort' => $price->product->sort];
+                $result['warehouseAll'][$price->warehouse_id] = ['id' => $price->warehouse_id, 'title' => $price->warehouse->title, 'sort' => $price->warehouse->sort];
         }
+
+        ArrayHelper::multisort($result['product'], 'sort');
+        ArrayHelper::multisort($result['productAll'], 'sort');
+        ArrayHelper::multisort($result['warehouse'], 'sort');
+        ArrayHelper::multisort($result['warehouseAll'], 'sort');
+        
         return $result;
     }
     
@@ -390,5 +513,21 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->status = User::STATUS_ACTIVE;
         return $this->save(false);
+    }
+    
+    public function generateManageMenuItem()
+    {
+        $menuItems = [];
+        foreach($this->activeGroupsIRule as $group) {
+            $menuItems[] = /*array_merge($menuItems, */[
+                'label' => $group->title, 
+                'url' => ['/group/default/manage', 'id' => $group->id],
+                //'active' => $this->context->module->id == 'group'
+            ]/*)*/;
+        }
+        
+        $result = ['label' => Yii::t('app', 'NAV_MANAGE'), 'items' => $menuItems];
+        
+        return $result;
     }
 }

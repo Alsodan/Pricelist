@@ -54,6 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'status',
                             'value' => $user->statusName
                         ],
+                        'sort',
                         /*[
                             'attribute' => 'groups',
                             'format' => 'html',

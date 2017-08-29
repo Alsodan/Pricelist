@@ -8,7 +8,7 @@ use app\components\widgets\LinkedItemsWidget;
 /* @var $searchModel app\modules\group\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('group', 'GROUP_PRODUCTS_MANAGE');
+$this->title = Module::t('group', 'PRODUCTS_MANAGE');
 $this->params['breadcrumbs'][] = ['label' => Module::t('group', 'GROUPS_TITLE'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $group->title, 'url' => ['view', 'id' => $group->id]];
 $this->params['breadcrumbs'][] = $this->title;
