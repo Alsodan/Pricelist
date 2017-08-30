@@ -103,6 +103,7 @@ a:hover {
     padding: 0px;
     /*color: #6d6e71;*/
 }
+
 nav.list ul li a {
     border: 10px solid transparent;
 }
@@ -321,7 +322,7 @@ nav.list ul li.active a {
     text-align: center;
 }
 table {
-    /*width: 100%;*/
+    width: 100%;
     border-collapse: collapse;
     border-spacing: 2px;
     border-color: grey;
@@ -339,7 +340,7 @@ thead tr {
 }
 tr {
     background: none;
-    border-bottom: 1px solid #e0e0e0;
+    /*border-bottom: 1px solid #e0e0e0;*/
     padding: 0.1em 0.6em;
     vertical-align: middle;
 }
@@ -350,7 +351,7 @@ th {
     border: 1px solid #e0e0e0;
     text-align: center;
     word-break: normal;
-    min-width: 120px;
+    min-width: 100px;
     max-width: 120px;
     background-color: #fdb813;
 }
@@ -671,6 +672,17 @@ tr:nth-of-type(odd) {
     margin: auto;
     background: url(/images/file2.png) 0 0 no-repeat;
 }
+
+.org-item .icon-pdf {
+    display: block;
+    width: 50px;
+    height: 50px;
+    margin: auto;
+    margin-top: 5px;
+    background: url(/images/pdf.png) 0 0 no-repeat;
+    background-size: cover;
+}
+
 .org-item a,
 .org-link a{
     text-decoration: none;
@@ -678,6 +690,10 @@ tr:nth-of-type(odd) {
 }
 .org-item:hover .icon {
     background: url(/images/file2_hover.png) 0 0 no-repeat;
+}
+.org-item:hover .icon-pdf {
+    background: url(/images/pdf_hover.png) 0 0 no-repeat;
+    background-size: cover;
 }
 .org-item:hover a span,
 .org-link:hover a span,
@@ -700,7 +716,39 @@ tr:nth-of-type(odd) {
     margin-bottom: 10px;
     border-bottom: 1px dashed #333;
 }
-
+.pdf-item a span {
+    border-bottom: 1px dashed #333;
+}
+.last-update {
+    display: table-cell;
+    width: 100%;
+}
+.pdf {
+    display: table-cell;
+    position:absolute;
+    right: 30px;
+    top: -40px;
+}
+@media (max-width: 768px) {
+    .last-update {
+        display: table-cell;
+        width: 60%;
+    }
+    .pdf {
+        top: -20px;
+    }
+    .pdf-item {
+        width: auto !important;
+    }
+    .pdf-item a:first-child {
+        display: none;
+    }
+}
+@media (max-width: 500px) {
+    .pdf {
+        right: 0px;
+    }
+}
 /* Default custom select styles */
 div.level300 {
     z-index: 300!important;

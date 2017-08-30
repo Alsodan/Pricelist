@@ -1,7 +1,15 @@
 <?php
 
 /* @var $this yii\web\View */
-
+//JS
+$this->registerJs('
+    <!-- DOM Ready Scripts -->
+    $(document).ready(function() {
+        //Modify top menu in mobile view
+        selectElement = $("select.cs-skin-underline");
+        new SelectFx(selectElement[0], { newTab : false });
+    });
+');
 //Meta
 $this->params['description'] = $site->page->meta_description;
 $this->params['keywords'] = $site->page->meta_keywords;
@@ -17,6 +25,7 @@ $this->params['title'] = $site->page->title;
         <?= $site->page->subheader ?>
     </div>
     <?= $site->page->content ?>
+</div>
     <!-- Managers -->
     <div id="managers" class="container-fluid">
         <h2 class="position-center">Связаться с нами и получить консультацию Вы можете обратившись напрямую к специалистам:</h2>
@@ -59,5 +68,4 @@ $this->params['title'] = $site->page->title;
         <div id="map" style="width: 100%; height: 500px;"></div>
         <!-- /Map -->
     </div>
-</div>
 

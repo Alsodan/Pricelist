@@ -5,8 +5,9 @@
 $this->registerJs('
     <!-- DOM Ready Scripts -->
     $(document).ready(function() {
-        $(".spinner").hide();
-        ActivatePage();
+        //Modify top menu in mobile view
+        selectElement = $("select.cs-skin-underline");
+        new SelectFx(selectElement[0], { newTab : false });
     });
 ');
 //Meta

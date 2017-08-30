@@ -53,8 +53,30 @@ function ActivatePage()
             $('#modal-content').append(dataToHtml($(this).data('modal')));
         }
     });
+    //Ссылка "Скачать в PDF"
+    $('.pdf-item a').click(function(e) {
+        e.preventDefault();
+        var params = {};
+        params['region'] = $('#regions-list ul li.active').data('id');
+        params['warehouse'] = $('#warehouses-list ul li.active').data('id');
+        params['crop'] = $('#crops-list ul li.active').data('id');
+        var link = $(this).attr('href') + '?' + urlEncodeData(params);
+        window.open(link, '_blank');
+    });
 }
 
+/*
+ * Генерация параметров запроса
+ * @param {type} data
+ * @returns {String}
+ */
+function urlEncodeData(data) 
+{  
+    var arr = [];
+    for(var p in data)
+        arr.push(encodeURIComponent(p) + '=' + encodeURIComponent(data[p]));
+    return arr.join('&');  
+}
 /*
  * Обработчик события нажатия на ссылку внутри списка nav
  */
