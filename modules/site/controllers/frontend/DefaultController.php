@@ -4,6 +4,7 @@ namespace app\modules\site\controllers\frontend;
 
 use yii\web\Controller;
 use app\modules\site\models\SiteModel;
+use kartik\mpdf\Pdf;
 
 /**
  * Default controller for the `main` module
@@ -63,5 +64,36 @@ class DefaultController extends Controller
         return $this->render('contacts', [
             'site' => new SiteModel('contacts'),
         ]);
-    }    
+    }
+    
+    //Output pricelist to PDF
+    public function actionPricelistPdf($region = 0, $warehouse = 0, $crop = 0)
+    {
+        $site = new SiteModel('pricelist');
+        
+        $pdf = new Pdf([
+            'mode' => Pdf::MODE_UTF8,
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_LANDSCAPE,
+            'marginTop' => 26,
+            'marginLeft' => 10,
+            'marginRight' => 10,
+            'content' => $this->renderPartial('pricelistPdf', [
+                'site' => $site,
+                'region' => $region,
+                'warehouse' => $warehouse,
+                'crop' => $crop,
+            ]),
+            'filename' => 'Прайслист ООО КРАСНОДАРЗЕРНОПРОДУКТ-ЭКСПО (изменен ' . $site->generateLastChange(true) . ').pdf',
+            'options' => [
+                'title' => 'Прайслист ООО "КРАСНОДАРЗЕРНОПРОДУКТ-ЭКСПО"',
+                'subject' => 'PDF',
+            ],
+            'methods' => [
+                'SetHeader' => ['<img src="/images/logo_0.png" width=200>||' . $site->generateLastChange()],
+                'SetFooter' => ['|Страница {PAGENO}|'],
+            ]
+        ]);
+        return $pdf->render();
+    }
 }

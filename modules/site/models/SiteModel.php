@@ -260,10 +260,10 @@ class SiteModel extends \yii\base\Model
      * Возвращает скомпонованную и отформатированную дату последнего изменения прайса
      * @return string
      */
-    public function generateLastChange()
+    public function generateLastChange($onlyData = false)
     {
         $lastchange = \app\components\behaviors\models\Changes::getLastChangeDate();
-        return '(Обновлено: ' . $lastchange . ')';
+        return $onlyData ? $lastchange : '(Обновлено: ' . $lastchange . ')';
     }
     
     /**
@@ -319,8 +319,9 @@ class SiteModel extends \yii\base\Model
             if ($headerColumnType === 'product') {
                 $tableHeader .= ($headerCell->subtitle ? ('<br>(' . $headerCell->subtitle . ')') : '')  . '</p><a href="#modal" class="modal-button" data-modal="spec;' . $headerCell->specification . '">Спецификация</a>';
             } else {
-                $tableHeader .= '</p><a href="/warehouses#wh' . $headerCell->id . '">ТТН</a></th>';
+                $tableHeader .= '</p><a href="/warehouses#wh' . $headerCell->id . '">ТТН</a>';
             }
+            $tableHeader .= '</th>';
         }
         $tableHeader .= '<th class="last"></th></tr></thead>';
         //Тело таблицы
@@ -338,6 +339,98 @@ class SiteModel extends \yii\base\Model
                 $tableBody .= '<td>';
                 if (is_object($tableData[$header->id][$row->id])) {
                     $tableBody .= '<a href="#modal" class="modal-button" data-modal="' . $this->managerToString($tableData[$header->id][$row->id]->manager) . '">' . $tableData[$header->id][$row->id]->getPrice('no_tax') . '</a>';
+                }
+                $tableBody .= '</td>';
+            }
+            $tableBody .= '</tr>';
+        }
+        $tableBody .= '</tbody>';
+
+        return $tableHeader . $tableBody;
+    }
+    
+    /**
+     * Возвращает HTML код таблицы цен для вывода в PDF
+     * @return string
+     */
+    public function generatePdfPriceTable($region, $warehouse, $crop)
+    {
+        //TODO - длинновато, но пока оставлю для читабельности. Отрефакторить
+        //Данные для таблицы
+        /*$prices = $this->getDataByName('price');
+        $warehouses = $this->getDataByName('warehouse');
+        $products = $this->getDataByName('product');*/
+        
+        $warehouses = \app\api\modules\v1\models\Warehouse::findWarehousesWithParams($warehouse, $crop, $region);
+        $products = \app\api\modules\v1\models\Product::findProductsWithParams($warehouses, $crop);
+        $prices = \app\api\modules\v1\models\Price::findPricesWithParams($warehouses, $products);
+        
+        //Шапка должна быть меньше или равна количеству строк
+        //Определяем что будет в шапке: продукция или склады
+        //Пока уберу
+        $headerColumnType = /*count($warehouses) > count($products) ? 'product' : */'warehouse';
+        $headerColumn = /*count($warehouses) > count($products) ? $products : */$warehouses;
+        $rowColumnType = /*count($warehouses) > count($products) ? 'warehouse' : */'product';
+        $rowColumn = /*count($warehouses) > count($products) ? $warehouses : */$products;
+        
+        //Если нет данных, то так и выводим
+        if (empty($warehouses) || empty($products) || empty($prices)) {
+            return '<h2 style="text-align: center;">Нет данных</h2>';
+        }
+
+        //Создаем пустой массив с нужными индексами
+        //Индексы - это ИД складов и продукции
+        $tableData = [];
+        foreach ($rowColumn as $row) {
+            //Первая колонка для названий
+            $tableData[0][$row->id] = '';
+            foreach ($headerColumn as $header) {
+                $tableData[$header->id][$row->id] = '';
+            }
+        }
+
+        //Заполняем массив ценами
+        $headerAttributeName = $headerColumnType . '_id';
+        $rowAttributeName = $rowColumnType . '_id';
+        foreach ($prices as $price) {
+            if ($price->price_status < (\app\api\modules\v1\models\Price::NONEED_NO_TAX)) {
+                $tableData[$price->$headerAttributeName][$price->$rowAttributeName] = $price;
+            }
+        }
+        
+        //Убираем склады, в которых сейчас не закупают товар
+        $prodCount = count($products);
+        foreach ($headerColumn as $header) {
+            $emptyCount = 0;
+            foreach ($rowColumn as $row) {
+                if (empty($tableData[$header->id][$row->id])) {
+                    $emptyCount++;
+                }
+            }
+            if ($emptyCount == $prodCount) {
+                unset($tableData[$header->id]);
+                unset($headerColumn[$header->id]);
+            }
+        }
+
+        //Создаем HTML разметку таблицы
+        //Заголовок таблицы. Первая ячейка - пустая
+        $tableHeader = '<thead><tr><th style="width: 100px; line-stacking-strategy: block-line-height; padding: 2px 5px;"></th>';
+        foreach ($headerColumn as $headerCell) {
+            $tableHeader .= '<th style="width: 100px; line-stacking-strategy: block-line-height; padding: 2px 5px; text-align: center;">' . $headerCell->title . ($headerColumnType === 'product' ? ($headerCell->subtitle ? '<br>(' . $headerCell->subtitle . ')' : '') : '');
+            $tableHeader .= '</th>';
+        }
+        $tableHeader .= '</tr></thead>';
+        //Тело таблицы
+        $tableBody = '<tbody>';
+        foreach ($rowColumn as $row) {
+            //Первая колонка для названий
+            $tableBody .= '<tr><td style="width: 100px; line-stacking-strategy: block-line-height; padding: 2px 5px;">' . $row->title . ($rowColumnType === 'product' ? ($row->subtitle ? '<br>(' . $row->subtitle . ')' : '') : '');
+            $tableBody .= '</td>';
+            foreach ($headerColumn as $header) {
+                $tableBody .= '<td style="width: 100px; line-stacking-strategy: block-line-height; padding: 2px 5px;">';
+                if (is_object($tableData[$header->id][$row->id])) {
+                    $tableBody .= $tableData[$header->id][$row->id]->getPrice('no_tax');
                 }
                 $tableBody .= '</td>';
             }
@@ -377,7 +470,7 @@ class SiteModel extends \yii\base\Model
         }
         
         //Шапка
-        $headerColumns = ['Склад' => 'width="25%"', 'Продукция' => 'width="25%"', 'Специалист' => 'width="50%"'];
+        $headerColumns = ['Склад' => 'width="24%"', 'Продукция' => 'width="24%"', 'Специалист' => 'width="48%"'];
         $tableHeader = '<thead><tr>';
         foreach ($headerColumns as $key => $value) {
             $tableHeader .= '<th ' . $value . '><p>' . $key . '</p></th>';
@@ -422,7 +515,7 @@ class SiteModel extends \yii\base\Model
                 //Название
                 $dataHtml .= '<div class="org-link"><a href="warehouse/' . $org->id . '"><span>' . $org->title . '</span>';
                 //Ссылка "Подробнее"
-                $dataHtml .= '<div class="link"><span>Подробнее...</span></div></a>';
+                $dataHtml .= '<div class="link"><span>Подробнее</span></div></a>';
                 $dataHtml .= '</div></div>';
             }
             $dataHtml .= '</div><hr>';

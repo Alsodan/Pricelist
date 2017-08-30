@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
+
 //JS
 $this->registerJs('
     <!-- DOM Ready Scripts -->
@@ -45,23 +46,17 @@ $this->params['title'] = $site->page->title;
         <div class="desktop-show position-center">
             <div id="regions" class="data-content">
                 <h3>Регионы</h3>
-                <nav id="regions-list" class="list position-center menu">
-                    <?= $site->generateNav('region'); ?>
-                </nav>
+                <?= $site->generateNav('region'); ?>
             </div>
             <div id="warehouses" class="data-content">
                 <h3>Склады</h3>
                 <div id="warehouses-spinner" class="spinner small"></div>
-                <nav id="warehouses-list" class="list position-center menu">
-                    <?= $site->generateNav('warehouse'); ?>
-                </nav>
+                <?= $site->generateNav('warehouse'); ?>
             </div>
             <div id="crops" class="data-content">
                 <h3>Продукция</h3>
                 <div id="crops-spinner" class="spinner small"></div>
-                <nav id="crops-list" class="list position-center">
-                    <?= $site->generateNav('crop'); ?>
-                </nav>
+                <?= $site->generateNav('crop'); ?>
             </div>
         </div>
     </div>
@@ -70,9 +65,18 @@ $this->params['title'] = $site->page->title;
 <!-- Prices -->
 <div id="prices" class="data-content">
     <h2 class="position-center">ПРАЙСЛИСТ</h2>
-    <h4 id="last-update" class="position-center">
-        <?= $site->generateLastChange(); ?>
-    </h4>
+    <div class="container" style="display: table; position: relative; height: 60px;">
+        <div id="last-update" class="position-center last-update">
+            <?= $site->generateLastChange(); ?>
+        </div>
+        <div class="pdf">
+            <div class="org-item pdf-item">
+                <a href="<?= yii\helpers\Url::to(['pricelist-pdf']) ?>" target="_blank"><span style="font-size: 12px;">Скачать в PDF</span></a>
+                <a href="<?= yii\helpers\Url::to(['pricelist-pdf']) ?>" target="_blank"><div class="icon-pdf"></div></a></div>
+        </div>
+        
+        
+    </div>
     <div class="responsive-table">
         <table id="prices-table" class="table-hover">
             <?= $site->generatePriceTable(); ?>

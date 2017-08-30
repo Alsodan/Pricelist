@@ -5,12 +5,9 @@
 $this->registerJs('
     <!-- DOM Ready Scripts -->
     $(document).ready(function() {
-        new SelectFx($("select.cs-skin-underline")[0], { newTab : false });
-        var hash = window.location.hash;
-        if (hash > "") {
-            var top = $("h3" + hash).offset().top - 140;
-            $("body, html").animate({scrollTop: top}, 1000);
-        }
+        //Modify top menu in mobile view
+        selectElement = $("select.cs-skin-underline");
+        new SelectFx(selectElement[0], { newTab : false });
     });
 ');
 //Meta
