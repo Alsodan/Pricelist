@@ -214,9 +214,9 @@ nav.list ul li.active a {
     display: block;
     padding: 10px 20px;
 }
-.navbar-item.last {
+/*.navbar-item.last {
     padding-right: 0px;
-}
+}*/
 .navbar-item a {
     font: 16px Arial, sans-serif;
     border-bottom: none;
@@ -277,7 +277,6 @@ nav.list ul li.active a {
         padding: 10px 0px;
     }
     .navbar-header {
-        /*background-image: url("../images/logo.png");*/
         width: 200px;
     }
     .wrap > .container {
@@ -286,11 +285,8 @@ nav.list ul li.active a {
     .wrap > #managers.container {
         padding: 10px 0px 20px;
     }
-    /*.prices-index {
-        display: none;
-    }*/
     .navbar-item {
-        padding: 5px 0px;
+        padding: 5px 15px;
     }
     .top-menu .navbar-item {
         padding: 5px 8px;
