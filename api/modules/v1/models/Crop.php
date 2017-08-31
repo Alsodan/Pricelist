@@ -20,13 +20,20 @@ class Crop extends BaseCrop implements \app\interfaces\SiteDataInterface
      */
     public static function getBaseData($data = [])
     {
-        $cropIds = array_unique(\yii\helpers\ArrayHelper::getColumn($data['products'], 'crop_id'));
-        $crops = Crop::find()
-                ->jsonData()
-                ->sorted()
-                ->where(['id' => $cropIds]);
-        
-        return $crops->all();
+        /*if ($data['cookie']['warehouse'] != 0 || $data['cookie']['crop'] != 0 || $data['cookie']['region'] != 0) {
+            $crops = static::findCropsWithParams($data['cookie']['warehouse'], $data['cookie']['crop']);
+            
+            return $crops;
+        } else {*/
+            /*$cropIds = array_unique(\yii\helpers\ArrayHelper::getColumn($data['products'], 'crop_id'));*/
+            $crops = Crop::find()
+                    ->jsonData()
+                    ->sorted()
+                    ->visible()
+                    /*->where(['id' => $cropIds])*/;
+
+            return $crops->all();
+        //}
     }
     
     /*

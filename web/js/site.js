@@ -77,6 +77,7 @@ function urlEncodeData(data)
         arr.push(encodeURIComponent(p) + '=' + encodeURIComponent(data[p]));
     return arr.join('&');  
 }
+
 /*
  * Обработчик события нажатия на ссылку внутри списка nav
  */
@@ -115,6 +116,10 @@ function NavLinkAction(type, id)
             //Получаем новый список складов
             GetWarehouses(0, 'list', $('#regions-list ul li.active').data('id'));
         }
+        //Пишем Cookie
+        Cookies.set('warehouse', warehouse);
+        Cookies.set('crop', crop);
+        Cookies.set('region', region);
         //Обновляем цены
         GetPrices(warehouse, crop, region);
     }
@@ -143,6 +148,11 @@ function SelectChangeAction(element)
         $('#crops-mobile-label').next().remove();
         GetCrops(crop);
     }
+    //Пишем Cookie
+    Cookies.set('warehouse', warehouse);
+    Cookies.set('crop', crop);
+    Cookies.set('region', region);
+    //Обновляем цены
     GetPrices(warehouse, crop, region);
 }
 

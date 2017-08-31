@@ -36,15 +36,22 @@ class Product extends BaseProduct
      */
     public static function getBaseData($data = [])
     {
-        $productIds = array_unique(\yii\helpers\ArrayHelper::getColumn($data['prices'], 'product_id'));
-        
-        $products = Product::find()
-                ->jsonData()
-                ->visible()
-                ->sorted()
-                ->andWhere([Product::tableName() . '.id' => $productIds]);
-        
-        return $products->all();
+        /*if ($data['cookie']['warehouse'] != 0 || $data['cookie']['crop'] != 0 || $data['cookie']['region'] != 0) {
+            $warehouses = Warehouse::findWarehousesWithParams($data['cookie']['warehouse'], $data['cookie']['crop'], $data['cookie']['region']);
+            $products = Product::findProductsWithParams($warehouses, $data['cookie']['crop']);
+            
+            return $products;
+        } else {*/
+            $productIds = array_unique(\yii\helpers\ArrayHelper::getColumn($data['prices'], 'product_id'));
+
+            $products = Product::find()
+                    ->jsonData()
+                    ->visible()
+                    ->sorted()
+                    ->andWhere([Product::tableName() . '.id' => $productIds]);
+
+            return $products->all();
+        //}
     }
     
     /*
