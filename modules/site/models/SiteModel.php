@@ -9,7 +9,7 @@ use app\components\widgets\LinkedItemsWidget;
 class SiteModel extends \yii\base\Model
 {
     //Хранилище данных и связей
-    //level - Уровень высоты для мобильных выпадающих списков
+    //level - Уровень высоты (CSS z-index) для мобильных выпадающих списков
     //all - Наименование пункта для выбора всех
     private $data = [
         'price' => ['data' => null, 'addon' => []],
@@ -27,6 +27,12 @@ class SiteModel extends \yii\base\Model
     private $submenu;
     //Данные для страницы
     private $sub;
+    //Cookie
+    private $cookies = [
+        'region' => 0,
+        'warehouse' => 0,
+        'crop' => 0,
+    ];
     //Состав меню
     public static $menu = [
         'pricelist' => ['link' => '/', 'title' => 'Прайслист'],
@@ -40,7 +46,6 @@ class SiteModel extends \yii\base\Model
     public function __construct($page = 'pricelist', $sub = 0) {
         parent::__construct();
         //Текущая страница
-                
         $this->page = Page::findPage($page, $sub);
         //Данные для страницы
         $subModelName = null;
@@ -50,8 +55,56 @@ class SiteModel extends \yii\base\Model
 
             $this->sub = $subModelName::findOne($sub);
         }
+        //Cookie
+        $this->setCookies();
     }
 
+    //Проверка наличия кук и установка их значениями по-умолчанию
+    private function setCookies()
+    {
+        //Куки нам нужны только на странице прайса
+        if ($this->page->id === 'pricelist_0') {
+            //Запоминаем куки
+            $this->cookies = $this->filterCookie($this->getUnsecuredCookieFromSite());
+            //Пишем на сайт
+            $this->setUnsecuredCookieToSite();
+        }
+    }
+    
+    //Установка наших кук на сайт.
+    //Куки невалидируемые, чтобы скрипты на клиенте могли их менять
+    private function setUnsecuredCookieToSite()
+    {
+        foreach ($this->cookies as $key => $value) {
+            setcookie($key, $value);
+        }
+    }
+    
+    //Выбор нужных нам кук
+    private function filterCookie($siteCookies)
+    {
+        $cookies = [];
+        foreach ($this->cookies as $key => $value) {
+            if ($siteCookies->has($key)) {
+                $cookies[$key] = $siteCookies->get($key)->value;
+            }
+        }
+        
+        return $cookies;
+    }
+    
+    //Чтение невалидных кук с сайта
+    private function getUnsecuredCookieFromSite()
+    {
+        // получение коллекции (yii\web\CookieCollection) из компонента "response"
+        //Т.к. куки ставятся скриптом на клиенте, при получении отключаем валидацию кук
+        \Yii::$app->request->enableCookieValidation=false;
+        $siteCookies = \Yii::$app->request->cookies;
+        \Yii::$app->request->enableCookieValidation=true;
+        
+        return $siteCookies;
+    }
+    
     //Геттеры для приватных членов класса
     public function getPage()
     {
@@ -66,6 +119,11 @@ class SiteModel extends \yii\base\Model
     public function getSub()
     {
         return $this->sub;
+    }
+    
+    public function getCookie($name)
+    {
+        return isset($this->cookies[$name]) ? $this->cookies[$name] : 0;
     }
 
     /**
@@ -133,7 +191,7 @@ class SiteModel extends \yii\base\Model
     private function loadData($innerName)
     {
         $className = $this->getClassName($innerName);
-        $addon = [];
+        $addon = ['cookie' => $this->cookies];
         //Подготавливаем связанные данные для получения основных данных
         foreach ($this->data[$innerName]['addon'] as $value) {
             $name = $value . 's';
@@ -222,13 +280,15 @@ class SiteModel extends \yii\base\Model
      * @param string $name
      * @return string HTML
      */
-    public function generateNav($name)
+    public function generateNav($name, $active)
     {
         $data = $this->getDataByName($name);
         
-        $navHtml = '<nav id="' . $name . 's-list" class="list position-center"><ul><li data-id="0" class="active"><a href="#">Все</a></li>';
+        if ($name === 'warehouse') $data = \app\api\modules\v1\models\Warehouse::findWarehousesWithParams(0, 0, $this->cookies['region']);
+        
+        $navHtml = '<nav id="' . $name . 's-list" class="list position-center"><ul><li data-id="0"' . ($active == 0 ? ' class="active"' : '') . '><a href="#">Все</a></li>';
         foreach ($data as $value) {
-            $navHtml .= '<li data-id="' . $value->id . '"><a href="#">' . $value->title . '</a></li>';
+            $navHtml .= '<li data-id="' . $value->id . '"' . ($active == $value->id ? ' class="active"' : '') . '><a href="#">' . $value->title . '</a></li>';
         }
         
         $navHtml .= '</ul></nav>';
@@ -240,15 +300,17 @@ class SiteModel extends \yii\base\Model
      * @param string $name
      * @return string HTML
      */
-    public function generateMobileNav($name)
+    public function generateMobileNav($name, $active)
     {
         $data = $this->getDataByName($name);
         
+        if ($name === 'warehouse') $data = \app\api\modules\v1\models\Warehouse::findWarehousesWithParams(0, 0, $this->cookies['region']);
+        
         $navHtml = '<select id="' . $name . 's-mobile" class="level' . $this->data[$name]['level'] . ' cs-select cs-skin-rotate">';
-        $navHtml .= '<option selected value="0">' . $this->data[$name]['all'] . '</option>';
+        $navHtml .= '<option ' . ($active == 0 ? 'selected' : '') . ' value="0">' . $this->data[$name]['all'] . '</option>';
         foreach ($data as $value) {
             $navHtml .= '<li data-id="' . $value->id . '"><a href="#">' . $value->title . '</a></li>';
-            $navHtml .= '<option value="' . $value->id . '">' . $value->title . '</option>';
+            $navHtml .= '<option ' . ($active == $value->id ? 'selected' : '') . ' value="' . $value->id . '">' . $value->title . '</option>';
         }
         
         $navHtml .= '</select>';

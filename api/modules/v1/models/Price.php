@@ -31,14 +31,22 @@ class Price extends BasePrice implements \app\interfaces\SiteDataInterface
      */
     public static function getBaseData($data = [])
     {
-        $prices = static::find()
-                ->jsonData()
-                ->hasManager()
-                ->activeWarehouses()
-                ->activeProducts()
-                ->andWhere('price_status < ' . static::NONEED_NO_TAX)
-                ->distinct();
-        return $prices->all();
+        if ($data['cookie']['warehouse'] != 0 || $data['cookie']['crop'] != 0 || $data['cookie']['region'] != 0) {
+            $warehouses = Warehouse::findWarehousesWithParams($data['cookie']['warehouse'], $data['cookie']['crop'], $data['cookie']['region']);
+            $products = Product::findProductsWithParams($warehouses, $data['cookie']['crop']);
+            $prices = static::findPricesWithParams($warehouses, $products);
+            
+            return $prices;
+        } else {
+            $prices = static::find()
+                    ->jsonData()
+                    ->hasManager()
+                    ->activeWarehouses()
+                    ->activeProducts()
+                    ->andWhere('price_status < ' . static::NONEED_NO_TAX)
+                    ->distinct();
+            return $prices->all();
+        }
     }
     
     /**

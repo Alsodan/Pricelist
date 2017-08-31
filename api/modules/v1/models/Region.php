@@ -21,15 +21,21 @@ class Region extends BaseRegion implements \app\interfaces\SiteDataInterface
      */
     public static function getBaseData($data = [])
     {
-        $regionIds = array_unique(\yii\helpers\ArrayHelper::getColumn($data['warehouses'], 'region_id'));
+        /*if ($data['cookie']['warehouse'] != 0 || $data['cookie']['crop'] != 0 || $data['cookie']['region'] != 0) {
+            $regions = static::findWithParams($data['cookie']['region']);
+            
+            return $regions;
+        } else {*/
+            /*$regionIds = array_unique(\yii\helpers\ArrayHelper::getColumn($data['warehouses'], 'region_id'));*/
 
-        $regions = Region::find()
-                ->jsonData()
-                ->active()
-                ->sorted()
-                ->andWhere([Region::tableName() . '.id' => $regionIds]);
-        
-        return $regions->all();
+            $regions = Region::find()
+                    ->jsonData()
+                    ->active()
+                    ->sorted()
+                    /*->andWhere([Region::tableName() . '.id' => $regionIds])*/;
+
+            return $regions->all();
+        //}
         
     }
     

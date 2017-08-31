@@ -64,12 +64,12 @@ class CropQuery extends \yii\db\ActiveQuery
     {
         return $this->joinWith(['products pproduct' => function ($pq) use ($warehouseId) {
                 $pq->joinWith('warehouses warehouse')
-                    ->joinWith('groups group')
-                    ->andWhere('group.id is NOT NULL')
+                    //->joinWith('groups pgroup')
+                    //->andWhere('pgroup.id is NOT NULL')
                     ->andWhere(['warehouse.id' => $warehouseId])
                     ->andWhere(['warehouse.status' => Warehouse::STATUS_ACTIVE]);
             }])
-            ->andWhere(['product.status' => Product::STATUS_ACTIVE]);
+            ->andWhere(['pproduct.status' => Product::STATUS_ACTIVE]);
     }
     
     /**

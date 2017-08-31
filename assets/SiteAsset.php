@@ -25,7 +25,8 @@ class SiteAsset extends AssetBundle
         'js/site.js',
         'js/jquery.stickytableheaders.min.js',
         'js/classie.js',
-        'js/selectFx.js'
+        'js/selectFx.js',
+        'js/js.cookie.js',
     ];
     public $depends = [
         'app\assets\Html5ShivAsset',

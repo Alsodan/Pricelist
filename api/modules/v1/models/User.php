@@ -49,9 +49,19 @@ class User extends BaseUser implements \app\interfaces\SiteDataInterface
      */
     public static function getBaseData($data = [])
     {
-        $pricesIds = \yii\helpers\ArrayHelper::getColumn($data['prices'], 'id');
-        $users = User::findByPrices($pricesIds);
-        return $users;
+        /*if ($data['cookie']['warehouse'] != 0 || $data['cookie']['crop'] != 0 || $data['cookie']['region'] != 0) {
+            $warehouses = Warehouse::findWarehousesWithParams($data['cookie']['warehouse'], $data['cookie']['crop'], $data['cookie']['region']);
+            $products = Product::findProductsWithParams($warehouses, $data['cookie']['crop']);
+            $prices = Price::findPricesWithParams($warehouses, $products);
+            
+            $users = static::findByPrices(\yii\helpers\ArrayHelper::getColumn($prices, 'id'));
+            
+            return $users;
+        } else {*/
+            $pricesIds = \yii\helpers\ArrayHelper::getColumn($data['prices'], 'id');
+            $users = User::findByPrices($pricesIds);
+            return $users;
+        //}
     }
     
     /*

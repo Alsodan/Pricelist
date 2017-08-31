@@ -20,17 +20,23 @@ class Warehouse extends BaseWarehouse implements \app\interfaces\SiteDataInterfa
      */
     public static function getBaseData($data = [])
     {
-        $warehouseIds = array_unique(\yii\helpers\ArrayHelper::getColumn($data['prices'], 'warehouse_id'));
+        /*if ($data['cookie']['warehouse'] != 0 || $data['cookie']['crop'] != 0 || $data['cookie']['region'] != 0) {
+            $warehouses = Warehouse::findWarehousesWithParams($data['cookie']['warehouse'], $data['cookie']['crop'], $data['cookie']['region']);
+            
+            return $warehouses;
+        } else {*/
+            $warehouseIds = array_unique(\yii\helpers\ArrayHelper::getColumn($data['prices'], 'warehouse_id'));
 
-        $warehouses = Warehouse::find()
-                ->jsonData()
-                ->visible()
-                ->sorted()
-                ->active()
-                ->with('activeOrganizations')
-                ->andWhere([Warehouse::tableName() . '.id' => $warehouseIds]);
+            $warehouses = Warehouse::find()
+                    ->jsonData()
+                    ->visible()
+                    ->sorted()
+                    ->active()
+                    ->with('activeOrganizations')
+                    ->andWhere([Warehouse::tableName() . '.id' => $warehouseIds]);
 
-        return $warehouses->all();
+            return $warehouses->all();
+        //}
     }
     
     /*
